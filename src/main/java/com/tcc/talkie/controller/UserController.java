@@ -1,5 +1,4 @@
-/* TODO: Implementar endpoint de Delete 
-TODO: implementar endpoint de buscar usuário pelo
+/* TODO: Implementar endpoint de Delete
 */
 
 package com.tcc.talkie.controller;
@@ -62,6 +61,21 @@ public class UserController {
 
         repository.save(user);
         return ResponseEntity.ok(new ErrorResponse("Usuário atualizado com sucesso", 200, LocalDate.now().toString()));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getUserById(@PathVariable UUID id){
+        Optional<User> userOptional = repository.findById(id);
+
+        if(userOptional.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(new UserResponseDTO(
+            userOptional.get().getId(),
+            userOptional.get().getName(),
+            userOptional.get().getEmail()
+        ));
     }
     
 }
