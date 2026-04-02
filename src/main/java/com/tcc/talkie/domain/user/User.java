@@ -1,5 +1,7 @@
 package com.tcc.talkie.domain.user;
 
+import java.util.UUID;
+
 import com.tcc.talkie.infra.security.crypto.CryptoConverter;
 
 import jakarta.persistence.*;
@@ -14,7 +16,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    private UUID id;
     
     private String name;
 
