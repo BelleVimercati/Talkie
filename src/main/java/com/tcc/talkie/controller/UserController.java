@@ -1,4 +1,6 @@
-/* TODO: Implementar endpoint de Delete
+/* 
+TODO: Implementar endpoint de Delete
+TODO: transferir a lógica para camada de serviço
 */
 
 package com.tcc.talkie.controller;
@@ -15,7 +17,6 @@ import com.tcc.talkie.repository.UserRepository;
 import org.springframework.web.bind.annotation.RequestBody;
 import lombok.RequiredArgsConstructor;
 
-import java.lang.foreign.Linker.Option;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
