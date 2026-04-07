@@ -28,4 +28,11 @@ public class TypeService {
         }
         return repository.save(type);
     }
+
+    public void delete(Long id){
+        if (repository.findById(id).isEmpty()) {
+            throw new IllegalArgumentException("Tipo não encontrado");
+        }
+        repository.deleteById(id);
+    }
 }
