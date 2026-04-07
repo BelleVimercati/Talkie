@@ -2,6 +2,8 @@ package com.tcc.talkie.domain.user;
 
 import java.util.UUID;
 
+import com.tcc.talkie.domain.user.Role;
+
 import com.tcc.talkie.infra.security.crypto.CryptoConverter;
 
 import jakarta.persistence.*;
@@ -30,4 +32,7 @@ public class User {
 
     @Column(unique = true)
     private String cpfHash;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 }

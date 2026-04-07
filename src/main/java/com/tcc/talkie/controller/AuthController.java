@@ -46,6 +46,7 @@ public class AuthController {
             newUser.setPassword(passwordEncoder.encode(data.password()));
             newUser.setCpf(cpfLimpo);
             newUser.setCpfHash(HashUtil.hashCpf(cpfLimpo));
+            newUser.setRole(data.role());
     
             repository.save(newUser);
             return ResponseEntity.ok(new ErrorResponse("Usuário criado com sucesso", 200, LocalDate.now().toString()));
