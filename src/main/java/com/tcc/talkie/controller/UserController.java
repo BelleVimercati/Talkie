@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.tcc.talkie.domain.user.User;
 import com.tcc.talkie.dto.UpdateDTO;
-import com.tcc.talkie.dto.UserResponseDTO;
+import com.tcc.talkie.dto.response.UserResponseDTO;
 import com.tcc.talkie.repository.UserRepository;
 import com.tcc.talkie.service.UserService;
 

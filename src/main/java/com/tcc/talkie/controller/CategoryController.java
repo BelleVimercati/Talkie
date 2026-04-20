@@ -12,29 +12,43 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tcc.talkie.domain.type.Type;
+import com.tcc.talkie.domain.category.Category;
 import com.tcc.talkie.dto.ErrorResponse;
-import com.tcc.talkie.service.TypeService;
+import com.tcc.talkie.dto.request.CategoryCreateDTO;
+import com.tcc.talkie.dto.response.CategoryResponseDTO;
+import com.tcc.talkie.service.CategoryService;
 
 import org.springframework.web.bind.annotation.RequestBody;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/types")
+@RequestMapping("/categories")
 @RequiredArgsConstructor
-public class TypeController {
+public class CategoryController {
 
-    private final TypeService service;
+    private final CategoryService service;
 
     @GetMapping
-    public List<Type> getAll(){
-        return service.findAll();
+    public ResponseEntity<List<CategoryResponseDTO>> getTypes(){
+        List<CategoryResponseDTO> types = service.findAll()
+        .stream()
+        .map(type -> new CategoryResponseDTO(
+            type.getId(),
+            type.getName(),
+            type.getIcon(),
+            type.getUser().getId()
+        ))
+        .toList();
+
+        return ResponseEntity.ok(types);
     }
+    
+    /* TODO: trocar a forma de retorno das funções para usar TypeResponseDTO */
 
     @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody Type type){
+    public ResponseEntity<?> create(@RequestBody CategoryCreateDTO data){
         try {
-        Type created = service.create(type);
+        Category created = service.create(data);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(created);
 

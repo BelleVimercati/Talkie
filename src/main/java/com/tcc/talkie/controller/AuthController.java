@@ -4,8 +4,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tcc.talkie.domain.user.User;
-import com.tcc.talkie.dto.RegisterDTO;
 import com.tcc.talkie.dto.ErrorResponse;
+import com.tcc.talkie.dto.request.RegisterDTO;
 import com.tcc.talkie.infra.security.hash.HashUtil;
 import com.tcc.talkie.repository.UserRepository;
 
