@@ -1,4 +1,4 @@
-package com.tcc.talkie.dto;
+package com.tcc.talkie.dto.request;
 
 import com.tcc.talkie.domain.user.Role;
 

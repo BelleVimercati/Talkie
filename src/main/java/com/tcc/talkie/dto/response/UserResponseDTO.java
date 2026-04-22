@@ -1,4 +1,4 @@
-package com.tcc.talkie.dto;
+package com.tcc.talkie.dto.response;
 
 import java.util.UUID;
 
