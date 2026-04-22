@@ -18,21 +18,33 @@ public class UserService {
     private final UserRepository repository;
 
     public User updateUser(UUID id, UpdateDTO data){
-        User user = repository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
-
-        user.setName(data.name());
-        user.setEmail(data.email());
-
-        return repository.save(user);
+        try{
+            User user = repository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+    
+            user.setName(data.name());
+            user.setEmail(data.email());
+    
+            return repository.save(user);
+        } catch (Exception e){
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     public User getUserById(UUID id){
-        return repository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
     }
 
     public List<User> getAllUsers(){
         return repository.findAll();
     }
 
+    public void deleteUser(UUID id){
+        try{
+            User user = repository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+            repository.delete(user);
+        } catch (Exception e){
+            throw new RuntimeException(e.getMessage());
+        }
+    }
     
 }

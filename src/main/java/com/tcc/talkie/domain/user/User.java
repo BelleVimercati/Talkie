@@ -1,7 +1,10 @@
 package com.tcc.talkie.domain.user;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
+import com.tcc.talkie.domain.category.Category;
 import com.tcc.talkie.domain.user.Role;
 
 import com.tcc.talkie.infra.security.crypto.CryptoConverter;
@@ -35,4 +38,7 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Category> categories = new ArrayList<>();
 }

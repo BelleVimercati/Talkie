@@ -1,7 +1,3 @@
-/* 
-TODO: Implementar endpoint de Delete
-*/
-
 package com.tcc.talkie.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -73,6 +70,15 @@ public class UserController {
             return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage(), 400, LocalDate.now().toString()));
         }
     }
-    
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable UUID id){
+        try{
+            service.deleteUser(id);
+            return ResponseEntity.ok(new ErrorResponse("Usuário deletado com sucesso", 200, LocalDate.now().toString()));
+        } catch (RuntimeException e){
+            return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage(), 400, LocalDate.now().toString()));
+        }
+    }   
 }
             

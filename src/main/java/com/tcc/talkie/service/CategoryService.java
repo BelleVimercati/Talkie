@@ -1,14 +1,11 @@
 package com.tcc.talkie.service;
 
-import java.time.LocalDate;
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.tcc.talkie.domain.category.Category;
 import com.tcc.talkie.domain.user.User;
-import com.tcc.talkie.dto.ErrorResponse;
 import com.tcc.talkie.dto.request.CategoryCreateDTO;
 import com.tcc.talkie.repository.CategoryRepository;
 import com.tcc.talkie.repository.UserRepository;
