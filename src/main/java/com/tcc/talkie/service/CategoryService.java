@@ -10,6 +10,7 @@ import com.tcc.talkie.dto.request.CategoryCreateDTO;
 import com.tcc.talkie.repository.CategoryRepository;
 import com.tcc.talkie.repository.UserRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -45,5 +46,22 @@ public class CategoryService {
             throw new IllegalArgumentException("Tipo não encontrado");
         }
         repository.deleteById(id);
+    }
+
+    public Category update(Long id, CategoryCreateDTO data){
+        try{
+            Category category = repository.findById(id).orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
+
+            category.setName(data.name());
+            category.setIcon(data.icon());
+
+            return repository.save(category);
+        } catch (Exception e){
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public Category findById(Long id){
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
     }
 }

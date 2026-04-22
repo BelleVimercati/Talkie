@@ -9,6 +9,6 @@
   - [x] Auth
   - [x] User - falta apenas Get
 - [ ] Implementando métodos de CRUD que faltam
-  - [ ] Category: Update, FindByID
+  - [x] Category: Update, FindByID
   - [x] User: Delete
-  - [ ] 
+- [ ] Revisar as nomenclatura de rotas
