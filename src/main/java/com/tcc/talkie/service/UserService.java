@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.tcc.talkie.domain.user.User;
 import com.tcc.talkie.dto.UpdateDTO;
+import com.tcc.talkie.infra.exceptions.NotFoundException;
 import com.tcc.talkie.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -18,20 +19,14 @@ public class UserService {
     private final UserRepository repository;
 
     public User updateUser(UUID id, UpdateDTO data){
-        try{
-            User user = repository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-    
-            user.setName(data.name());
-            user.setEmail(data.email());
-    
-            return repository.save(user);
-        } catch (Exception e){
-            throw new RuntimeException(e.getMessage());
-        }
+        User user = repository.findById(id).orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
+        user.setName(data.name());
+        user.setEmail(data.email());
+        return repository.save(user);
     }
 
     public User getUserById(UUID id){
-        return repository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        return repository.findById(id).orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
     }
 
     public List<User> getAllUsers(){
@@ -39,12 +34,8 @@ public class UserService {
     }
 
     public void deleteUser(UUID id){
-        try{
-            User user = repository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-            repository.delete(user);
-        } catch (Exception e){
-            throw new RuntimeException(e.getMessage());
-        }
+        User user = repository.findById(id).orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
+        repository.delete(user);
     }
     
 }

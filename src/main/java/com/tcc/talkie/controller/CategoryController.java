@@ -46,7 +46,6 @@ public class CategoryController {
 
     @PostMapping
     public ResponseEntity<?> create(@RequestBody CategoryCreateDTO data){
-        try {
         Category created = service.create(data);
         return ResponseEntity.ok(new CategoryResponseDTO(
             created.getId(),
@@ -54,49 +53,28 @@ public class CategoryController {
             created.getIcon(),
             created.getUser().getId()
         ));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ErrorResponse(
-                            e.getMessage(),
-                            400,
-                            LocalDate.now().toString()
-                    ));
-        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id){
-        try {
-            service.delete(id);
-            return ResponseEntity.ok(new ErrorResponse("Categoria deletada com sucesso", 200, LocalDate.now().toString()));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ErrorResponse(
-                            e.getMessage(),
-                            404,
-                            LocalDate.now().toString()
-                    ));
-        }
+        service.delete(id);
+        return ResponseEntity.ok(new ErrorResponse("Categoria deletada com sucesso", 200, LocalDate.now().toString()));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody CategoryCreateDTO data){
-        try{
-            Category updated = service.update(id, data);
-            return ResponseEntity.ok(new CategoryResponseDTO(
-                updated.getId(),
-                updated.getName(),
-                updated.getIcon(),
-                updated.getUser().getId()
-            ));
-        } catch (RuntimeException e){
-            return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage(), 400, LocalDate.now().toString()));
-        }
+        Category updated = service.update(id, data);
+        return ResponseEntity.ok(new CategoryResponseDTO(
+            updated.getId(),
+            updated.getName(),
+            updated.getIcon(),
+            updated.getUser().getId()
+        ));
+
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id){
-        try{
             Category category = service.findById(id);
             return ResponseEntity.ok(new CategoryResponseDTO(
                 category.getId(),
@@ -104,8 +82,5 @@ public class CategoryController {
                 category.getIcon(),
                 category.getUser().getId()
             ));
-        } catch (RuntimeException e){
-            return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage(), 400, LocalDate.now().toString()));
-        }
     }
 }

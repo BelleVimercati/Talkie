@@ -11,7 +11,11 @@
 - [x] Implementando métodos de CRUD que faltam
   - [x] Category: Update, FindByID
   - [x] User: Delete
-- [ ] Revisar as nomenclatura de rotas
-- [ ] Adicionar Swagger
+- [x] Revisar as nomenclatura de rotas
+- [x] Adicionar Swagger
 - [ ] Revisar a criação de um Handler Global
+  - [x] Auth
+  - [x] Category 
+  - [x] Subcategory
+  - [x] User
 - [ ] Criar autenticação

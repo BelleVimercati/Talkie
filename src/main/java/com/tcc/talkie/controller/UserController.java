@@ -45,40 +45,27 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateUser(@PathVariable UUID id, @RequestBody UpdateDTO data){
-        try{
             User user = service.updateUser(id, data);
             return ResponseEntity.ok(new UserResponseDTO(
                 user.getId(),
                 user.getName(),
                 user.getEmail()));
-        }catch (RuntimeException e){
-            return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage(), 400, LocalDate.now().toString()));
-        }
-
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable UUID id){
-        try{
             User user = service.getUserById(id);
             return ResponseEntity.ok(new UserResponseDTO(
                 user.getId(),
                 user.getName(),
                 user.getEmail()
             ));
-        } catch (RuntimeException e){
-            return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage(), 400, LocalDate.now().toString()));
-        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable UUID id){
-        try{
             service.deleteUser(id);
             return ResponseEntity.ok(new ErrorResponse("Usuário deletado com sucesso", 200, LocalDate.now().toString()));
-        } catch (RuntimeException e){
-            return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage(), 400, LocalDate.now().toString()));
-        }
     }   
 }
             

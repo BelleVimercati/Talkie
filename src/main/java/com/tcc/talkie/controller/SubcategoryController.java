@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tcc.talkie.domain.category.Subcategory;
 import com.tcc.talkie.dto.ErrorResponse;
 import com.tcc.talkie.dto.request.SubcategoryCreateDTO;
+import com.tcc.talkie.dto.response.ApiResponse;
 import com.tcc.talkie.dto.response.SubcategoryResponseDTO;
 import com.tcc.talkie.service.SubcategoryService;
 
@@ -32,26 +33,19 @@ public class SubcategoryController {
 
     @PostMapping
     public ResponseEntity<?> create(@RequestBody @Valid SubcategoryCreateDTO dto){
-        try{
-            Subcategory newSub = service.create(dto);
-            return ResponseEntity.ok(new ErrorResponse("Subcategoria criada com sucesso", 201, LocalDate.now().toString()));
-        }catch (RuntimeException e){
-            return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage(), 400, LocalDate.now().toString()));
-        }
+        Subcategory newSub = service.create(dto);
+        return ResponseEntity.ok(new ApiResponse<>("Subcategoria criada com sucesso", new SubcategoryResponseDTO(newSub.getName(), newSub.getCategory().getName(), newSub.getId())));
+
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id){
-        try{
-            Subcategory sub = service.findById(id);
-            return ResponseEntity.ok(new SubcategoryResponseDTO(
-                sub.getName(),
-                sub.getCategory().getName(),
-                sub.getId()
-            ));
-        } catch (RuntimeException e){
-            return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage(), 400, LocalDate.now().toString()));
-        }
+        Subcategory sub = service.findById(id);
+        return ResponseEntity.ok(new SubcategoryResponseDTO(
+            sub.getName(),
+            sub.getCategory().getName(),
+            sub.getId()
+        ));
     }
 
     @GetMapping
@@ -70,23 +64,13 @@ public class SubcategoryController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id){
-        try{
-            service.delete(id);
-            return ResponseEntity.ok(new ErrorResponse("Subcategoria deletada com sucesso", 200, LocalDate.now().toString()));
-
-        } catch (RuntimeException e){
-            return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage(), 400, LocalDate.now().toString()));
-        }
+        service.delete(id);
+        return ResponseEntity.ok(new ErrorResponse("Subcategoria deletada com sucesso", 200, LocalDate.now().toString()));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid SubcategoryCreateDTO dto){
-        try{
-            service.update(id, dto);
-            return ResponseEntity.ok(new ErrorResponse("Subcategoria atualizada com sucesso", 200, LocalDate.now().toString()));
-
-        } catch (RuntimeException e){
-            return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage(), 400, LocalDate.now().toString()));
-        }
+        Subcategory sub = service.update(id, dto);
+        return ResponseEntity.ok( new ApiResponse<>("Subcategoria atualizada com sucesso", new SubcategoryResponseDTO(sub.getName(), sub.getCategory().getName(), sub.getId())));
     }
 }

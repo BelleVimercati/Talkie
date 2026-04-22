@@ -4,7 +4,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tcc.talkie.domain.user.User;
-import com.tcc.talkie.dto.ErrorResponse;
 import com.tcc.talkie.dto.request.RegisterDTO;
 import com.tcc.talkie.dto.response.ApiResponse;
 import com.tcc.talkie.dto.response.UserResponseDTO;
@@ -12,7 +11,6 @@ import com.tcc.talkie.service.AuthService;
 
 import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDate;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,14 +25,9 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterDTO data){
-        try{
-            User created = authService.register(data);
-            return ResponseEntity.ok( new ApiResponse<>("Usuário registrado com sucesso", 
-                new UserResponseDTO(created.getId(), created.getName(), created.getEmail())
-            ));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage(), 400, LocalDate.now().toString()));
-        }
-
+        User created = authService.register(data);
+        return ResponseEntity.ok( new ApiResponse<>("Usuário registrado com sucesso", 
+            new UserResponseDTO(created.getId(), created.getName(), created.getEmail())
+        ));
     }
 }
