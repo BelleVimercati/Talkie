@@ -2,7 +2,7 @@
 
 Para acessar o swagger: http://localhost:8080/swagger-ui/index.html
 
-## Andamento da etapa de criação do banco
+## Andamento das etapas do projeto
 
 - [x] criação da tabela de usuários
 - [x] criação da tabela de tipos
