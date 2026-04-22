@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.tcc.talkie.domain.category.Category;
 import com.tcc.talkie.domain.category.Subcategory;
 import com.tcc.talkie.dto.request.SubcategoryCreateDTO;
+import com.tcc.talkie.infra.exceptions.NotFoundException;
 import com.tcc.talkie.repository.CategoryRepository;
 import com.tcc.talkie.repository.SubcategoryRepository;
 
@@ -21,13 +22,13 @@ public class SubcategoryService {
 
     public Subcategory create(SubcategoryCreateDTO dto){
         Category category = categoryRepository.findById(dto.categoryId())
-            .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
+        .orElseThrow(() -> new NotFoundException("Categoria não encontrada"));
 
-            Subcategory sub = new Subcategory();
-            sub.setName(dto.name());
-            sub.setCategory(category);
+        Subcategory sub = new Subcategory();
+        sub.setName(dto.name());
+        sub.setCategory(category);
 
-            return repository.save(sub);
+        return repository.save(sub);
     }
 
     public List<Subcategory> findAll(){
@@ -35,39 +36,27 @@ public class SubcategoryService {
     }
 
     public void delete(Long id){
-        try{
-            Subcategory sub = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Subcategoria não encontrada"));
+        repository.findById(id)
+            .orElseThrow(() -> new NotFoundException("Subcategoria não encontrada"));
+        repository.deleteById(id);
 
-            repository.deleteById(id);
-        } catch (Exception e){
-            throw new RuntimeException("Subcategoria não encontrada");
-        }
     }
 
-    public void update(Long id, SubcategoryCreateDTO dto){
-        try{
-            Subcategory sub = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Subcategoria não encontrada"));
+    public Subcategory update(Long id, SubcategoryCreateDTO dto){
+        Subcategory sub = repository.findById(id)
+            .orElseThrow(() -> new NotFoundException("Subcategoria não encontrada"));
 
-            Category category = categoryRepository.findById(dto.categoryId())
-                .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
+        Category category = categoryRepository.findById(dto.categoryId())
+            .orElseThrow(() -> new NotFoundException("Categoria não encontrada"));
 
-            sub.setName(dto.name());
-            sub.setCategory(category);
+        sub.setName(dto.name());
+        sub.setCategory(category);
 
-            repository.save(sub);
-        } catch (Exception e){
-            throw new RuntimeException(e.getMessage());
-        }
+        return repository.save(sub);
     }
 
     public Subcategory findById(Long id){
-        try{
-            return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Subcategoria não encontrada"));
-        } catch (Exception e){
-            throw new RuntimeException("Subcategoria não encontrada");
-        }
+        return repository.findById(id)
+            .orElseThrow(() -> new NotFoundException("Subcategoria não encontrada"));
     }
 }

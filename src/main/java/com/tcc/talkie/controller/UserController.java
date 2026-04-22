@@ -1,25 +1,23 @@
-/* 
-TODO: Implementar endpoint de Delete
-*/
-
 package com.tcc.talkie.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tcc.talkie.domain.user.User;
+import com.tcc.talkie.dto.ErrorResponse;
 import com.tcc.talkie.dto.UpdateDTO;
 import com.tcc.talkie.dto.response.UserResponseDTO;
-import com.tcc.talkie.repository.UserRepository;
 import com.tcc.talkie.service.UserService;
 
 import org.springframework.web.bind.annotation.RequestBody;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -28,13 +26,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
-    private final UserRepository repository;
     private final UserService service;
 
     @GetMapping
     public ResponseEntity<List<UserResponseDTO>> getUsers(){
 
-        List<UserResponseDTO> users = repository.findAll()
+        List<UserResponseDTO> users = service.getAllUsers()
         .stream()
             .map(user -> new UserResponseDTO(
                 user.getId(),
@@ -48,21 +45,27 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateUser(@PathVariable UUID id, @RequestBody UpdateDTO data){
-        User user = service.updateUser(id, data);
-        return ResponseEntity.ok(new UserResponseDTO(
-            user.getId(),
-            user.getName(),
-            user.getEmail()));
+            User user = service.updateUser(id, data);
+            return ResponseEntity.ok(new UserResponseDTO(
+                user.getId(),
+                user.getName(),
+                user.getEmail()));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable UUID id){
-        User user = service.getUserById(id);
-        return ResponseEntity.ok(new UserResponseDTO(
-            user.getId(),
-            user.getName(),
-            user.getEmail()));
+            User user = service.getUserById(id);
+            return ResponseEntity.ok(new UserResponseDTO(
+                user.getId(),
+                user.getName(),
+                user.getEmail()
+            ));
     }
-    
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable UUID id){
+            service.deleteUser(id);
+            return ResponseEntity.ok(new ErrorResponse("Usuário deletado com sucesso", 200, LocalDate.now().toString()));
+    }   
 }
             

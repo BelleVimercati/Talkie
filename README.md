@@ -1,8 +1,23 @@
 # Talkie
 
-## Andamento da etapa de criação do banco
+Para acessar o swagger: http://localhost:8080/swagger-ui/index.html
+
+## Andamento das etapas do projeto
 
 - [x] criação da tabela de usuários
-- [ ] criação da tabela de tipos
+- [x] criação da tabela de tipos
 - [x] criação da tabela de subtipos
-- [ ] mudar funções de authController para um service
+- [x] Corrigir funções para utilizar service e controller
+  - [x] Auth
+  - [x] User - falta apenas Get
+- [x] Implementando métodos de CRUD que faltam
+  - [x] Category: Update, FindByID
+  - [x] User: Delete
+- [x] Revisar as nomenclatura de rotas
+- [x] Adicionar Swagger
+- [ ] Revisar a criação de um Handler Global
+  - [x] Auth
+  - [x] Category
+  - [x] Subcategory
+  - [x] User
+- [ ] Criar autenticação
