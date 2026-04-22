@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -33,8 +32,12 @@ public class SubcategoryController {
 
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody @Valid SubcategoryCreateDTO dto){
-        Subcategory newSub = service.create(dto);
-        return ResponseEntity.ok(new ErrorResponse("Subcategoria criada com sucesso", 201, LocalDate.now().toString()));
+        try{
+            Subcategory newSub = service.create(dto);
+            return ResponseEntity.ok(new ErrorResponse("Subcategoria criada com sucesso", 201, LocalDate.now().toString()));
+        }catch (RuntimeException e){
+            return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage(), 400, LocalDate.now().toString()));
+        }
     }
 
     @GetMapping("/{id}")

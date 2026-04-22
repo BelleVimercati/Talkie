@@ -5,4 +5,6 @@
 - [x] criação da tabela de usuários
 - [ ] criação da tabela de tipos
 - [x] criação da tabela de subtipos
-- [ ] mudar funções de authController para um service
+- [ ] Corrigir funções para utilizar service e controller
+  - [x] Auth
+  - [x] User - falta apenas Get

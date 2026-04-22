@@ -1,12 +1,10 @@
 package com.tcc.talkie.service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.tcc.talkie.domain.category.Category;
 import com.tcc.talkie.domain.user.User;
 import com.tcc.talkie.dto.UpdateDTO;
 import com.tcc.talkie.repository.UserRepository;
@@ -35,4 +33,6 @@ public class UserService {
     public List<User> getAllUsers(){
         return repository.findAll();
     }
+
+    
 }

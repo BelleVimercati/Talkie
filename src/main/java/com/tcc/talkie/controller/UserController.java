@@ -8,14 +8,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tcc.talkie.domain.user.User;
+import com.tcc.talkie.dto.ErrorResponse;
 import com.tcc.talkie.dto.UpdateDTO;
 import com.tcc.talkie.dto.response.UserResponseDTO;
-import com.tcc.talkie.repository.UserRepository;
 import com.tcc.talkie.service.UserService;
 
 import org.springframework.web.bind.annotation.RequestBody;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,13 +29,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
-    private final UserRepository repository;
     private final UserService service;
 
     @GetMapping
     public ResponseEntity<List<UserResponseDTO>> getUsers(){
 
-        List<UserResponseDTO> users = repository.findAll()
+        List<UserResponseDTO> users = service.getAllUsers()
         .stream()
             .map(user -> new UserResponseDTO(
                 user.getId(),
@@ -48,20 +48,30 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateUser(@PathVariable UUID id, @RequestBody UpdateDTO data){
-        User user = service.updateUser(id, data);
-        return ResponseEntity.ok(new UserResponseDTO(
-            user.getId(),
-            user.getName(),
-            user.getEmail()));
+        try{
+            User user = service.updateUser(id, data);
+            return ResponseEntity.ok(new UserResponseDTO(
+                user.getId(),
+                user.getName(),
+                user.getEmail()));
+        }catch (RuntimeException e){
+            return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage(), 400, LocalDate.now().toString()));
+        }
+
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable UUID id){
-        User user = service.getUserById(id);
-        return ResponseEntity.ok(new UserResponseDTO(
-            user.getId(),
-            user.getName(),
-            user.getEmail()));
+        try{
+            User user = service.getUserById(id);
+            return ResponseEntity.ok(new UserResponseDTO(
+                user.getId(),
+                user.getName(),
+                user.getEmail()
+            ));
+        } catch (RuntimeException e){
+            return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage(), 400, LocalDate.now().toString()));
+        }
     }
     
 }
