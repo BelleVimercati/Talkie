@@ -1,5 +1,7 @@
 # Talkie
 
+Para acessar o swagger: http://localhost:8080/swagger-ui/index.html
+
 ## Andamento da etapa de criação do banco
 
 - [x] criação da tabela de usuários
@@ -15,7 +17,7 @@
 - [x] Adicionar Swagger
 - [ ] Revisar a criação de um Handler Global
   - [x] Auth
-  - [x] Category 
+  - [x] Category
   - [x] Subcategory
   - [x] User
 - [ ] Criar autenticação
