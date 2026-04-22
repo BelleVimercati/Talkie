@@ -30,7 +30,7 @@ public class SubcategoryController {
 
     private final SubcategoryService service;
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<?> create(@RequestBody @Valid SubcategoryCreateDTO dto){
         try{
             Subcategory newSub = service.create(dto);
@@ -68,7 +68,7 @@ public class SubcategoryController {
         return ResponseEntity.ok(subcategories);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id){
         try{
             service.delete(id);
@@ -79,7 +79,7 @@ public class SubcategoryController {
         }
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid SubcategoryCreateDTO dto){
         try{
             service.update(id, dto);

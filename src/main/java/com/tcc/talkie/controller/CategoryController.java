@@ -44,7 +44,7 @@ public class CategoryController {
         return ResponseEntity.ok(types);
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<?> create(@RequestBody CategoryCreateDTO data){
         try {
         Category created = service.create(data);
@@ -64,7 +64,7 @@ public class CategoryController {
         }
     }
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id){
         try {
             service.delete(id);

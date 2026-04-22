@@ -8,7 +8,10 @@
 - [x] Corrigir funções para utilizar service e controller
   - [x] Auth
   - [x] User - falta apenas Get
-- [ ] Implementando métodos de CRUD que faltam
+- [x] Implementando métodos de CRUD que faltam
   - [x] Category: Update, FindByID
   - [x] User: Delete
 - [ ] Revisar as nomenclatura de rotas
+- [ ] Adicionar Swagger
+- [ ] Revisar a criação de um Handler Global
+- [ ] Criar autenticação
