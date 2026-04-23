@@ -3,15 +3,12 @@ package com.tcc.talkie.infra.security;
 import java.io.IOException;
 import java.util.Collections;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.tcc.talkie.domain.user.User;
-import com.tcc.talkie.infra.exceptions.NotFoundException;
 import com.tcc.talkie.repository.UserRepository;
 
 import jakarta.servlet.FilterChain;
@@ -48,7 +45,7 @@ public class SecurityFilter extends OncePerRequestFilter {
                 );
 
                 var authentication = new UsernamePasswordAuthenticationToken(
-                    login, // 👈 agora não precisa do User
+                    login, 
                     null,
                     authorities
                 );
