@@ -7,8 +7,6 @@ import java.util.UUID;
 import com.tcc.talkie.domain.category.Category;
 import com.tcc.talkie.domain.user.Role;
 
-import com.tcc.talkie.infra.security.crypto.CryptoConverter;
-
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -34,6 +32,7 @@ public class User {
     private String cpf;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Role role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
