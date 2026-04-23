@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.tcc.talkie.domain.user.User;
 
 public interface UserRepository extends JpaRepository<User, UUID> {
-    boolean existsByCpfHash(String cpfHash);
+    boolean existsByCpf(String cpf);
 
     Optional<User> findByEmail(String email);
 

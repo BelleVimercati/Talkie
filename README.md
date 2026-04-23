@@ -15,9 +15,12 @@ Para acessar o swagger: http://localhost:8080/swagger-ui/index.html
   - [x] User: Delete
 - [x] Revisar as nomenclatura de rotas
 - [x] Adicionar Swagger
-- [ ] Revisar a criação de um Handler Global
+- [x] Revisar a criação de um Handler Global
   - [x] Auth
   - [x] Category
   - [x] Subcategory
   - [x] User
+- [ ] Remover criptografia do CPF
 - [ ] Criar autenticação
+- [ ] Verificar as regras de negócio que precisam ser validadas
+  

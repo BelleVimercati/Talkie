@@ -30,11 +30,8 @@ public class User {
 
     private String password;
 
-    @Convert(converter = CryptoConverter.class)
-    private String cpf;
-
     @Column(unique = true)
-    private String cpfHash;
+    private String cpf;
 
     @Enumerated(EnumType.STRING)
     private Role role;
