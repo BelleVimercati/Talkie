@@ -32,6 +32,7 @@ public class User {
     private String cpf;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Role role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

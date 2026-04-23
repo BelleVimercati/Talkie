@@ -33,17 +33,30 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
+        throws ServletException, IOException {
 
         var token = this.recoverToken(request);
-        var login = tokenService.validateToken(token);
 
-        if(login != null){
-            User user = userRepository.findByEmail(login).orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
-            var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
-            var authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        if (token != null) {
+            var login = tokenService.validateToken(token);
+            var role = tokenService.getRole(token);
+
+            if (login != null && role != null) {
+
+                var authorities = Collections.singletonList(
+                    new SimpleGrantedAuthority("ROLE_" + role)
+                );
+
+                var authentication = new UsernamePasswordAuthenticationToken(
+                    login, // 👈 agora não precisa do User
+                    null,
+                    authorities
+                );
+
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
         }
+
         filterChain.doFilter(request, response);
     }
 
@@ -52,6 +65,8 @@ public class SecurityFilter extends OncePerRequestFilter {
         if(authHeader == null) return null;
         return authHeader.replace("Bearer ", "");
     }
+
+
 }
 
 /* 

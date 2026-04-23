@@ -38,6 +38,7 @@ public class SecurityConfig {
                     "/swagger-ui/**",
                     "/swagger-ui.html"
                 ).permitAll()
+                .requestMatchers("/users/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             )
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

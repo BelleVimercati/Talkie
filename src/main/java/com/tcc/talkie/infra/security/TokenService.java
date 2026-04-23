@@ -23,7 +23,7 @@ public class TokenService {
     public String generateToken(User user){
         try{
             Algorithm algorithm = Algorithm.HMAC256(secret);
-            return JWT.create().withIssuer("talkie-api").withSubject(user.getEmail())
+            return JWT.create().withIssuer("talkie-api").withSubject(user.getEmail()).withClaim("role", user.getRole().name())
             .withExpiresAt(this.generateExpirationDate()).sign(algorithm);
             
         } catch (JWTCreationException exception){
@@ -45,6 +45,15 @@ public class TokenService {
             
             return JWT.require(algorithm).withIssuer("talkie-api").build().verify(token).getSubject();
 
+        } catch (JWTVerificationException exception) {
+            return null;
+        }
+    }
+
+    public String getRole(String token){
+        try{
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+            return JWT.require(algorithm).withIssuer("talkie-api").build().verify(token).getClaim("role").asString();
         } catch (JWTVerificationException exception) {
             return null;
         }
