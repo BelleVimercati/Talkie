@@ -20,7 +20,16 @@ Para acessar o swagger: http://localhost:8080/swagger-ui/index.html
   - [x] Category
   - [x] Subcategory
   - [x] User
-- [ ] Remover criptografia do CPF
-- [ ] Criar autenticação
+- [x] Remover criptografia do CPF
+- [x] Criar autenticação
+
+### Próximos passos
+
+- [ ] Ajustar Autorização de rotas para incluir role
+  - [ ] incluir role no token
+- [ ] VAlidação de dados nos DTOs ?
+- [ ] Criação de testes automatizados
+- [ ] Adicionar novos tratamentos no Global Handler
+- [ ] Adicionar Logs
 - [ ] Verificar as regras de negócio que precisam ser validadas
   
