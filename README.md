@@ -28,6 +28,7 @@ Para acessar o swagger: http://localhost:8080/swagger-ui/index.html
 - [x] Ajustar Autorização de rotas para incluir role
   - [x] incluir role no token
 - [ ] Criar a tabela de ocorrências
+- [ ] Refatorar o preenchimento de usuário no banco para usar o helper
 - [ ] Validação de dados nos DTOs ?
 - [ ] Criação de testes automatizados
 - [ ] Adicionar novos tratamentos no Global Handler

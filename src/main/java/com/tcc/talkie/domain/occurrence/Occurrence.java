@@ -6,7 +6,6 @@ import com.tcc.talkie.domain.category.Category;
 import com.tcc.talkie.domain.category.Subcategory;
 import com.tcc.talkie.domain.user.User;
 
-import jakarta.annotation.Generated;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -51,5 +50,4 @@ public class Occurrence {
     @ManyToOne
     @JoinColumn(name = "subcategory_id", nullable = false)
     private Subcategory subcategory;
-
 }

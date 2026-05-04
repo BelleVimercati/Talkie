@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.tcc.talkie.domain.user.User;
 import com.tcc.talkie.repository.UserRepository;
 
 import jakarta.servlet.FilterChain;
@@ -40,12 +41,16 @@ public class SecurityFilter extends OncePerRequestFilter {
 
             if (login != null && role != null) {
 
+                User user = userRepository.findByEmail(login)
+                    .orElseThrow(() ->
+                        new RuntimeException("Usuário não encontrado"));
+
                 var authorities = Collections.singletonList(
                     new SimpleGrantedAuthority("ROLE_" + role)
                 );
 
                 var authentication = new UsernamePasswordAuthenticationToken(
-                    login, 
+                    user, 
                     null,
                     authorities
                 );
