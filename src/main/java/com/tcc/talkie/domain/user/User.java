@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.UUID;
 
 import com.tcc.talkie.domain.category.Category;
-import com.tcc.talkie.domain.user.Role;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -37,4 +36,5 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Category> categories = new ArrayList<>();
+
 }
