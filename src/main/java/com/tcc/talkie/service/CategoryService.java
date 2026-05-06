@@ -9,6 +9,7 @@ import com.tcc.talkie.domain.user.User;
 import com.tcc.talkie.dto.request.CategoryCreateDTO;
 import com.tcc.talkie.infra.exceptions.BadRequestException;
 import com.tcc.talkie.infra.exceptions.NotFoundException;
+import com.tcc.talkie.infra.security.AuthenticatedUser;
 import com.tcc.talkie.repository.CategoryRepository;
 import com.tcc.talkie.repository.UserRepository;
 
@@ -19,7 +20,6 @@ import lombok.RequiredArgsConstructor;
 public class CategoryService {
 
     private final CategoryRepository repository;
-    private final UserRepository userRepository;
 
     public List<Category> findAll(){
         return repository.findAll();
@@ -30,8 +30,7 @@ public class CategoryService {
             throw new BadRequestException("Tipo já existe");
         }
 
-        User user = userRepository.findById(dto.userId())
-            .orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
+        User user = AuthenticatedUser.get();
 
         Category type = new Category();
         type.setName(dto.name());

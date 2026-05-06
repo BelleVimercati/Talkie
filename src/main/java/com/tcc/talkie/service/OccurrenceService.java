@@ -24,12 +24,6 @@ import com.tcc.talkie.repository.SubcategoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-/* A fazer:
-    - cadastro de ocorrencias - ok
-    - listar todas as ocorrencias - ok
-    - listar ocorrencias por usuario - ok
-    - excluir ocorrencias - ok
-*/
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -40,9 +34,6 @@ public class OccurrenceService {
     private final SubcategoryRepository subcategoryRepository;
 
     public Occurrence create(OccurrenceDTO dto){
-
-
-
         Category category = categoryRepository.findById(dto.categoryId()).orElseThrow(() -> new NotFoundException("Categoria não encontrada"));
 
         Subcategory subcategory = subcategoryRepository.findById(dto.subcategoryId()).orElseThrow(() -> new NotFoundException("Subcategoria não encontrada"));
