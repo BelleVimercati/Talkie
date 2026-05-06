@@ -98,4 +98,25 @@ class AuthControllerIT {
             .andExpect(jsonPath("$.message").value("Login bem-sucedido"))
             .andExpect(jsonPath("$.data").isNotEmpty());
     }
+
+    @Test
+    @DisplayName("Não deve autenticar usuário com credenciais inválidas")
+    void naoDeveAutenticarUsuarioComCredenciaisInvalidas() throws Exception {
+        User user = new User();
+        user.setName("João");
+        user.setEmail("joao@gmail.com");
+        user.setPassword(passwordEncoder.encode("123456"));
+        user.setCpf("000.0000.000-00");
+        user.setRole(Role.USER);
+        userRepository.save(user);
+
+        LoginRequestDTO loginDTO = new LoginRequestDTO("joao@gmail.com", "654321");
+
+        mockMvc.perform(post("/auth/login")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(loginDTO)))
+            .andExpect(status().isUnauthorized())
+            .andExpect(jsonPath("$.message").value("Credenciais inválidas"))
+            .andExpect(jsonPath("$.data").isEmpty());
+    }
 }
