@@ -39,7 +39,7 @@ public class AuthSteps {
 
     private final TestContext context;
 
-    @Dado("que o usuário esteja autenticado")
+    @Dado("que o usuário admin esteja autenticado")
     public void usuarioAdm() throws Exception {
         String email = "admin" + UUID.randomUUID() + "@teste.com";
 
@@ -55,6 +55,38 @@ public class AuthSteps {
         user.setCpf(cpf);
         user.setPassword(passwordEncoder.encode("senha123"));
         user.setRole(Role.ADMIN);
+        userRepository.save(user);
+
+        String body = objectMapper.writeValueAsString(new LoginRequestDTO(email, "senha123"));
+
+        MvcResult result = mockMvc.perform(post("/auth/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body))
+            .andDo(print())
+            .andReturn();
+
+        String resposta = result.getResponse().getContentAsString();
+        context.setTokenJWT(objectMapper.readTree(resposta).get("data").asText());
+
+        context.setAuthenticatedUser(user);
+    }
+
+    @Dado("que o usuário comum esteja autenticado")
+    public void usuarioComum() throws Exception {
+        String email = "user" + UUID.randomUUID() + "@teste.com";
+
+        String cpf = UUID.randomUUID()
+        .toString()
+        .replaceAll("[^0-9]", "")
+        .substring(0, 11);
+
+        // Cria um usuário comum para autenticação
+        User user = new User();
+        user.setName("User Teste");
+        user.setEmail(email);
+        user.setCpf(cpf);
+        user.setPassword(passwordEncoder.encode("senha123"));
+        user.setRole(Role.USER);
         userRepository.save(user);
 
         String body = objectMapper.writeValueAsString(new LoginRequestDTO(email, "senha123"));

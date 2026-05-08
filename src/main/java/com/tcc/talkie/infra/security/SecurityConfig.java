@@ -39,8 +39,8 @@ public class SecurityConfig {
                     "/swagger-ui.html"
                 ).permitAll()
                 .requestMatchers("/occurrences/**").permitAll()
-                .requestMatchers("/category/**").hasRole("ADMIN")
-                .requestMatchers("/subcategory/**").hasRole("ADMIN")
+                .requestMatchers("/categories/**").hasRole("ADMIN")
+                .requestMatchers("/subcategories/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             )
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

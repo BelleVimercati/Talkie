@@ -3,7 +3,7 @@
 Funcionalidade: Gerenciamento de Ocorrências
 
     Cenário: Criar uma ocorrência com sucesso
-        Dado que o usuário esteja autenticado
+        Dado que o usuário admin esteja autenticado
         E que já exista categoria cadastrada
         Quando o usuário enviar uma requisição "POST" para "/occurrences" com os seguintes dados:
             | title         | Teste |

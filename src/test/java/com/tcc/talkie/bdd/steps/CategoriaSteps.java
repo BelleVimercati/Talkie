@@ -17,14 +17,8 @@ public class CategoriaSteps {
     private TestContext context;
 
 
-    @E("que o usuário seja um administrador")
-    public void que_o_usuario_seja_um_administrador() {
-        // O usuário criado no passo anterior já é um administrador, então não é necessário fazer nada aqui
-    }
-
     @Então("o status da resposta deve ser {int}")
     public void o_status_da_resposta_deve_ser(int statusEsperado) throws Exception {
         context.getResultado().andExpect(MockMvcResultMatchers.status().is(statusEsperado));
     }
-    
 }
