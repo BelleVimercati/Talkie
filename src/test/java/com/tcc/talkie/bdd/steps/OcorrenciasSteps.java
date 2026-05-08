@@ -33,19 +33,21 @@ public class OcorrenciasSteps {
     }
 
     @E("que já exista categoria cadastrada")
-    public void que_já_exista_uma_categoria_com_id_1() {
+    public void que_já_exista_categoria_cadastrada() {
        
         Category categoria = new Category();
         categoria.setName("Categoria Teste");
         categoria.setIcon("icon.png");
         categoria.setUser(context.getAuthenticatedUser());
         Category categoriaSalva = categoriaRepository.save(categoria);
+
         context.setCategoryId(categoriaSalva.getId());
 
         Subcategory subcategoria = new Subcategory();
         subcategoria.setName("Subcategoria Teste");
         subcategoria.setCategory(categoria);    
         Subcategory subcategoriaSalva = subcategoriaRepository.save(subcategoria);
+
         context.setSubcategoryId(subcategoriaSalva.getId());
     }
 

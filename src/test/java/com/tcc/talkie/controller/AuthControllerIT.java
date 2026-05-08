@@ -96,7 +96,7 @@ class AuthControllerIT {
             .content(objectMapper.writeValueAsString(loginDTO)))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.message").value("Login bem-sucedido"))
-            .andExpect(jsonPath("$.data").isNotEmpty());
+            .andExpect(jsonPath("$.data").isNotEmpty()) ;
     }
 
     @Test
