@@ -40,4 +40,17 @@ public class GlobalExceptionHandler {
                         LocalDate.now().toString()
                 ));
     }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ErrorResponse> handleUnauthorized(
+                UnauthorizedException ex
+        ) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(new ErrorResponse(
+                        ex.getMessage(),
+                        401,
+                        LocalDate.now().toString()
+                ));
+        }
 }

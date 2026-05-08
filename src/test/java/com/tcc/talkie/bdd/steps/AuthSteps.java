@@ -70,4 +70,10 @@ public class AuthSteps {
 
         context.setAuthenticatedUser(user);
     }
+
+    @Dado("que o usuário não esteja autenticado")
+    public void usuarioNaoAutenticado() {
+        context.setTokenJWT(null);
+        context.setAuthenticatedUser(null);
+    }
 }

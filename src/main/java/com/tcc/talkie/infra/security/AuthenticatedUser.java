@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.tcc.talkie.domain.user.User;
+import com.tcc.talkie.infra.exceptions.UnauthorizedException;
 
 public class AuthenticatedUser {
 
@@ -21,7 +22,7 @@ public class AuthenticatedUser {
             !auth.isAuthenticated() ||
             auth instanceof AnonymousAuthenticationToken) {
 
-            throw new RuntimeException("Usuário não autenticado");
+            throw new UnauthorizedException("Usuário não autenticado");
         }
 
         return (User) auth.getPrincipal();

@@ -16,10 +16,6 @@ public class CategoriaSteps {
     @Autowired
     private TestContext context;
 
-    @Before
-    public void limparBanco(){
-        categoriaRepository.deleteAll();
-    }
 
     @E("que o usuário seja um administrador")
     public void que_o_usuario_seja_um_administrador() {

@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.pt.*;
@@ -58,25 +59,51 @@ public class GenericSteps {
         switch (metodo.toUpperCase()) {
 
                 case "POST":
-                    context.setResultado(mockMvc.perform(post(endpoint)
-                            .header("Authorization", "Bearer " + context.getTokenJWT())
+                    MockHttpServletRequestBuilder postRequest = post(endpoint)
                             .contentType(MediaType.APPLICATION_JSON)
-                            .content(json))
-                            .andDo(print()));
+                            .content(json);
+
+                    if (context.getTokenJWT() != null) {
+                        postRequest.header("Authorization", "Bearer " + context.getTokenJWT());
+                    }
+
+                    context.setResultado(
+                            mockMvc.perform(postRequest)
+                                    .andDo(print())
+                    );
+
                     break;
 
                 case "PUT":
-                    context.setResultado(mockMvc.perform(put(endpoint)
-                            .header("Authorization", "Bearer " + context.getTokenJWT())
+                    MockHttpServletRequestBuilder putRequest = put(endpoint)
                             .contentType(MediaType.APPLICATION_JSON)
-                            .content(json)));
+                            .content(json);
+
+                    if (context.getTokenJWT() != null) {
+                        putRequest.header("Authorization", "Bearer " + context.getTokenJWT());
+                    }
+
+                    context.setResultado(
+                            mockMvc.perform(putRequest)
+                                    .andDo(print())
+                    );
+
                     break;
 
                 case "PATCH":
-                    context.setResultado(mockMvc.perform(patch(endpoint)
-                            .header("Authorization", "Bearer " + context.getTokenJWT())
+                    MockHttpServletRequestBuilder patchRequest = patch(endpoint)
                             .contentType(MediaType.APPLICATION_JSON)
-                            .content(json)));
+                            .content(json);
+
+                    if (context.getTokenJWT() != null) {
+                        patchRequest.header("Authorization", "Bearer " + context.getTokenJWT());
+                    }
+
+                    context.setResultado(
+                            mockMvc.perform(patchRequest)
+                                    .andDo(print())
+                    );
+
                     break;
 
                 default:
