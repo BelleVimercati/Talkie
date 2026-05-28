@@ -26,9 +26,10 @@ public class CategoryService {
     }
 
     public Category create(CategoryCreateDTO dto){
-        if (repository.findByName(dto.name().trim()).isPresent()) {
+        if (repository.findByNameIgnoreCase(dto.name().trim()).isPresent()) {
             throw new BadRequestException("Tipo já existe");
         }
+
 
         User user = AuthenticatedUser.get();
 
