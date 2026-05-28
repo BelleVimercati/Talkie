@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-/* A fazer:
-    - Entender com o Bazilio se existe a necessidade de criar a exclusão de ocorrências */
 @Slf4j
 @RestController
 @RequestMapping("/occurrences")

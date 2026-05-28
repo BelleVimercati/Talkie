@@ -29,10 +29,5 @@ Para acessar o swagger: http://localhost:8080/swagger-ui/index.html
   - [x] incluir role no token
 - [x] Criar a tabela de ocorrências
 - [x] Refatorar o preenchimento de usuário no banco para usar o helper
-- [ ] Criação de testes automatizados
-  - [x] Criar testes para quando o usuário for comum
-- [ ] Validação de dados nos DTOs ?
-- [ ] Adicionar novos tratamentos no Global Handler
-- [ ] Adicionar Logs
-- [ ] Verificar as regras de negócio que precisam ser validadas
+- [x] Criação de testes automatizados
   
