@@ -30,4 +30,6 @@ Para acessar o swagger: http://localhost:8080/swagger-ui/index.html
 - [x] Criar a tabela de ocorrências
 - [x] Refatorar o preenchimento de usuário no banco para usar o helper
 - [x] Criação de testes automatizados
+- [x] Criar rota de delete de ocorrencias apenas para admin
+- [ ] Criar a inscrição nos tópicos
   
