@@ -1,5 +1,10 @@
 package com.tcc.talkie.dto.request;
 
-public record CategoryCreateDTO(String name, String icon) {
+import jakarta.validation.constraints.NotBlank;
 
-}
+public record CategoryCreateDTO(
+    @NotBlank(message = "Nome da categoria é obrigatório")
+    String name,
+
+    String icon
+) {}

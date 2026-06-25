@@ -9,16 +9,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import jakarta.validation.Valid;
 
 import com.tcc.talkie.domain.category.Category;
 import com.tcc.talkie.dto.ErrorResponse;
 import com.tcc.talkie.dto.request.CategoryCreateDTO;
+import com.tcc.talkie.dto.response.ApiResponse;
 import com.tcc.talkie.dto.response.CategoryResponseDTO;
 import com.tcc.talkie.service.CategoryService;
 
-import org.springframework.web.bind.annotation.RequestBody;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -44,14 +47,14 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody CategoryCreateDTO data){
+    public ResponseEntity<ApiResponse<CategoryResponseDTO>> create(@Valid @RequestBody CategoryCreateDTO data){
         Category created = service.create(data);
-        return ResponseEntity.ok(new CategoryResponseDTO(
+        return ResponseEntity.ok(new ApiResponse<>("Categoria criada com sucesso", new CategoryResponseDTO(
             created.getId(),
             created.getName(),
             created.getIcon(),
             created.getUser().getId()
-        ));
+        )));
     }
 
     @DeleteMapping("/{id}")
@@ -61,15 +64,14 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody CategoryCreateDTO data){
+    public ResponseEntity<ApiResponse<CategoryResponseDTO>> update(@PathVariable Long id, @Valid @RequestBody CategoryCreateDTO data){
         Category updated = service.update(id, data);
-        return ResponseEntity.ok(new CategoryResponseDTO(
+        return ResponseEntity.ok(new ApiResponse<>("Categoria atualizada com sucesso", new CategoryResponseDTO(
             updated.getId(),
             updated.getName(),
             updated.getIcon(),
             updated.getUser().getId()
-        ));
-
+        )));
     }
 
     @GetMapping("/{id}")

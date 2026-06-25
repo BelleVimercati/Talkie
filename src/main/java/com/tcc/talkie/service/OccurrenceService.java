@@ -2,12 +2,9 @@ package com.tcc.talkie.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.tcc.talkie.domain.category.Category;
 import com.tcc.talkie.domain.category.Subcategory;
@@ -52,7 +49,8 @@ public class OccurrenceService {
         
         occurrence.setCreatedAt(LocalDateTime.now());
 
-        return repository.save(occurrence);
+        Occurrence savedOccurrence = repository.save(occurrence);
+        return savedOccurrence;
     }
 
     public List<Occurrence> findAll(){
@@ -82,8 +80,8 @@ public class OccurrenceService {
                 o.getDescription(),
                 o.getLocation(),
                 o.getOwner().getId(),
-                o.getCategory().getId(),
-                o.getSubcategory().getId()
+                o.getCategory().getName(),
+                o.getSubcategory().getName()
             ))
             .toList();
     }
