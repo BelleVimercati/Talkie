@@ -33,7 +33,19 @@ Deixar o código existente correto e pronto antes de adicionar novas features.
 - [ ] Corrigir assinaturas do `SubscriptionRepository`
 - [ ] Adicionar `@Valid` + validações nos DTOs
 - [ ] Publicar evento `OccurrenceCreatedEvent` no `OccurrenceService.create()`
-- [ ] Melhorar `OccurrenceResponseDTO` (retornar nomes, não IDs)
+- [ ] Melhorar `OccurrenceResponseDTO` (retornar nomes, não IDs)Prezados(as),
+
+Gostaria de solicitar o agendamento das minhas férias.
+
+Se possível, gostaria de programá-las para o período de [data de início] a [data de término]. Caso seja necessário algum ajuste em função do planejamento da equipe ou das políticas da empresa, fico à disposição para alinhar a melhor opção.
+
+Peço, por gentileza, que me informem os próximos passos e eventuais documentos ou procedimentos necessários para dar andamento à solicitação.
+
+Agradeço pela atenção.
+
+Atenciosamente,
+
+Isabelle Vimercati
 - [ ] Remover imports desnecessários
 - [ ] Externalizar secrets do `application.properties`
 - [ ] Todos os testes passando ✅

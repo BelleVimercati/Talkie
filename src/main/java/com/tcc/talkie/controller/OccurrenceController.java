@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,9 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 
 import com.tcc.talkie.domain.occurrence.Occurrence;
-import com.tcc.talkie.dto.ApiResponse;
+import com.tcc.talkie.dto.response.ApiResponse;
 import com.tcc.talkie.dto.ErrorResponse;
 import com.tcc.talkie.dto.request.OccurrenceDTO;
+import com.tcc.talkie.dto.request.OccurrenceStatusUpdateDTO;
 import com.tcc.talkie.dto.response.OccurrenceResponseDTO;
 import com.tcc.talkie.service.OccurrenceService;
 
@@ -41,24 +43,15 @@ public class OccurrenceController {
             created.getLocation(),
             created.getOwner().getId(),
             created.getCategory().getName(),
-            created.getSubcategory().getName()
+            created.getSubcategory().getName(),
+            created.getStatus()
         );
         return ResponseEntity.ok(new ApiResponse<>("Ocorrência criada com sucesso", response));
     }
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<OccurrenceResponseDTO>>> getAll(){
-        List<OccurrenceResponseDTO> occurrences = service.findAll()
-            .stream()
-            .map(occ -> new OccurrenceResponseDTO(
-                occ.getTitle(),
-                occ.getDescription(),
-                occ.getLocation(),
-                occ.getOwner().getId(),
-                occ.getCategory().getName(),
-                occ.getSubcategory().getName()
-            ))
-            .toList();
+        List<OccurrenceResponseDTO> occurrences = service.findAll();
         return ResponseEntity.ok(new ApiResponse<>("Ocorrências recuperadas com sucesso", occurrences));
     }
 
@@ -68,6 +61,21 @@ public class OccurrenceController {
 
         log.info("Ocorrências encontradas para o usuário: {}", occurrences.size());
         return ResponseEntity.ok(new ApiResponse<>("Suas ocorrências recuperadas com sucesso", occurrences));
+    }
+
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<ApiResponse<List<OccurrenceResponseDTO>>> getByCategory(@PathVariable Long categoryId){
+        List<OccurrenceResponseDTO> occurrences = service.findByCategory(categoryId);
+        return ResponseEntity.ok(new ApiResponse<>("Ocorrências da categoria recuperadas com sucesso", occurrences));
+    }
+
+    @PutMapping("/{id}/status")
+    public ResponseEntity<ApiResponse<OccurrenceResponseDTO>> updateStatus(
+        @PathVariable Long id,
+        @Valid @RequestBody OccurrenceStatusUpdateDTO dto
+    ){
+        OccurrenceResponseDTO result = service.updateStatus(id, dto.status());
+        return ResponseEntity.ok(new ApiResponse<>("Status atualizado com sucesso", result));
     }
 
     @DeleteMapping("/{id}")

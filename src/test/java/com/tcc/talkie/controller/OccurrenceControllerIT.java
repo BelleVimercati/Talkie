@@ -3,6 +3,7 @@ package com.tcc.talkie.controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -20,9 +21,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tcc.talkie.domain.category.Category;
 import com.tcc.talkie.domain.category.Subcategory;
 import com.tcc.talkie.domain.occurrence.Occurrence;
+import com.tcc.talkie.domain.occurrence.OccurrenceStatus;
 import com.tcc.talkie.domain.user.Role;
 import com.tcc.talkie.domain.user.User;
 import com.tcc.talkie.dto.request.OccurrenceDTO;
+import com.tcc.talkie.dto.request.OccurrenceStatusUpdateDTO;
 import com.tcc.talkie.repository.CategoryRepository;
 import com.tcc.talkie.repository.OccurrenceRepository;
 import com.tcc.talkie.repository.SubcategoryRepository;
@@ -194,6 +197,7 @@ class OccurrenceControllerIT {
             occ.setOwner(commonUser);
             occ.setCategory(category);
             occ.setSubcategory(subcategory);
+            occ.setCreatedAt(LocalDateTime.now());
             occurrenceRepository.save(occ);
         }
 
@@ -217,6 +221,7 @@ class OccurrenceControllerIT {
             occ.setOwner(commonUser);
             occ.setCategory(category);
             occ.setSubcategory(subcategory);
+            occ.setCreatedAt(LocalDateTime.now());
             occurrenceRepository.save(occ);
         }
 
@@ -228,6 +233,7 @@ class OccurrenceControllerIT {
         adminOcc.setOwner(adminUser);
         adminOcc.setCategory(category);
         adminOcc.setSubcategory(subcategory);
+        adminOcc.setCreatedAt(LocalDateTime.now());
         occurrenceRepository.save(adminOcc);
 
         mockMvc.perform(get("/occurrences/my")
@@ -248,6 +254,7 @@ class OccurrenceControllerIT {
         occ.setOwner(commonUser);
         occ.setCategory(category);
         occ.setSubcategory(subcategory);
+        occ.setCreatedAt(LocalDateTime.now());
         occ = occurrenceRepository.save(occ);
 
         mockMvc.perform(delete("/occurrences/" + occ.getId())
@@ -269,6 +276,7 @@ class OccurrenceControllerIT {
         occ.setOwner(commonUser);
         occ.setCategory(category);
         occ.setSubcategory(subcategory);
+        occ.setCreatedAt(LocalDateTime.now());
         occ = occurrenceRepository.save(occ);
 
         mockMvc.perform(delete("/occurrences/" + occ.getId())
@@ -292,5 +300,108 @@ class OccurrenceControllerIT {
     void naoDeveListarOcorrenciasSemAutenticacao() throws Exception {
         mockMvc.perform(get("/occurrences"))
             .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @DisplayName("Deve listar ocorrências por categoria")
+    void deveListarOcorrenciasPorCategoria() throws Exception {
+        // Create occurrences for the category
+        for (int i = 0; i < 2; i++) {
+            Occurrence occ = new Occurrence();
+            occ.setTitle("Ocorrência da categoria " + i);
+            occ.setDescription("Descrição " + i);
+            occ.setLocation("Local " + i);
+            occ.setOwner(commonUser);
+            occ.setCategory(category);
+            occ.setSubcategory(subcategory);
+            occurrenceRepository.save(occ);
+        }
+
+        mockMvc.perform(get("/occurrences/category/" + category.getId())
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("Authorization", "Bearer " + commonUserToken))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.message").value("Ocorrências da categoria recuperadas com sucesso"))
+            .andExpect(jsonPath("$.data").isArray())
+            .andExpect(jsonPath("$.data.length()").value(2))
+            .andExpect(jsonPath("$.data[0].status").value("PENDENTE"));
+    }
+
+    @Test
+    @DisplayName("Deve atualizar status da ocorrência como admin")
+    void deveAtualizarStatusDaOcorrenciaComoAdmin() throws Exception {
+        Occurrence occ = new Occurrence();
+        occ.setTitle("Buraco");
+        occ.setDescription("Descrição");
+        occ.setLocation("Local");
+        occ.setOwner(commonUser);
+        occ.setCategory(category);
+        occ.setSubcategory(subcategory);
+        occ.setStatus(OccurrenceStatus.PENDENTE);
+        occ = occurrenceRepository.save(occ);
+
+        OccurrenceStatusUpdateDTO dto = new OccurrenceStatusUpdateDTO(OccurrenceStatus.RESOLVIDO);
+
+        mockMvc.perform(put("/occurrences/" + occ.getId() + "/status")
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("Authorization", "Bearer " + adminUserToken)
+            .content(objectMapper.writeValueAsString(dto)))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.message").value("Status atualizado com sucesso"))
+            .andExpect(jsonPath("$.data.status").value("RESOLVIDO"));
+    }
+
+    @Test
+    @DisplayName("Não deve atualizar status como usuário comum")
+    void naoDeveAtualizarStatusComoUsuarioComum() throws Exception {
+        Occurrence occ = new Occurrence();
+        occ.setTitle("Buraco");
+        occ.setDescription("Descrição");
+        occ.setLocation("Local");
+        occ.setOwner(commonUser);
+        occ.setCategory(category);
+        occ.setSubcategory(subcategory);
+        occ = occurrenceRepository.save(occ);
+
+        OccurrenceStatusUpdateDTO dto = new OccurrenceStatusUpdateDTO(OccurrenceStatus.RESOLVIDO);
+
+        mockMvc.perform(put("/occurrences/" + occ.getId() + "/status")
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("Authorization", "Bearer " + commonUserToken)
+            .content(objectMapper.writeValueAsString(dto)))
+            .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @DisplayName("Não deve atualizar status sem autenticação")
+    void naoDeveAtualizarStatusSemAutenticacao() throws Exception {
+        Occurrence occ = new Occurrence();
+        occ.setTitle("Buraco");
+        occ.setDescription("Descrição");
+        occ.setLocation("Local");
+        occ.setOwner(commonUser);
+        occ.setCategory(category);
+        occ.setSubcategory(subcategory);
+        occ = occurrenceRepository.save(occ);
+
+        OccurrenceStatusUpdateDTO dto = new OccurrenceStatusUpdateDTO(OccurrenceStatus.RESOLVIDO);
+
+        mockMvc.perform(put("/occurrences/" + occ.getId() + "/status")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(dto)))
+            .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @DisplayName("Não deve atualizar status de ocorrência inexistente")
+    void naoDeveAtualizarStatusDeOcorrenciaInexistente() throws Exception {
+        OccurrenceStatusUpdateDTO dto = new OccurrenceStatusUpdateDTO(OccurrenceStatus.RESOLVIDO);
+
+        mockMvc.perform(put("/occurrences/99999/status")
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("Authorization", "Bearer " + adminUserToken)
+            .content(objectMapper.writeValueAsString(dto)))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.message").value("Ocorrência não encontrada"));
     }
 }

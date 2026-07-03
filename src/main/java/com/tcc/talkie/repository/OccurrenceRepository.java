@@ -12,4 +12,6 @@ public interface OccurrenceRepository extends JpaRepository<Occurrence, Long> {
     Optional<Occurrence> findById(Long id);
 
     List<Occurrence> findByOwnerId(UUID ownerId);
+
+    List<Occurrence> findByCategoryId(Long categoryId);
 }

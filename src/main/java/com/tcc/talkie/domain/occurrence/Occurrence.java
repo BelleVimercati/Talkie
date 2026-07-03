@@ -8,6 +8,8 @@ import com.tcc.talkie.domain.user.User;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -50,4 +52,8 @@ public class Occurrence {
     @ManyToOne
     @JoinColumn(name = "subcategory_id", nullable = false)
     private Subcategory subcategory;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private OccurrenceStatus status = OccurrenceStatus.PENDENTE;
 }
