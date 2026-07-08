@@ -1,7 +1,8 @@
 package com.tcc.talkie.domain.occurrence;
 
 public enum OccurrenceStatus {
-    PENDENTE,
+    ABERTO,
+    EM_ANALISE,
     RESOLVIDO,
-    DECLINADO
+    FECHADO
 }
