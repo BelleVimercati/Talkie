@@ -395,10 +395,3 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 - **Isabelle Vimercati** - _Desenvolvimento inicial_
 
 ---
-
-## 📞 Suporte
-
-Para dúvidas ou sugestões, abra uma [issue](https://github.com/seu-usuario/talkie/issues) no GitHub.
-
-
-  
