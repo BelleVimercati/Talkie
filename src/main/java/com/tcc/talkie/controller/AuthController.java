@@ -20,6 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import jakarta.validation.Valid;
+
 
 @RestController
 @RequestMapping("/auth")
@@ -31,15 +33,15 @@ public class AuthController {
     private final PasswordEncoder PasswordEncoder;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterDTO data){
+    public ResponseEntity<?> register(@Valid @RequestBody RegisterDTO data){
         User created = authService.register(data);
-        return ResponseEntity.ok( new ApiResponse<>("Usuário registrado com sucesso", 
+        return ResponseEntity.ok( new ApiResponse<>("Usuário registrado com sucesso",
             new UserResponseDTO(created.getId(), created.getName(), created.getEmail())
         ));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequestDTO data){
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequestDTO data){
         User user = this.userRepository.findByEmail(data.email())
             .orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
 
