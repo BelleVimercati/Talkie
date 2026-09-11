@@ -8,8 +8,8 @@ function AuthLayout({ children }: { children: React.ReactNode }) {
             Talkie
           </span>
         </div>
-        <div className="flex flex-1 items-center justify-center">
-          <div className="w-full max-w-md">{children}</div>
+        <div className="flex flex-1 flex-col items-center justify-center overflow-y-auto py-10">
+          <div className="w-full max-w-[540px]">{children}</div>
         </div>
       </div>
 

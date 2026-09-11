@@ -8,7 +8,6 @@ import Input from '@/components/ui/Input';
 import PasswordInput from '@/components/ui/PasswordInput';
 import Button from '@/components/ui/Button';
 import Alert from '@/components/ui/Alert';
-import Divider from '@/components/ui/Divider';
 import { loginSchema } from '@/schemas/loginSchema';
 import { useAuthStore } from '@/stores/authStore';
 function LoginPage() {
@@ -32,7 +31,7 @@ function LoginPage() {
             // Error is stored in the store
         }
     };
-    return (_jsx(AuthLayout, { children: _jsxs("div", { children: [_jsx("h1", { className: "mb-8 font-poppins text-4xl font-semibold text-black-900", children: "Bem vindo!" }), showSuccess && (_jsx(Alert, { variant: "success", onClose: () => setShowSuccess(false), children: "Conta criada com sucesso! Fa\u00E7a login." })), error && (_jsx(Alert, { variant: "error", onClose: clearError, children: error })), _jsxs("form", { onSubmit: handleSubmit(onSubmit), className: "space-y-6", children: [_jsx(Input, { label: "Login", placeholder: "Email or phone number", type: "email", error: errors.email?.message, ...register('email') }), _jsx(PasswordInput, { label: "Password", placeholder: "Enter password", error: errors.password?.message, ...register('password') }), _jsx(Button, { type: "submit", isLoading: isLoading, children: "Sign in" })] }), _jsx(Divider, {}), _jsx("div", { className: "text-center", children: _jsxs("p", { className: "text-sm text-black-900", children: ["Ainda n\u00E3o tem conta?", ' ', _jsx("button", { onClick: () => navigate('/register'), className: "font-semibold text-brand-blue hover:underline", children: "Cadastre-se" })] }) })] }) }));
+    return (_jsx(AuthLayout, { children: _jsxs("div", { children: [_jsx("h1", { className: "mb-6 font-poppins text-4xl font-semibold text-black-900", children: "Bem vindo!" }), showSuccess && (_jsx(Alert, { variant: "success", onClose: () => setShowSuccess(false), children: "Conta criada com sucesso! Fa\u00E7a login." })), error && (_jsx(Alert, { variant: "error", onClose: clearError, children: error })), _jsxs("form", { onSubmit: handleSubmit(onSubmit), children: [_jsxs("div", { className: "space-y-4", children: [_jsx(Input, { label: "Login", placeholder: "Email or phone number", type: "email", error: errors.email?.message, ...register('email') }), _jsx(PasswordInput, { label: "Password", placeholder: "Enter password", error: errors.password?.message, ...register('password') })] }), _jsx(Button, { type: "submit", isLoading: isLoading, className: "mt-8", children: "Sign in" })] }), _jsx("div", { className: "mt-8 text-center", children: _jsxs("p", { className: "text-sm text-black-900", children: ["Ainda n\u00E3o tem conta?", ' ', _jsx("button", { onClick: () => navigate('/register'), className: "font-semibold text-brand-blue hover:underline", children: "Cadastre-se" })] }) })] }) }));
 }
 export default LoginPage;
 //# sourceMappingURL=LoginPage.js.map

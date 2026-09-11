@@ -7,7 +7,6 @@ import Input from '@/components/ui/Input'
 import PasswordInput from '@/components/ui/PasswordInput'
 import Button from '@/components/ui/Button'
 import Alert from '@/components/ui/Alert'
-import Divider from '@/components/ui/Divider'
 import { registerSchema, type RegisterFormData } from '@/schemas/registerSchema'
 import { authService } from '@/services/authService'
 import { formatCpf } from '@/utils/cpf'
@@ -55,7 +54,7 @@ function RegisterPage() {
   return (
     <AuthLayout>
       <div>
-        <h1 className="mb-8 font-poppins text-4xl font-semibold text-black-900">
+        <h1 className="mb-6 font-poppins text-4xl font-semibold text-black-900">
           Registre-se
         </h1>
 
@@ -65,61 +64,61 @@ function RegisterPage() {
           </Alert>
         )}
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <Input
-            label="Nome"
-            placeholder="Nome Completo"
-            error={errors.name?.message}
-            {...register('name')}
-          />
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="space-y-4">
+            <Input
+              label="Nome"
+              placeholder="Nome Completo"
+              error={errors.name?.message}
+              {...register('name')}
+            />
 
-          <Controller
-            name="cpf"
-            control={control}
-            render={({ field }) => (
-              <Input
-                label="CPF"
-                placeholder="000.000.000-00"
-                error={errors.cpf?.message}
-                {...field}
-                onChange={(e) => {
-                  field.onChange(formatCpf(e.target.value))
-                }}
-                value={formatCpf(field.value || '')}
-              />
-            )}
-          />
+            <Controller
+              name="cpf"
+              control={control}
+              render={({ field }) => (
+                <Input
+                  label="CPF"
+                  placeholder="000.000.000-00"
+                  error={errors.cpf?.message}
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(formatCpf(e.target.value))
+                  }}
+                  value={formatCpf(field.value || '')}
+                />
+              )}
+            />
 
-          <Input
-            label="Email"
-            placeholder="email@email.com"
-            type="email"
-            error={errors.email?.message}
-            {...register('email')}
-          />
+            <Input
+              label="Email"
+              placeholder="email@email.com"
+              type="email"
+              error={errors.email?.message}
+              {...register('email')}
+            />
 
-          <PasswordInput
-            label="Password"
-            placeholder="••••••••••"
-            error={errors.password?.message}
-            {...register('password')}
-          />
+            <PasswordInput
+              label="Password"
+              placeholder="••••••••••"
+              error={errors.password?.message}
+              {...register('password')}
+            />
 
-          <PasswordInput
-            label="Confirm Password"
-            placeholder="••••••••••"
-            error={errors.confirmPassword?.message}
-            {...register('confirmPassword')}
-          />
+            <PasswordInput
+              label="Confirm Password"
+              placeholder="••••••••••"
+              error={errors.confirmPassword?.message}
+              {...register('confirmPassword')}
+            />
+          </div>
 
-          <Button type="submit" isLoading={isLoading}>
+          <Button type="submit" isLoading={isLoading} className="mt-8">
             Sign up
           </Button>
         </form>
 
-        <Divider />
-
-        <div className="text-center">
+        <div className="mt-8 text-center">
           <p className="text-sm text-black-900">
             Já tem uma conta?{' '}
             <button

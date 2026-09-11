@@ -7,7 +7,6 @@ import Input from '@/components/ui/Input'
 import PasswordInput from '@/components/ui/PasswordInput'
 import Button from '@/components/ui/Button'
 import Alert from '@/components/ui/Alert'
-import Divider from '@/components/ui/Divider'
 import { loginSchema, type LoginFormData } from '@/schemas/loginSchema'
 import { useAuthStore } from '@/stores/authStore'
 
@@ -41,7 +40,7 @@ function LoginPage() {
   return (
     <AuthLayout>
       <div>
-        <h1 className="mb-8 font-poppins text-4xl font-semibold text-black-900">
+        <h1 className="mb-6 font-poppins text-4xl font-semibold text-black-900">
           Bem vindo!
         </h1>
 
@@ -57,30 +56,30 @@ function LoginPage() {
           </Alert>
         )}
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <Input
-            label="Login"
-            placeholder="Email or phone number"
-            type="email"
-            error={errors.email?.message}
-            {...register('email')}
-          />
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="space-y-4">
+            <Input
+              label="Login"
+              placeholder="Email or phone number"
+              type="email"
+              error={errors.email?.message}
+              {...register('email')}
+            />
 
-          <PasswordInput
-            label="Password"
-            placeholder="Enter password"
-            error={errors.password?.message}
-            {...register('password')}
-          />
+            <PasswordInput
+              label="Password"
+              placeholder="Enter password"
+              error={errors.password?.message}
+              {...register('password')}
+            />
+          </div>
 
-          <Button type="submit" isLoading={isLoading}>
+          <Button type="submit" isLoading={isLoading} className="mt-8">
             Sign in
           </Button>
         </form>
 
-        <Divider />
-
-        <div className="text-center">
+        <div className="mt-8 text-center">
           <p className="text-sm text-black-900">
             Ainda não tem conta?{' '}
             <button
