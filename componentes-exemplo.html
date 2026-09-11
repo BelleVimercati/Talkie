@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talkie - Componentes de Referência</title>
+    <link rel="stylesheet" href="design-tokens.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--color-bg-light);
+            padding: var(--spacing-xl);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section {
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .section-title {
+            font-size: var(--font-size-h2);
+            font-weight: var(--font-weight-h2);
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 2px solid var(--color-border);
+        }
+
+        .component-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .component-showcase {
+            background: var(--color-white);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .component-label {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-sm);
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .component-preview {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+            align-items: flex-start;
+            min-height: 100px;
+            justify-content: center;
+        }
+
+        .component-row {
+            display: flex;
+            gap: var(--spacing-md);
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        /* Color Palette */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: var(--spacing-md);
+        }
+
+        .color-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .color-swatch {
+            width: 100%;
+            height: 60px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+        }
+
+        .color-name {
+            font-size: var(--font-size-sm);
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .color-hex {
+            font-size: var(--font-size-xs);
+            color: var(--color-text-secondary);
+            font-family: 'Courier New', monospace;
+        }
+
+        /* Chat Card */
+        .chat-card {
+            display: flex;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md);
+            border: 1px solid var(--color-border-light);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition-base);
+            width: 100%;
+        }
+
+        .chat-card:hover {
+            background-color: var(--color-bg-light);
+            transform: translateY(-2px);
+        }
+
+        .chat-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .chat-name {
+            font-weight: 600;
+            color: var(--color-black);
+        }
+
+        .chat-time {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+        }
+
+        .chat-message {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Statistics Cards */
+        .stat-card {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-md);
+            background-color: var(--color-bg-light);
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: var(--font-size-h2);
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        .stat-label {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+        }
+
+        /* Form Group */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .form-label {
+            font-size: var(--font-size-body);
+            font-weight: 600;
+            color: var(--color-black);
+        }
+
+        .form-error {
+            font-size: var(--font-size-sm);
+            color: var(--color-error);
+        }
+
+        /* Profile Section */
+        .profile-section {
+            display: flex;
+            gap: var(--spacing-lg);
+            align-items: flex-start;
+            padding: var(--spacing-lg);
+            background: var(--color-white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: var(--font-size-h3);
+            font-weight: var(--font-weight-h3);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .profile-status {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: var(--radius-full);
+        }
+
+        .status-dot.online {
+            background-color: var(--color-status-online);
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        /* Message Bubble */
+        .message-bubble {
+            max-width: 70%;
+            padding: var(--spacing-md);
+            border-radius: var(--radius-lg);
+            word-wrap: break-word;
+        }
+
+        .message-sent {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            align-self: flex-end;
+            border-bottom-right-radius: var(--radius-sm);
+        }
+
+        .message-received {
+            background-color: var(--color-bg-light);
+            color: var(--color-black);
+            align-self: flex-start;
+            border-bottom-left-radius: var(--radius-sm);
+        }
+
+        .message-time {
+            font-size: var(--font-size-xs);
+            margin-top: var(--spacing-xs);
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="heading-1" style="margin-bottom: var(--spacing-2xl);">Talkie - Componentes de Referência</h1>
+
+        <!-- Paleta de Cores -->
+        <div class="section">
+            <h2 class="section-title">Paleta de Cores</h2>
+
+            <h3 class="heading-3" style="margin-bottom: var(--spacing-lg); margin-top: var(--spacing-lg);">Cores Primárias</h3>
+            <div class="color-grid">
+                <div class="color-box">
+                    <div class="color-swatch" style="background-color: #2563EB;"></div>
+                    <div class="color-name">Azul Primário</div>
+                    <div class="color-hex">#2563EB</div>
+                </div>
+                <div class="color-box">
+                    <div class="color-swatch" style="background-color: #FFFFFF; border: 1px solid #E5E7EB;"></div>
+                    <div class="color-name">Branco</div>
+                    <div class="color-hex">#FFFFFF</div>
+                </div>
+                <div class="color-box">
+                    <div class="color-swatch" style="background-color: #1F2937;"></div>
+                    <div class="color-name">Preto/Cinza</div>
+                    <div class="color-hex">#1F2937</div>
+                </div>
+                <div class="color-box">
+                    <div class="color-swatch" style="background-color: #FBBF24;"></div>
+                    <div class="color-name">Amarelo</div>
+                    <div class="color-hex">#FBBF24</div>
+                </div>
+            </div>
+
+            <h3 class="heading-3" style="margin-bottom: var(--spacing-lg); margin-top: var(--spacing-xl);">Status</h3>
+            <div class="color-grid">
+                <div class="color-box">
+                    <div class="color-swatch" style="background-color: #10B981;"></div>
+                    <div class="color-name">Online</div>
+                    <div class="color-hex">#10B981</div>
+                </div>
+                <div class="color-box">
+                    <div class="color-swatch" style="background-color: #EF4444;"></div>
+                    <div class="color-name">Offline</div>
+                    <div class="color-hex">#EF4444</div>
+                </div>
+                <div class="color-box">
+                    <div class="color-swatch" style="background-color: #F97316;"></div>
+                    <div class="color-name">Away</div>
+                    <div class="color-hex">#F97316</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botões -->
+        <div class="section">
+            <h2 class="section-title">Botões</h2>
+            <div class="component-showcase">
+                <div class="component-preview">
+                    <div class="component-row">
+                        <button class="btn btn-primary">Botão Primário</button>
+                        <button class="btn btn-secondary">Botão Secundário</button>
+                        <button class="btn btn-disabled" disabled>Botão Desativado</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inputs -->
+        <div class="section">
+            <h2 class="section-title">Inputs e Formulários</h2>
+            <div class="component-showcase">
+                <div class="component-preview">
+                    <div class="form-group">
+                        <label class="form-label">Nome</label>
+                        <input type="text" class="input" placeholder="Digite seu nome">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="input" placeholder="seu@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Mensagem (com erro)</label>
+                        <input type="text" class="input input-error" placeholder="Campo com erro">
+                        <span class="form-error">Este campo é obrigatório</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cards -->
+        <div class="section">
+            <h2 class="section-title">Cards de Conversa</h2>
+            <div class="component-showcase">
+                <div class="component-label">Chat Card</div>
+                <div class="component-preview" style="width: 100%; align-items: stretch;">
+                    <div class="chat-card">
+                        <div class="avatar avatar-md bg-avatar-blue" style="color: white; flex-shrink: 0;">JS</div>
+                        <div class="chat-info">
+                            <div class="chat-header">
+                                <span class="chat-name">João Silva</span>
+                                <span class="chat-time">10:30</span>
+                            </div>
+                            <div class="chat-message">Ótimo! Vamos conversar sobre o projeto...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Avatares -->
+        <div class="section">
+            <h2 class="section-title">Avatares</h2>
+            <div class="component-showcase">
+                <div class="component-label">Avatares com Status</div>
+                <div class="component-preview" style="flex-direction: row;">
+                    <div class="avatar avatar-md avatar-status online bg-avatar-blue" style="color: white;">AB</div>
+                    <div class="avatar avatar-md avatar-status bg-avatar-pink" style="color: white;">CD</div>
+                    <div class="avatar avatar-md avatar-status away bg-avatar-green" style="color: white;">EF</div>
+                </div>
+
+                <div class="component-label" style="margin-top: var(--spacing-lg);">Avatares Diferentes Tamanhos</div>
+                <div class="component-preview" style="flex-direction: row; gap: var(--spacing-lg);">
+                    <div class="avatar avatar-sm bg-avatar-purple" style="color: white;">JS</div>
+                    <div class="avatar avatar-md bg-avatar-indigo" style="color: white;">JS</div>
+                    <div class="avatar avatar-lg bg-avatar-cyan" style="color: white;">JS</div>
+                </div>
+
+                <div class="component-label" style="margin-top: var(--spacing-lg);">Paleta de Cores para Avatares</div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(50px, 1fr)); gap: var(--spacing-md);">
+                    <div class="avatar avatar-md bg-avatar-red" style="color: white;">A</div>
+                    <div class="avatar avatar-md bg-avatar-pink" style="color: white;">B</div>
+                    <div class="avatar avatar-md bg-avatar-purple" style="color: white;">C</div>
+                    <div class="avatar avatar-md bg-avatar-indigo" style="color: white;">D</div>
+                    <div class="avatar avatar-md bg-avatar-blue" style="color: white;">E</div>
+                    <div class="avatar avatar-md bg-avatar-cyan" style="color: white;">F</div>
+                    <div class="avatar avatar-md bg-avatar-teal" style="color: white;">G</div>
+                    <div class="avatar avatar-md bg-avatar-green" style="color: white;">H</div>
+                    <div class="avatar avatar-md bg-avatar-yellow" style="color: #1F2937;">I</div>
+                    <div class="avatar avatar-md bg-avatar-orange" style="color: white;">J</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Badges -->
+        <div class="section">
+            <h2 class="section-title">Badges e Tags</h2>
+            <div class="component-showcase">
+                <div class="component-preview" style="flex-direction: row; gap: var(--spacing-md);">
+                    <span class="badge">Default</span>
+                    <span class="badge badge-primary">Primário</span>
+                    <span class="badge badge-success">Sucesso</span>
+                    <span class="badge badge-error">Erro</span>
+                    <span class="badge badge-warning">Aviso</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Perfil -->
+        <div class="section">
+            <h2 class="section-title">Seção de Perfil</h2>
+            <div class="profile-section">
+                <div class="avatar avatar-lg bg-avatar-blue" style="color: white; flex-shrink: 0;">MB</div>
+                <div class="profile-info">
+                    <div class="profile-name">Maria Belém</div>
+                    <div class="profile-status">
+                        <div class="status-dot online"></div>
+                        <span>Online agora</span>
+                    </div>
+                    <div style="margin-bottom: var(--spacing-md);">
+                        <p class="body-small">maria@email.com</p>
+                        <p class="body-small">Membro desde 2024</p>
+                    </div>
+                    <div class="profile-actions">
+                        <button class="btn btn-primary" style="padding: 8px 16px; height: auto;">Mensagem</button>
+                        <button class="btn btn-secondary" style="padding: 8px 16px; height: auto;">Opções</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Estatísticas -->
+        <div class="section">
+            <h2 class="section-title">Cards de Estatísticas</h2>
+            <div class="component-grid">
+                <div class="stat-card">
+                    <div class="stat-number">1,234</div>
+                    <div class="stat-label">Mensagens</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">56</div>
+                    <div class="stat-label">Contatos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">12</div>
+                    <div class="stat-label">Grupos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Atividade</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mensagens -->
+        <div class="section">
+            <h2 class="section-title">Bolhas de Mensagem</h2>
+            <div class="component-showcase">
+                <div class="component-preview" style="width: 100%; align-items: stretch; gap: var(--spacing-md);">
+                    <div style="display: flex; gap: var(--spacing-md); margin-bottom: var(--spacing-md);">
+                        <div class="avatar avatar-sm bg-avatar-blue" style="color: white; flex-shrink: 0;">JS</div>
+                        <div class="message-bubble message-received">
+                            <div>Olá! Como você está?</div>
+                            <div class="message-time">10:30</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: flex-end; gap: var(--spacing-md); margin-bottom: var(--spacing-md);">
+                        <div class="message-bubble message-sent">
+                            <div>Tudo bem! E você?</div>
+                            <div class="message-time">10:31</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tipografia -->
+        <div class="section">
+            <h2 class="section-title">Tipografia</h2>
+            <div class="component-showcase">
+                <h1 class="heading-1">Heading 1 - 32px Bold</h1>
+                <h2 class="heading-2">Heading 2 - 24px Bold</h2>
+                <h3 class="heading-3">Heading 3 - 18px Semibold</h3>
+                <p class="body-large">Body Large - 16px Regular</p>
+                <p>Body Regular - 14px Regular</p>
+                <p class="body-small">Body Small - 12px Regular</p>
+                <p class="caption">Caption - 11px Regular</p>
+                <p class="text-secondary">Texto Secundário - 14px Regular</p>
+            </div>
+        </div>
+
+        <!-- Espaçamento -->
+        <div class="section">
+            <h2 class="section-title">Espaçamento (Grid 4px)</h2>
+            <div class="component-showcase">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr>
+                        <th style="padding: var(--spacing-md); text-align: left; border-bottom: 1px solid var(--color-border);">Tamanho</th>
+                        <th style="padding: var(--spacing-md); text-align: left; border-bottom: 1px solid var(--color-border);">Valor</th>
+                        <th style="padding: var(--spacing-md); text-align: left; border-bottom: 1px solid var(--color-border);">Exemplo</th>
+                    </tr>
+                    <tr>
+                        <td style="padding: var(--spacing-md); border-bottom: 1px solid var(--color-border);">XS</td>
+                        <td style="padding: var(--spacing-md); border-bottom: 1px solid var(--color-border);">4px</td>
+                        <td style="padding: var(--spacing-md); border-bottom: 1px solid var(--color-border);"><div style="width: 4px; height: 20px; background-color: var(--color-primary);"></div></td>
+                    </tr>
+                    <tr>
+                        <td style="padding: var(--spacing-md); border-bottom: 1px solid var(--color-border);">SM</td>
+                        <td style="padding: var(--spacing-md); border-bottom: 1px solid var(--color-border);">8px</td>
+                        <td style="padding: var(--spacing-md); border-bottom: 1px solid var(--color-border);"><div style="width: 8px; height: 20px; background-color: var(--color-primary);"></div></td>
+                    </tr>
+                    <tr>
+                        <td style="padding: var(--spacing-md); border-bottom: 1px solid var(--color-border);">MD</td>
+                        <td style="padding: var(--spacing-md); border-bottom: 1px solid var(--color-border);">16px</td>
+                        <td style="padding: var(--spacing-md); border-bottom: 1px solid var(--color-border);"><div style="width: 16px; height: 20px; background-color: var(--color-primary);"></div></td>
+                    </tr>
+                    <tr>
+                        <td style="padding: var(--spacing-md); border-bottom: 1px solid var(--color-border);">LG</td>
+                        <td style="padding: var(--spacing-md); border-bottom: 1px solid var(--color-border);">24px</td>
+                        <td style="padding: var(--spacing-md); border-bottom: 1px solid var(--color-border);"><div style="width: 24px; height: 20px; background-color: var(--color-primary);"></div></td>
+                    </tr>
+                    <tr>
+                        <td style="padding: var(--spacing-md); border-bottom: 1px solid var(--color-border);">XL</td>
+                        <td style="padding: var(--spacing-md); border-bottom: 1px solid var(--color-border);">32px</td>
+                        <td style="padding: var(--spacing-md); border-bottom: 1px solid var(--color-border);"><div style="width: 32px; height: 20px; background-color: var(--color-primary);"></div></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
