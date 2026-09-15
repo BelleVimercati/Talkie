@@ -17,6 +17,18 @@ export default {
           blue: '#007AFF',
           navy: '#4667AC',
           logo: '#343A40',
+          orange: '#EF7148',
+          muted: '#90A0B7',
+        },
+        status: {
+          openBg: '#F2F4F7',
+          openText: '#364254',
+          analysisBg: '#FEF3E2',
+          analysisText: '#B54708',
+          resolvedBg: '#ECFDF3',
+          resolvedText: '#037847',
+          closedBg: '#FDEEEC',
+          closedText: '#780303',
         },
       },
       fontFamily: {
