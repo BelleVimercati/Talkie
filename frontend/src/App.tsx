@@ -3,6 +3,7 @@ import LoginPage from '@/pages/AuthPage/LoginPage'
 import RegisterPage from '@/pages/AuthPage/RegisterPage'
 import HomePage from '@/pages/HomePage'
 import CreateOccurrencePage from '@/pages/OccurrencesPage/CreateOccurrencePage'
+import NotificationsPage from '@/pages/NotificationsPage'
 import CategoriesListPage from '@/pages/SettingsPage/CategoriesListPage'
 import CreateCategoryPage from '@/pages/SettingsPage/CreateCategoryPage'
 import CreateSubcategoryPage from '@/pages/SettingsPage/CreateSubcategoryPage'
@@ -29,6 +30,14 @@ function App() {
           element={
             <ProtectedRoute>
               <CreateOccurrencePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/notificacoes"
+          element={
+            <ProtectedRoute>
+              <NotificationsPage />
             </ProtectedRoute>
           }
         />

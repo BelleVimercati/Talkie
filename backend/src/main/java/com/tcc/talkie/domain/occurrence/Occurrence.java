@@ -56,4 +56,6 @@ public class Occurrence {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private OccurrenceStatus status = OccurrenceStatus.ABERTO;
+
+    private LocalDateTime resolvedAt;
 }

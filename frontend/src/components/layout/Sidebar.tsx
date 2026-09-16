@@ -14,6 +14,7 @@ export function Sidebar() {
   }
 
   const isGeral = location.pathname === '/'
+  const isNotificacoes = location.pathname.startsWith('/notificacoes')
   const isConfiguracoes = location.pathname.startsWith('/configuracoes')
   const isUsers = location.pathname.startsWith('/usuarios')
 
@@ -55,7 +56,14 @@ export function Sidebar() {
         </button>
 
         {/* Notificações */}
-        <button className="w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 text-black-700 hover:bg-black-50 transition-colors">
+        <button
+          onClick={() => navigate('/notificacoes')}
+          className={`w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 transition-colors ${
+            isNotificacoes
+              ? 'bg-brand-orange bg-opacity-10 text-brand-orange'
+              : 'text-black-700 hover:bg-black-50'
+          }`}
+        >
           <Bell size={18} />
           <span className="font-medium text-sm">Notificações</span>
         </button>

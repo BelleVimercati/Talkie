@@ -8,6 +8,11 @@ export const occurrenceService = {
     return response.data.data
   },
 
+  getByCategory: async (categoryId: number) => {
+    const response = await api.get<ApiResponse<Occurrence[]>>(`/occurrences/category/${categoryId}`)
+    return response.data.data
+  },
+
   create: async (data: CreateOccurrenceDTO) => {
     const response = await api.post<ApiResponse<Occurrence>>('/occurrences', data)
     return response.data.data

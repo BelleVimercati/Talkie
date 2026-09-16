@@ -38,13 +38,17 @@ public class OccurrenceController {
     public ResponseEntity<ApiResponse<OccurrenceResponseDTO>> create(@Valid @RequestBody OccurrenceDTO data){
         Occurrence created = service.create(data);
         OccurrenceResponseDTO response = new OccurrenceResponseDTO(
+            created.getId(),
             created.getTitle(),
             created.getDescription(),
             created.getLocation(),
             created.getOwner().getId(),
+            created.getOwner().getName(),
             created.getCategory().getName(),
             created.getSubcategory().getName(),
-            created.getStatus()
+            created.getStatus(),
+            created.getCreatedAt(),
+            created.getResolvedAt()
         );
         return ResponseEntity.ok(new ApiResponse<>("Ocorrência criada com sucesso", response));
     }
