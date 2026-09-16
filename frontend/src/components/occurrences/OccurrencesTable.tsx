@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Occurrence } from '@/types/occurrence'
 import Button from '@/components/ui/Button'
 import Badge from '@/components/ui/Badge'
@@ -10,6 +11,7 @@ interface OccurrencesTableProps {
 }
 
 export function OccurrencesTable({ occurrences, isLoading }: OccurrencesTableProps) {
+  const navigate = useNavigate()
   const [searchTerm, setSearchTerm] = useState('')
 
   const filtered = occurrences.filter(
@@ -34,7 +36,11 @@ export function OccurrencesTable({ occurrences, isLoading }: OccurrencesTablePro
             className="w-full pl-10 pr-4 py-3 border border-black-100 rounded-2xl text-sm placeholder-brand-muted focus:outline-none focus:ring-2 focus:ring-brand-blue focus:ring-opacity-50"
           />
         </div>
-        <Button variant="dashboard" className="flex items-center gap-2">
+        <Button
+          variant="dashboard"
+          onClick={() => navigate('/ocorrencias/nova')}
+          className="flex items-center gap-2"
+        >
           <Plus size={18} />
           <span className="hidden sm:inline">Nova Ocorrência</span>
         </Button>

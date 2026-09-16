@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '@/stores/authStore'
 import { getInitials } from '@/utils/initials'
-import { Grid, Bell, LogOut } from 'lucide-react'
+import { Grid, Bell, LogOut, Settings, Users } from 'lucide-react'
 
 export function Sidebar() {
   const { user, logout } = useAuthStore()
@@ -14,6 +14,8 @@ export function Sidebar() {
   }
 
   const isGeral = location.pathname === '/'
+  const isConfiguracoes = location.pathname.startsWith('/configuracoes')
+  const isUsers = location.pathname.startsWith('/usuarios')
 
   return (
     <div className="h-screen w-64 bg-white shadow-md flex flex-col">
@@ -57,6 +59,37 @@ export function Sidebar() {
           <Bell size={18} />
           <span className="font-medium text-sm">Notificações</span>
         </button>
+
+        {/* Admin Items */}
+        {user?.role === 'ADMIN' && (
+          <>
+            {/* Configurações */}
+            <button
+              onClick={() => navigate('/configuracoes')}
+              className={`w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 transition-colors ${
+                isConfiguracoes
+                  ? 'bg-brand-orange bg-opacity-10 text-brand-orange'
+                  : 'text-black-700 hover:bg-black-50'
+              }`}
+            >
+              <Settings size={18} />
+              <span className="font-medium text-sm">Configurações</span>
+            </button>
+
+            {/* Usuários */}
+            <button
+              onClick={() => navigate('/usuarios')}
+              className={`w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 transition-colors ${
+                isUsers
+                  ? 'bg-brand-orange bg-opacity-10 text-brand-orange'
+                  : 'text-black-700 hover:bg-black-50'
+              }`}
+            >
+              <Users size={18} />
+              <span className="font-medium text-sm">Usuários</span>
+            </button>
+          </>
+        )}
       </nav>
 
       {/* Logout Button */}

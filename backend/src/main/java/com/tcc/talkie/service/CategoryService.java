@@ -1,5 +1,6 @@
 package com.tcc.talkie.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -36,6 +37,9 @@ public class CategoryService {
         Category type = new Category();
         type.setName(dto.name());
         type.setIcon(dto.icon());
+        type.setPriority(dto.priority());
+        type.setColor(dto.color());
+        type.setCreatedAt(LocalDateTime.now());
         type.setUser(user);
 
         return repository.save(type);
@@ -53,6 +57,8 @@ public class CategoryService {
 
             category.setName(data.name());
             category.setIcon(data.icon());
+            category.setPriority(data.priority());
+            category.setColor(data.color());
 
             return repository.save(category);
     }

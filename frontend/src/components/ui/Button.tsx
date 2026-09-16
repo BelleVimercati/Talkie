@@ -1,7 +1,7 @@
 import { ButtonHTMLAttributes, ReactNode } from 'react'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'dashboard'
+  variant?: 'primary' | 'dashboard' | 'secondary'
   isLoading?: boolean
   children: ReactNode
 }
@@ -21,6 +21,8 @@ function Button({
       'w-full bg-brand-blue text-white hover:bg-opacity-90 disabled:bg-opacity-60 disabled:cursor-not-allowed',
     dashboard:
       'bg-brand-navy text-white hover:bg-opacity-90 disabled:bg-opacity-60 disabled:cursor-not-allowed',
+    secondary:
+      'bg-[#b4b4b4] text-white hover:bg-opacity-90 disabled:bg-opacity-60 disabled:cursor-not-allowed',
   }
 
   return (

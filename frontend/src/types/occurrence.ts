@@ -9,3 +9,11 @@ export interface Occurrence {
   subcategoryName: string
   ownerId: string
 }
+
+export interface CreateOccurrenceDTO {
+  title: string
+  description: string
+  location: string
+  categoryId: number
+  subcategoryId: number
+}
