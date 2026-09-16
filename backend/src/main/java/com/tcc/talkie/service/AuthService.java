@@ -1,5 +1,6 @@
 package com.tcc.talkie.service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,7 @@ public class AuthService {
         newUser.setPassword(passwordEncoder.encode(data.password()));
         newUser.setCpf(cpfLimpo);
         newUser.setRole(data.role() != null ? data.role() : Role.USER);
+        newUser.setCreatedAt(LocalDateTime.now());
 
         return repository.save(newUser);
     }
