@@ -16,9 +16,15 @@ const PRIORITY_CONFIG = {
         label: 'Alta',
     },
 };
+const FALLBACK_CONFIG = {
+    bg: 'bg-black-50',
+    text: 'text-black-500',
+    label: '—',
+};
 export function PriorityBadge({ priority }) {
-    const config = PRIORITY_CONFIG[priority];
-    return (_jsxs("div", { className: `inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 ${config.bg} ${config.text}`, children: [_jsx("div", { className: "h-2 w-2 rounded-full", style: { backgroundColor: 'currentColor' } }), _jsx("span", { className: "text-xs font-medium", children: config.label })] }));
+    const config = priority ? PRIORITY_CONFIG[priority] : null;
+    const finalConfig = config || FALLBACK_CONFIG;
+    return (_jsxs("div", { className: `inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 ${finalConfig.bg} ${finalConfig.text}`, children: [_jsx("div", { className: "h-2 w-2 rounded-full", style: { backgroundColor: 'currentColor' } }), _jsx("span", { className: "text-xs font-medium", children: finalConfig.label })] }));
 }
 export default PriorityBadge;
 //# sourceMappingURL=PriorityBadge.js.map
