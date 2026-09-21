@@ -144,6 +144,7 @@ function CreateOccurrencePage() {
                     label: c.name,
                   }))}
                   {...field}
+                  onChange={(e) => field.onChange(Number(e.target.value))}
                 />
               )}
             />
@@ -162,6 +163,7 @@ function CreateOccurrencePage() {
                     label: s.name,
                   }))}
                   {...field}
+                  onChange={(e) => field.onChange(Number(e.target.value))}
                 />
               )}
             />
