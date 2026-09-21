@@ -8,9 +8,10 @@ import { Search, Plus } from 'lucide-react'
 interface OccurrencesTableProps {
   occurrences: Occurrence[]
   isLoading: boolean
+  onRowClick?: (occurrence: Occurrence) => void
 }
 
-export function OccurrencesTable({ occurrences, isLoading }: OccurrencesTableProps) {
+export function OccurrencesTable({ occurrences, isLoading, onRowClick }: OccurrencesTableProps) {
   const navigate = useNavigate()
   const [searchTerm, setSearchTerm] = useState('')
 
@@ -77,8 +78,12 @@ export function OccurrencesTable({ occurrences, isLoading }: OccurrencesTablePro
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((occurrence, idx) => (
-                  <tr key={idx} className="border-b border-black-100 hover:bg-black-50">
+                {filtered.map((occurrence) => (
+                  <tr
+                    key={occurrence.id}
+                    className={`border-b border-black-100 hover:bg-black-50 ${onRowClick ? 'cursor-pointer' : ''}`}
+                    onClick={() => onRowClick?.(occurrence)}
+                  >
                     <td className="px-6 py-4 text-black-900 font-medium">
                       {occurrence.title}
                     </td>

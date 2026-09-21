@@ -62,9 +62,7 @@ public class OccurrenceService {
         Occurrence occurrence = repository.findById(id)
             .orElseThrow(() -> new NotFoundException("Ocorrência não encontrada"));
         occurrence.setStatus(status);
-        if (status == OccurrenceStatus.RESOLVIDO) {
-            occurrence.setResolvedAt(LocalDateTime.now());
-        }
+        occurrence.setResolvedAt(status == OccurrenceStatus.RESOLVIDO ? LocalDateTime.now() : null);
         Occurrence updated = repository.save(occurrence);
         return mapToResponse(updated);
     }

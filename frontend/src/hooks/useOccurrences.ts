@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
 import { occurrenceService } from '@/services/occurrenceService'
-import { Occurrence } from '@/types/occurrence'
+import { Occurrence, OccurrenceStatus } from '@/types/occurrence'
 import { getErrorMessage } from '@/utils/errorHandler'
+import { useAuthStore } from '@/stores/authStore'
 
 export function useOccurrences() {
+  const { user } = useAuthStore()
   const [occurrences, setOccurrences] = useState<Occurrence[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -13,7 +15,9 @@ export function useOccurrences() {
       try {
         setIsLoading(true)
         setError(null)
-        const data = await occurrenceService.getMine()
+        const data = user?.role === 'ADMIN'
+          ? await occurrenceService.getAll()
+          : await occurrenceService.getMine()
         setOccurrences(data || [])
       } catch (err) {
         setError(getErrorMessage(err))
@@ -23,7 +27,13 @@ export function useOccurrences() {
     }
 
     fetchOccurrences()
-  }, [])
+  }, [user?.role])
 
-  return { occurrences, isLoading, error }
+  const updateOccurrenceStatus = (id: number, status: OccurrenceStatus) => {
+    setOccurrences((prev) =>
+      prev.map((o) => (o.id === id ? { ...o, status } : o))
+    )
+  }
+
+  return { occurrences, isLoading, error, updateOccurrenceStatus }
 }
