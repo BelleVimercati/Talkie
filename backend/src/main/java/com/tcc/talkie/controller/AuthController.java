@@ -36,7 +36,7 @@ public class AuthController {
     public ResponseEntity<?> register(@Valid @RequestBody RegisterDTO data){
         User created = authService.register(data);
         return ResponseEntity.ok( new ApiResponse<>("Usuário registrado com sucesso",
-            new UserResponseDTO(created.getId(), created.getName(), created.getEmail())
+            new UserResponseDTO(created.getId(), created.getName(), created.getEmail(), created.getCpf(), created.getRole(), created.getCreatedAt())
         ));
     }
 

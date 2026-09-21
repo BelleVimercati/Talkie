@@ -36,7 +36,10 @@ public class UserController {
             .map(user -> new UserResponseDTO(
                 user.getId(),
                 user.getName(),
-                user.getEmail()
+                user.getEmail(),
+                user.getCpf(),
+                user.getRole(),
+                user.getCreatedAt()
             ))
             .toList();
 
@@ -49,7 +52,10 @@ public class UserController {
             return ResponseEntity.ok(new UserResponseDTO(
                 user.getId(),
                 user.getName(),
-                user.getEmail()));
+                user.getEmail(),
+                user.getCpf(),
+                user.getRole(),
+                user.getCreatedAt()));
     }
 
     @GetMapping("/{id}")
@@ -58,7 +64,10 @@ public class UserController {
             return ResponseEntity.ok(new UserResponseDTO(
                 user.getId(),
                 user.getName(),
-                user.getEmail()
+                user.getEmail(),
+                user.getCpf(),
+                user.getRole(),
+                user.getCreatedAt()
             ));
     }
 

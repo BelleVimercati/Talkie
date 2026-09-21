@@ -39,7 +39,10 @@ public class CategoryController {
             type.getId(),
             type.getName(),
             type.getIcon(),
-            type.getUser().getId()
+            type.getUser().getId(),
+            type.getPriority(),
+            type.getColor(),
+            type.getCreatedAt()
         ))
         .toList();
 
@@ -53,7 +56,10 @@ public class CategoryController {
             created.getId(),
             created.getName(),
             created.getIcon(),
-            created.getUser().getId()
+            created.getUser().getId(),
+            created.getPriority(),
+            created.getColor(),
+            created.getCreatedAt()
         )));
     }
 
@@ -70,7 +76,10 @@ public class CategoryController {
             updated.getId(),
             updated.getName(),
             updated.getIcon(),
-            updated.getUser().getId()
+            updated.getUser().getId(),
+            updated.getPriority(),
+            updated.getColor(),
+            updated.getCreatedAt()
         )));
     }
 
@@ -81,7 +90,10 @@ public class CategoryController {
                 category.getId(),
                 category.getName(),
                 category.getIcon(),
-                category.getUser().getId()
+                category.getUser().getId(),
+                category.getPriority(),
+                category.getColor(),
+                category.getCreatedAt()
             ));
     }
 }

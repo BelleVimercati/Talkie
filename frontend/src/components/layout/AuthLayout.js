@@ -1,0 +1,6 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+function AuthLayout({ children }) {
+    return (_jsxs("div", { className: "flex min-h-screen w-full bg-white", children: [_jsxs("div", { className: "flex flex-1 flex-col px-6 py-8 sm:px-10 lg:px-24", children: [_jsxs("div", { className: "flex items-center gap-3", children: [_jsx("div", { className: "h-10 w-10 rounded-md bg-brand-blue" }), _jsx("span", { className: "font-logo text-4xl font-bold tracking-logo text-brand-logo", children: "Talkie" })] }), _jsx("div", { className: "flex flex-1 flex-col items-center justify-center overflow-y-auto py-10", children: _jsx("div", { className: "w-full max-w-[540px]", children: children }) })] }), _jsxs("div", { className: "relative hidden w-[830px] shrink-0 items-center justify-center overflow-hidden bg-brand-navy lg:flex", children: [_jsx("div", { className: "absolute right-0 top-1/2 -translate-y-1/2", children: _jsx("div", { className: "h-96 w-96 rounded-full bg-yellow-400 opacity-50" }) }), _jsx("div", { className: "relative z-10 flex h-64 w-64 items-center justify-center rounded-lg bg-gray-300", children: _jsx("span", { className: "text-center text-gray-500", children: "Ilustra\u00E7\u00E3o do Talkie" }) })] })] }));
+}
+export default AuthLayout;
+//# sourceMappingURL=AuthLayout.js.map

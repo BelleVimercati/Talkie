@@ -2,6 +2,7 @@ package com.tcc.talkie.domain.category;
 
 import com.tcc.talkie.domain.user.User;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,6 +22,13 @@ public class Category {
     private String name; 
 
     private String icon;
+
+    @Enumerated(EnumType.STRING)
+    private CategoryPriority priority;
+
+    private String color;
+
+    private LocalDateTime createdAt;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
