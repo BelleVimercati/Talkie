@@ -61,12 +61,14 @@ function NotificationsPage() {
             <h2 className="text-xl font-semibold font-roboto text-black-900">
               Inscrições
             </h2>
+            <div>
             <Button
               onClick={() => setIsModalOpen(true)}
               className="text-sm"
             >
               + Nova Inscrição
             </Button>
+            </div>
           </div>
 
           {subscriptions.length === 0 ? (
