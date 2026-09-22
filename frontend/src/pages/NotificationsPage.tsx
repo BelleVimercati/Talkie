@@ -2,11 +2,15 @@ import { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AppLayout } from '@/components/layout/AppLayout'
 import Button from '@/components/ui/Button'
+import Alert from '@/components/ui/Alert'
 import { Badge } from '@/components/ui/Badge'
 import { SubscriptionCard } from '@/components/notifications/SubscriptionCard'
 import { SubscribeModal } from '@/components/notifications/SubscribeModal'
 import { useSubscriptions } from '@/hooks/useSubscriptions'
 import { useNotifications } from '@/hooks/useNotifications'
+import { subscriptionService } from '@/services/subscriptionService'
+import { getErrorMessage } from '@/utils/errorHandler'
+import { Subscription } from '@/types/subscription'
 import { Search } from 'lucide-react'
 
 function NotificationsPage() {
@@ -15,6 +19,8 @@ function NotificationsPage() {
   const { occurrences, isLoading: notificationsLoading } = useNotifications()
   const [searchTerm, setSearchTerm] = useState('')
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [editingSubscription, setEditingSubscription] = useState<Subscription | null>(null)
+  const [removeError, setRemoveError] = useState<string | null>(null)
 
   const filtered = useMemo(
     () =>
@@ -36,7 +42,30 @@ function NotificationsPage() {
   }
 
   const handleSubscribeSuccess = () => {
+    setEditingSubscription(null)
     refetchSubscriptions()
+  }
+
+  const handleRemove = async (categoryId: number) => {
+    if (!window.confirm('Tem certeza que deseja cancelar esta inscrição?')) return
+
+    try {
+      setRemoveError(null)
+      await subscriptionService.unsubscribe(categoryId)
+      refetchSubscriptions()
+    } catch (err) {
+      setRemoveError(getErrorMessage(err))
+    }
+  }
+
+  const handleEdit = (subscription: Subscription) => {
+    setEditingSubscription(subscription)
+    setIsModalOpen(true)
+  }
+
+  const handleModalClose = () => {
+    setIsModalOpen(false)
+    setEditingSubscription(null)
   }
 
   return (
@@ -63,13 +92,18 @@ function NotificationsPage() {
             </h2>
             <div>
             <Button
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => {
+                setEditingSubscription(null)
+                setIsModalOpen(true)
+              }}
               className="text-sm"
             >
               + Nova Inscrição
             </Button>
             </div>
           </div>
+
+          {removeError && <Alert variant="error" onClose={() => setRemoveError(null)} className="mb-4">{removeError}</Alert>}
 
           {subscriptions.length === 0 ? (
             <div className="p-8 text-center bg-white rounded-lg border border-black-100">
@@ -79,9 +113,11 @@ function NotificationsPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {subscriptions.map((sub) => (
                 <SubscriptionCard
-                  key={sub.categoryId}
+                  key={sub.id}
                   icon="📌"
                   categoryName={sub.categoryName}
+                  onEdit={() => handleEdit(sub)}
+                  onRemove={() => handleRemove(sub.categoryId)}
                 />
               ))}
             </div>
@@ -188,8 +224,9 @@ function NotificationsPage() {
 
       <SubscribeModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={handleModalClose}
         onSubscribe={handleSubscribeSuccess}
+        editingSubscription={editingSubscription}
       />
     </AppLayout>
   )

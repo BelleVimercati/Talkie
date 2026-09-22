@@ -14,4 +14,8 @@ export const subscriptionService = {
     const data = response.data
     return Array.isArray(data) ? data : data.data
   },
+
+  unsubscribe: async (categoryId: number) => {
+    await api.delete(`/subscriptions/${categoryId}`)
+  },
 }
