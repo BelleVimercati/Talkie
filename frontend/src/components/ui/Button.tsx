@@ -28,7 +28,7 @@ function Button({
   return (
     <button
       disabled={disabled || isLoading}
-      className={`${baseStyles} ${variants[variant]} ${className}`}
+      className={`${baseStyles} ${variants[variant]} ${className} px-6`}
       {...props}
     >
       {isLoading ? (

@@ -1,6 +1,6 @@
 import { OccurrenceStatus } from '@/types/occurrence'
 
-const STATUS_CONFIG: Record<OccurrenceStatus, { bg: string; text: string; label: string }> = {
+export const STATUS_CONFIG: Record<OccurrenceStatus, { bg: string; text: string; label: string }> = {
   ABERTO: {
     bg: 'bg-status-openBg',
     text: 'text-status-openText',
