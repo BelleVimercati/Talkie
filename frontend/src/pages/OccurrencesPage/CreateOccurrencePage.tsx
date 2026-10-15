@@ -8,6 +8,7 @@ import Select from '@/components/ui/Select'
 import Textarea from '@/components/ui/Textarea'
 import Button from '@/components/ui/Button'
 import Alert from '@/components/ui/Alert'
+import { ImageUpload } from '@/components/occurrences/ImageUpload'
 import { useCategories } from '@/hooks/useCategories'
 import { useSubcategories } from '@/hooks/useSubcategories'
 import { createOccurrenceSchema, type CreateOccurrenceFormData } from '@/schemas/createOccurrenceSchema'
@@ -18,6 +19,7 @@ function CreateOccurrencePage() {
   const navigate = useNavigate()
   const [globalError, setGlobalError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [imageFile, setImageFile] = useState<File | null>(null)
   const { categories } = useCategories()
   const { subcategories } = useSubcategories()
 
@@ -70,7 +72,17 @@ function CreateOccurrencePage() {
       setGlobalError(null)
       setIsLoading(true)
 
-      await occurrenceService.create(data)
+      const created = await occurrenceService.create(data)
+
+      // Se houver imagem, fazer upload separado
+      if (imageFile) {
+        try {
+          await occurrenceService.uploadImage(created.id, imageFile)
+        } catch (err) {
+          // Ocorrência foi criada, mas erro no upload de imagem
+          setGlobalError('Ocorrência criada, mas falha ao enviar a imagem')
+        }
+      }
 
       navigate('/', { state: { created: true } })
     } catch (err) {
@@ -122,13 +134,12 @@ function CreateOccurrencePage() {
               {...register('title')}
             />
 
-            {/* Data (decorativa, desabilitada) */}
+            {/* Data e Horário do Fato */}
             <Input
-              label="Data*"
-              type="date"
-              disabled
-              defaultValue="2020-12-12"
-              className="opacity-50 cursor-not-allowed"
+              label="Data e Horário do Fato (opcional)"
+              type="datetime-local"
+              error={errors.occurredAt?.message}
+              {...register('occurredAt')}
             />
 
             {/* Categoria */}
@@ -176,39 +187,32 @@ function CreateOccurrencePage() {
               {...register('location')}
             />
 
-            {/* Horário (decorativa, desabilitada) */}
+            {/* Latitude */}
             <Input
-              label="Horário*"
-              type="time"
-              disabled
-              defaultValue="12:00"
-              className="opacity-50 cursor-not-allowed"
+              label="Latitude (opcional)"
+              type="number"
+              placeholder="-23.5505"
+              step="0.0001"
+              error={errors.latitude?.message}
+              {...register('latitude')}
+            />
+
+            {/* Longitude */}
+            <Input
+              label="Longitude (opcional)"
+              type="number"
+              placeholder="-46.6333"
+              step="0.0001"
+              error={errors.longitude?.message}
+              {...register('longitude')}
             />
           </div>
 
-          {/* Toggle "usar localização e hora atuais" (decorativo) */}
-          <div className="flex items-center gap-3 px-4 py-2 border border-black-100 rounded-md bg-black-50 opacity-50 cursor-not-allowed">
-            <input
-              type="checkbox"
-              disabled
-              className="w-4 h-4"
-            />
-            <span className="text-sm text-black-500">Usar Localização e hora atuais</span>
-          </div>
-
-          {/* Anexo (decorativo, desabilitado) */}
-          <div className="opacity-50 cursor-not-allowed">
-            <label className="mb-1.5 block font-roboto text-sm font-medium text-black-800 tracking-wide03">
-              Anexo
-            </label>
-            <div className="relative">
-              <input
-                type="file"
-                disabled
-                className="h-12 w-full rounded-md border-[0.5px] border-black-100 bg-black-50 px-4 py-2 text-black-500"
-              />
-            </div>
-          </div>
+          {/* Imagem */}
+          <ImageUpload
+            value={imageFile}
+            onChange={setImageFile}
+          />
 
           {/* Descrição */}
           <Textarea

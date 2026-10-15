@@ -30,6 +30,8 @@ import com.tcc.talkie.repository.CategoryRepository;
 import com.tcc.talkie.repository.OccurrenceRepository;
 import com.tcc.talkie.repository.SubcategoryRepository;
 import com.tcc.talkie.repository.UserRepository;
+import com.tcc.talkie.repository.OccurrenceStatusHistoryRepository;
+import com.tcc.talkie.repository.SubscriptionRepository;
 import com.tcc.talkie.infra.security.TokenService;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -56,6 +58,12 @@ class OccurrenceControllerIT {
     private UserRepository userRepository;
 
     @Autowired
+    private OccurrenceStatusHistoryRepository historyRepository;
+
+    @Autowired
+    private SubscriptionRepository subscriptionRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -70,6 +78,8 @@ class OccurrenceControllerIT {
 
     @BeforeEach
     void setup() {
+        historyRepository.deleteAll();
+        subscriptionRepository.deleteAll();
         occurrenceRepository.deleteAll();
         subcategoryRepository.deleteAll();
         categoryRepository.deleteAll();
@@ -117,7 +127,10 @@ class OccurrenceControllerIT {
             "Há um grande buraco na Rua A",
             "Rua A, número 123",
             category.getId(),
-            subcategory.getId()
+            subcategory.getId(),
+            null,
+            null,
+            null
         );
 
         mockMvc.perform(post("/occurrences")
@@ -138,7 +151,10 @@ class OccurrenceControllerIT {
             "Há um grande buraco na Rua A",
             "Rua A, número 123",
             category.getId(),
-            subcategory.getId()
+            subcategory.getId(),
+            null,
+            null,
+            null
         );
 
         mockMvc.perform(post("/occurrences")
@@ -155,7 +171,10 @@ class OccurrenceControllerIT {
             "Há um grande buraco na Rua A",
             "Rua A, número 123",
             99999L,
-            subcategory.getId()
+            subcategory.getId(),
+            null,
+            null,
+            null
         );
 
         mockMvc.perform(post("/occurrences")
@@ -174,7 +193,10 @@ class OccurrenceControllerIT {
             "Há um grande buraco na Rua A",
             "Rua A, número 123",
             category.getId(),
-            99999L
+            99999L,
+            null,
+            null,
+            null
         );
 
         mockMvc.perform(post("/occurrences")
@@ -337,10 +359,10 @@ class OccurrenceControllerIT {
         occ.setOwner(commonUser);
         occ.setCategory(category);
         occ.setSubcategory(subcategory);
-        occ.setStatus(OccurrenceStatus.PENDENTE);
+        occ.setStatus(OccurrenceStatus.ABERTO);
         occ = occurrenceRepository.save(occ);
 
-        OccurrenceStatusUpdateDTO dto = new OccurrenceStatusUpdateDTO(OccurrenceStatus.RESOLVIDO);
+        OccurrenceStatusUpdateDTO dto = new OccurrenceStatusUpdateDTO(OccurrenceStatus.RESOLVIDO, null);
 
         mockMvc.perform(put("/occurrences/" + occ.getId() + "/status")
             .contentType(MediaType.APPLICATION_JSON)
@@ -363,7 +385,7 @@ class OccurrenceControllerIT {
         occ.setSubcategory(subcategory);
         occ = occurrenceRepository.save(occ);
 
-        OccurrenceStatusUpdateDTO dto = new OccurrenceStatusUpdateDTO(OccurrenceStatus.RESOLVIDO);
+        OccurrenceStatusUpdateDTO dto = new OccurrenceStatusUpdateDTO(OccurrenceStatus.RESOLVIDO, null);
 
         mockMvc.perform(put("/occurrences/" + occ.getId() + "/status")
             .contentType(MediaType.APPLICATION_JSON)
@@ -384,7 +406,7 @@ class OccurrenceControllerIT {
         occ.setSubcategory(subcategory);
         occ = occurrenceRepository.save(occ);
 
-        OccurrenceStatusUpdateDTO dto = new OccurrenceStatusUpdateDTO(OccurrenceStatus.RESOLVIDO);
+        OccurrenceStatusUpdateDTO dto = new OccurrenceStatusUpdateDTO(OccurrenceStatus.RESOLVIDO, null);
 
         mockMvc.perform(put("/occurrences/" + occ.getId() + "/status")
             .contentType(MediaType.APPLICATION_JSON)
@@ -395,7 +417,7 @@ class OccurrenceControllerIT {
     @Test
     @DisplayName("Não deve atualizar status de ocorrência inexistente")
     void naoDeveAtualizarStatusDeOcorrenciaInexistente() throws Exception {
-        OccurrenceStatusUpdateDTO dto = new OccurrenceStatusUpdateDTO(OccurrenceStatus.RESOLVIDO);
+        OccurrenceStatusUpdateDTO dto = new OccurrenceStatusUpdateDTO(OccurrenceStatus.RESOLVIDO, null);
 
         mockMvc.perform(put("/occurrences/99999/status")
             .contentType(MediaType.APPLICATION_JSON)

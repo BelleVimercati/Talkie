@@ -38,12 +38,16 @@ public class SecurityFilter extends OncePerRequestFilter {
         if (token != null) {
             var login = tokenService.validateToken(token);
             var role = tokenService.getRole(token);
+            var userId = tokenService.getUserId(token);
 
-            if (login != null && role != null) {
+            // Conta excluída (ou token de outra conta com o mesmo e-mail): segue sem autenticar → 401
+            User user = login != null && role != null && userId != null
+                ? userRepository.findByEmail(login)
+                    .filter(u -> u.getId().toString().equals(userId))
+                    .orElse(null)
+                : null;
 
-                User user = userRepository.findByEmail(login)
-                    .orElseThrow(() ->
-                        new RuntimeException("Usuário não encontrado"));
+            if (user != null) {
 
                 var authorities = Collections.singletonList(
                     new SimpleGrantedAuthority("ROLE_" + role)

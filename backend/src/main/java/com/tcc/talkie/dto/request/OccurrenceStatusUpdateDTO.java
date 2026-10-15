@@ -6,5 +6,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record OccurrenceStatusUpdateDTO(
     @NotNull(message = "Status é obrigatório")
-    OccurrenceStatus status
+    OccurrenceStatus status,
+
+    String reason
 ) {}

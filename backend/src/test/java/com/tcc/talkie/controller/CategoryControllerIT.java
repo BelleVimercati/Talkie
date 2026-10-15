@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tcc.talkie.domain.category.Category;
+import com.tcc.talkie.domain.category.CategoryPriority;
 import com.tcc.talkie.domain.user.Role;
 import com.tcc.talkie.domain.user.User;
 import com.tcc.talkie.dto.request.CategoryCreateDTO;
@@ -80,7 +81,7 @@ class CategoryControllerIT {
     @Test
     @DisplayName("Deve criar uma categoria como admin")
     void deveCriarCategoriaCOmoAdmin() throws Exception {
-        CategoryCreateDTO dto = new CategoryCreateDTO("Violência", "violence-icon.png");
+        CategoryCreateDTO dto = new CategoryCreateDTO("Violência", "violence-icon.png", CategoryPriority.MEDIA, "#000000");
 
         mockMvc.perform(post("/categories")
             .contentType(MediaType.APPLICATION_JSON)
@@ -95,7 +96,7 @@ class CategoryControllerIT {
     @Test
     @DisplayName("Não deve criar categoria como usuário comum")
     void naoDeveCriarCategoriaComoUsuarioComum() throws Exception {
-        CategoryCreateDTO dto = new CategoryCreateDTO("Violência", "violence-icon.png");
+        CategoryCreateDTO dto = new CategoryCreateDTO("Violência", "violence-icon.png", CategoryPriority.MEDIA, "#000000");
 
         mockMvc.perform(post("/categories")
             .contentType(MediaType.APPLICATION_JSON)
@@ -107,7 +108,7 @@ class CategoryControllerIT {
     @Test
     @DisplayName("Não deve criar categoria sem autenticação")
     void naoDeveCriarCategoriaSemAutenticacao() throws Exception {
-        CategoryCreateDTO dto = new CategoryCreateDTO("Violência", "violence-icon.png");
+        CategoryCreateDTO dto = new CategoryCreateDTO("Violência", "violence-icon.png", CategoryPriority.MEDIA, "#000000");
 
         mockMvc.perform(post("/categories")
             .contentType(MediaType.APPLICATION_JSON)
@@ -126,7 +127,7 @@ class CategoryControllerIT {
         categoryRepository.save(category);
 
         // Try to create duplicate
-        CategoryCreateDTO dto = new CategoryCreateDTO("violência", "another-icon.png");
+        CategoryCreateDTO dto = new CategoryCreateDTO("violência", "another-icon.png", CategoryPriority.MEDIA, "#000000");
 
         mockMvc.perform(post("/categories")
             .contentType(MediaType.APPLICATION_JSON)
@@ -193,7 +194,7 @@ class CategoryControllerIT {
         cat.setUser(adminUser);
         cat = categoryRepository.save(cat);
 
-        CategoryCreateDTO dto = new CategoryCreateDTO("Segurança", "new-icon.png");
+        CategoryCreateDTO dto = new CategoryCreateDTO("Segurança", "new-icon.png", CategoryPriority.MEDIA, "#000000");
 
         mockMvc.perform(put("/categories/" + cat.getId())
             .contentType(MediaType.APPLICATION_JSON)
@@ -213,7 +214,7 @@ class CategoryControllerIT {
         cat.setUser(adminUser);
         cat = categoryRepository.save(cat);
 
-        CategoryCreateDTO dto = new CategoryCreateDTO("Segurança", "new-icon.png");
+        CategoryCreateDTO dto = new CategoryCreateDTO("Segurança", "new-icon.png", CategoryPriority.MEDIA, "#000000");
 
         mockMvc.perform(put("/categories/" + cat.getId())
             .contentType(MediaType.APPLICATION_JSON)
@@ -225,7 +226,7 @@ class CategoryControllerIT {
     @Test
     @DisplayName("Não deve atualizar categoria inexistente")
     void naoDeveAtualizarCategoriaInexistente() throws Exception {
-        CategoryCreateDTO dto = new CategoryCreateDTO("Segurança", "icon.png");
+        CategoryCreateDTO dto = new CategoryCreateDTO("Segurança", "icon.png", CategoryPriority.MEDIA, "#000000");
 
         mockMvc.perform(put("/categories/99999")
             .contentType(MediaType.APPLICATION_JSON)
