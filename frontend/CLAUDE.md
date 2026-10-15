@@ -8,6 +8,7 @@ SPA do Talkie. Visão geral do projeto, contrato com a API e fluxo full-stack: [
 - react-router-dom 6 · zustand (estado de auth) · axios
 - react-hook-form + zod (`@hookform/resolvers`) · jwt-decode
 - Tailwind CSS 3 · lucide-react (ícones) · fontes via `@fontsource` (Poppins, Roboto, Inter)
+- leaflet 1.9 + react-leaflet 4 (mapa OpenStreetMap; a v5 do react-leaflet exige React 19)
 
 **Não há** react-query, biblioteca de componentes (MUI etc.), testes automatizados nem ESLint instalado. Não adicione dependências novas sem necessidade clara.
 
@@ -43,11 +44,11 @@ src/
 │   ├── layout/          # AppLayout (com Sidebar), AuthLayout, Sidebar
 │   ├── ui/              # primitivos: Button, Input, PasswordInput, Select, Textarea, Alert,
 │   │                    #   Badge, PriorityBadge, RoleBadge, Card, ColorPicker, IconPicker
-│   ├── occurrences/     # OccurrencesTable, OccurrenceDetailsModal, StatsCards, ImageUpload
+│   ├── occurrences/     # OccurrencesTable, OccurrenceDetailsModal, StatsCards, ImageUpload, LocationPicker
 │   └── notifications/   # SubscribeModal, SubscriptionCard
 ├── pages/               # telas (AuthPage/, OccurrencesPage/, SettingsPage/, HomePage, ...)
-├── hooks/               # useCategories, useOccurrences, useSubscriptions, useUsers, ...
-├── services/            # api.ts (axios) + xxxService.ts
+├── hooks/               # useCategories, useOccurrences, useSubscriptions, useUsers, useGeolocation, ...
+├── services/            # api.ts (axios) + xxxService.ts + geocodingService.ts (Nominatim)
 ├── schemas/             # schemas zod dos formulários
 ├── stores/              # authStore (zustand)
 ├── types/               # espelho dos DTOs do backend
@@ -144,8 +145,17 @@ Use os tokens de `tailwind.config.ts` em vez de cores hex soltas:
 
 - **Nunca** gere nem commite `.js` / `.js.map` dentro de `src/`. O `tsconfig` tem `noEmit: true`; se aparecerem, apague-os (o Vite pode resolver o `.js` velho antes do `.tsx`).
 - Não chame `axios` direto em componentes; passe por um service.
+- Serviços externos (ex.: Nominatim em `geocodingService`) usam `fetch`, **nunca** a instância `api`: ela anexaria o JWT do Talkie à requisição.
+- `src/vite-env.d.ts` (`/// <reference types="vite/client" />`) é necessário para `import.meta.env` e imports de imagens.
 - Não use `any`; tipar respostas com `ApiResponse<T>`.
 - Antes de concluir uma tarefa, rode `npm run build` e garanta que passa sem erros de tipo.
+
+## Localização (Geolocation API + mapa)
+
+- `useGeolocation` embrulha `navigator.geolocation.getCurrentPosition` numa Promise e traduz os erros (permissão negada, indisponível, tempo esgotado). Só funciona em contexto seguro: `localhost` ou **HTTPS** (obrigatório em produção).
+- `LocationPicker` (Leaflet): botão "Usar minha localização", clique no mapa e pino arrastável; `readOnly` para exibição. Os tiles do OpenStreetMap exigem a atribuição já incluída.
+- Em `CreateOccurrencePage`, mudar o ponto preenche `latitude`/`longitude` via `setValue` e sugere o endereço com `geocodingService.reverse`, sem sobrescrever o campo se o usuário já o editou (`dirtyFields.location`).
+- Nominatim: no máximo 1 req/s; chame só quando o ponto mudar (há cache por coordenada).
 
 ## Pendências conhecidas
 

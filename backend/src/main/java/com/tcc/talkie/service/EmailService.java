@@ -55,6 +55,17 @@ public class EmailService {
         }
     }
 
+    /* Link do OpenStreetMap quando a ocorrência tem coordenadas (Double.toString sempre usa ponto decimal) */
+    private String buildMapLink(Occurrence occurrence) {
+        if (occurrence.getLatitude() == null || occurrence.getLongitude() == null) {
+            return "";
+        }
+        String lat = occurrence.getLatitude().toString();
+        String lng = occurrence.getLongitude().toString();
+        return "<br><a href=\"https://www.openstreetmap.org/?mlat=" + lat + "&mlon=" + lng
+            + "#map=18/" + lat + "/" + lng + "\">Ver no mapa</a>";
+    }
+
     private String buildNotificationHtml(User subscriber, Occurrence occurrence) {
         return String.format(
             """
@@ -179,7 +190,7 @@ public class EmailService {
                             </div>
                             <div class="field">
                                 <div class="field-label">Localização</div>
-                                <div class="field-value">%s</div>
+                                <div class="field-value">%s%s</div>
                             </div>
                             <div class="field">
                                 <div class="field-label">Descrição</div>
@@ -207,6 +218,7 @@ public class EmailService {
             occurrence.getCategory().getName(),
             occurrence.getSubcategory().getName(),
             occurrence.getLocation(),
+            buildMapLink(occurrence),
             occurrence.getDescription(),
             occurrence.getStatus().name(),
             occurrence.getCategory().getName()

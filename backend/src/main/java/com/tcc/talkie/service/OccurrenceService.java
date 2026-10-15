@@ -18,6 +18,7 @@ import com.tcc.talkie.dto.request.OccurrenceDTO;
 import com.tcc.talkie.dto.response.OccurrenceResponseDTO;
 import com.tcc.talkie.dto.response.OccurrenceStatusHistoryResponseDTO;
 import com.tcc.talkie.events.OccurrenceCreatedEvent;
+import com.tcc.talkie.infra.exceptions.BadRequestException;
 import com.tcc.talkie.infra.exceptions.NotFoundException;
 import com.tcc.talkie.infra.security.AuthenticatedUser;
 import com.tcc.talkie.repository.CategoryRepository;
@@ -41,6 +42,8 @@ public class OccurrenceService {
 
     @Transactional
     public Occurrence create(OccurrenceDTO dto){
+        validateCoordinates(dto.latitude(), dto.longitude());
+
         Category category = categoryRepository.findById(dto.categoryId()).orElseThrow(() -> new NotFoundException("Categoria não encontrada"));
 
         Subcategory subcategory = subcategoryRepository.findById(dto.subcategoryId()).orElseThrow(() -> new NotFoundException("Subcategoria não encontrada"));
@@ -97,6 +100,20 @@ public class OccurrenceService {
                 h.getChangedBy() != null ? h.getChangedBy().getName() : null
             ))
             .toList();
+    }
+
+    /* @DecimalMin/@DecimalMax do DTO não rodam sem spring-boot-starter-validation */
+    private void validateCoordinates(Double latitude, Double longitude) {
+        if ((latitude == null) != (longitude == null)) {
+            throw new BadRequestException("Latitude e longitude devem ser informadas juntas");
+        }
+        if (latitude == null) return;
+        if (latitude < -90 || latitude > 90) {
+            throw new BadRequestException("Latitude deve estar entre -90 e 90");
+        }
+        if (longitude < -180 || longitude > 180) {
+            throw new BadRequestException("Longitude deve estar entre -180 e 180");
+        }
     }
 
     private void recordStatusChange(Occurrence occurrence, OccurrenceStatus previous, OccurrenceStatus next, String reason, User actor) {

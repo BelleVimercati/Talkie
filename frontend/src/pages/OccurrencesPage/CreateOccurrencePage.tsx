@@ -9,10 +9,12 @@ import Textarea from '@/components/ui/Textarea'
 import Button from '@/components/ui/Button'
 import Alert from '@/components/ui/Alert'
 import { ImageUpload } from '@/components/occurrences/ImageUpload'
+import { LocationPicker } from '@/components/occurrences/LocationPicker'
 import { useCategories } from '@/hooks/useCategories'
 import { useSubcategories } from '@/hooks/useSubcategories'
 import { createOccurrenceSchema, type CreateOccurrenceFormData } from '@/schemas/createOccurrenceSchema'
 import { occurrenceService } from '@/services/occurrenceService'
+import { geocodingService } from '@/services/geocodingService'
 import { getErrorMessage, getFieldFromBackendMessage } from '@/utils/errorHandler'
 
 function CreateOccurrencePage() {
@@ -20,6 +22,7 @@ function CreateOccurrencePage() {
   const [globalError, setGlobalError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [imageFile, setImageFile] = useState<File | null>(null)
+  const [isFetchingAddress, setIsFetchingAddress] = useState(false)
   const { categories } = useCategories()
   const { subcategories } = useSubcategories()
 
@@ -30,7 +33,7 @@ function CreateOccurrencePage() {
     setError,
     watch,
     setValue,
-    formState: { errors },
+    formState: { errors, dirtyFields },
   } = useForm<CreateOccurrenceFormData>({
     resolver: zodResolver(createOccurrenceSchema),
     defaultValues: {
@@ -40,6 +43,28 @@ function CreateOccurrencePage() {
   })
 
   const selectedCategoryId = watch('categoryId')
+  const latitude = watch('latitude')
+  const longitude = watch('longitude')
+
+  // Ponto escolhido no mapa (ou removido): atualiza as coordenadas e sugere o endereço
+  const handleLocationChange = async (lat?: number, lng?: number) => {
+    setValue('latitude', lat, { shouldValidate: true })
+    setValue('longitude', lng, { shouldValidate: true })
+    if (lat === undefined || lng === undefined) return
+
+    // Endereço digitado à mão não é sobrescrito (setValue sem shouldDirty não marca o campo)
+    if (dirtyFields.location) return
+
+    setIsFetchingAddress(true)
+    try {
+      const address = await geocodingService.reverse(lat, lng)
+      if (address) setValue('location', address, { shouldValidate: true })
+    } catch {
+      // Sem endereço automático: o usuário digita
+    } finally {
+      setIsFetchingAddress(false)
+    }
+  }
 
   // Atualizar subcategorias disponíveis quando categoria muda
   useEffect(() => {
@@ -180,32 +205,34 @@ function CreateOccurrencePage() {
             />
 
             {/* Localização */}
-            <Input
-              label="Localização*"
-              placeholder="Endereço ou descrição de local"
-              error={errors.location?.message}
-              {...register('location')}
-            />
+            <div className="col-span-2">
+              <Input
+                label="Localização*"
+                placeholder="Endereço (preenchido pelo mapa ou digitado)"
+                error={errors.location?.message}
+                {...register('location')}
+              />
+              {isFetchingAddress && (
+                <p className="mt-1 text-xs text-black-500">Buscando endereço...</p>
+              )}
+            </div>
 
-            {/* Latitude */}
-            <Input
-              label="Latitude (opcional)"
-              type="number"
-              placeholder="-23.5505"
-              step="0.0001"
-              error={errors.latitude?.message}
-              {...register('latitude')}
-            />
-
-            {/* Longitude */}
-            <Input
-              label="Longitude (opcional)"
-              type="number"
-              placeholder="-46.6333"
-              step="0.0001"
-              error={errors.longitude?.message}
-              {...register('longitude')}
-            />
+            {/* Mapa */}
+            <div className="col-span-2">
+              <label className="mb-1.5 block font-roboto text-sm font-medium text-black-800 tracking-wide03">
+                Local no mapa (opcional)
+              </label>
+              <LocationPicker
+                latitude={latitude}
+                longitude={longitude}
+                onChange={handleLocationChange}
+              />
+              {(errors.latitude || errors.longitude) && (
+                <p className="mt-1 text-xs text-red-500">
+                  {errors.latitude?.message ?? errors.longitude?.message}
+                </p>
+              )}
+            </div>
           </div>
 
           {/* Imagem */}

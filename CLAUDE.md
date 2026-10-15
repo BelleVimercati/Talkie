@@ -83,6 +83,7 @@ Permissões (`infra/security/SecurityConfig.java`): `ADMIN` lista todas as ocorr
 - **Upload de imagem:** o front chama `POST/GET /occurrences/{id}/image`, mas o endpoint ainda não existe no backend (a coluna `image_path` e o `imageUrl` do DTO já existem).
 - **`GlobalExceptionHandler`** converte qualquer `RuntimeException` em 400. Lance `NotFoundException` / `BadRequestException` / `UnauthorizedException` para ter o status correto.
 - **Exclusão de conta** anonimiza em vez de apagar ocorrências: `owner`, `changedBy` e `Category.user` podem ser `null` ("Usuário excluído" no front, via `formatAuthor`). Ao criar uma nova FK para `users`, trate-a em `UserService.deleteAccount`. Detalhes: `backend/docs/EXCLUSAO_DE_CONTA.md`.
+- **Geolocalização** (`useGeolocation`/`LocationPicker`): a Geolocation API só funciona em `localhost` ou HTTPS — o deploy precisa de HTTPS. Endereço sugerido via Nominatim (OpenStreetMap), chamado direto do navegador. O backend valida o par latitude/longitude e as faixas em `OccurrenceService.validateCoordinates`.
 - **JWT** carrega `uid`; o `SecurityFilter` rejeita tokens cujo `uid` não bate com o usuário do e-mail.
 - **`UserController`** é inconsistente (retorna listas cruas / `ErrorResponse` no sucesso). Não use como modelo; siga `OccurrenceController`.
 - **Frontend sem testes e sem ESLint instalado:** valide com `npm run build` (roda `tsc`). O script `lint` existe, mas o ESLint não está nas dependências.
