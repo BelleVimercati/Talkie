@@ -6,6 +6,7 @@ import Select from '@/components/ui/Select'
 import Badge from '@/components/ui/Badge'
 import Alert from '@/components/ui/Alert'
 import Textarea from '@/components/ui/Textarea'
+import { LocationPicker } from '@/components/occurrences/LocationPicker'
 import { STATUS_CONFIG } from '@/components/ui/Badge'
 import { occurrenceService } from '@/services/occurrenceService'
 import { getErrorMessage } from '@/utils/errorHandler'
@@ -134,6 +135,21 @@ export function OccurrenceDetailsModal({
               <label className="block text-sm font-medium text-black-700 mb-1">Localização</label>
               <p className="px-4 py-2 bg-black-50 rounded-md text-black-900">{occurrence.location}</p>
             </div>
+
+            {occurrence.latitude != null && occurrence.longitude != null && (
+              <div>
+                <label className="block text-sm font-medium text-black-700 mb-1">Local no mapa</label>
+                <LocationPicker latitude={occurrence.latitude} longitude={occurrence.longitude} readOnly />
+                <a
+                  href={`https://www.openstreetmap.org/?mlat=${occurrence.latitude}&mlon=${occurrence.longitude}#map=18/${occurrence.latitude}/${occurrence.longitude}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-1 inline-block text-sm text-brand-blue hover:underline"
+                >
+                  Abrir no OpenStreetMap
+                </a>
+              </div>
+            )}
 
             <div className="grid grid-cols-2 gap-4">
               <div>

@@ -82,7 +82,7 @@ Toda criação e mudança de status grava um evento (`previous_status`, `new_sta
 ## Pendências de negócio (não decididas no código)
 
 - **Texto livre:** título, descrição, localização e motivo podem conter dados pessoais digitados pelos usuários. Não são anonimizados automaticamente. Precisa de uma política (revisão manual, prazo de retenção ou edição pelo admin).
-- **Geolocalização:** latitude/longitude de uma ocorrência podem apontar para a residência do autor. Pode ser necessário reduzir a precisão ou apagar após a resolução.
+- **Geolocalização:** latitude/longitude de uma ocorrência podem apontar para a residência do autor — ainda mais agora que podem vir do próprio aparelho (Geolocation API). Pode ser necessário reduzir a precisão ou apagar após a resolução. Ao usar o mapa, o navegador do usuário também envia a região e o IP aos servidores do OpenStreetMap (tiles e Nominatim); isso deve constar nos termos de uso.
 - **Imagem:** o upload ainda não existe; quando existir, a imagem precisa da mesma análise.
 - **Prazo de retenção:** não há obrigação legal/regulatória registrada no projeto; por isso nenhum dado pessoal é retido após a exclusão.
 - **Último administrador:** não pode se excluir; é preciso promover outro antes (ainda não existe rota de promoção).

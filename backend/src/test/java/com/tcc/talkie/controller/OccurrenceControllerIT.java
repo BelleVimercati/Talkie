@@ -426,4 +426,53 @@ class OccurrenceControllerIT {
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.message").value("Ocorrência não encontrada"));
     }
+
+    /* Testes de coordenadas (localização do mapa / Geolocation API) */
+    private OccurrenceDTO occurrenceWithCoordinates(Double latitude, Double longitude) {
+        return new OccurrenceDTO("Buraco na rua", "Há um grande buraco na Rua A", "Rua A, número 123",
+            category.getId(), subcategory.getId(), null, latitude, longitude);
+    }
+
+    @Test
+    @DisplayName("Deve criar ocorrência com latitude e longitude")
+    void deveCriarOcorrenciaComCoordenadas() throws Exception {
+        mockMvc.perform(post("/occurrences")
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("Authorization", "Bearer " + commonUserToken)
+            .content(objectMapper.writeValueAsString(occurrenceWithCoordinates(-22.9056, -43.1331))))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.latitude").value(-22.9056))
+            .andExpect(jsonPath("$.data.longitude").value(-43.1331));
+    }
+
+    @Test
+    @DisplayName("Não deve criar ocorrência com apenas a latitude")
+    void naoDeveCriarOcorrenciaComApenasLatitude() throws Exception {
+        mockMvc.perform(post("/occurrences")
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("Authorization", "Bearer " + commonUserToken)
+            .content(objectMapper.writeValueAsString(occurrenceWithCoordinates(-22.9056, null))))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.message").value("Latitude e longitude devem ser informadas juntas"));
+
+        assert occurrenceRepository.count() == 0;
+    }
+
+    @Test
+    @DisplayName("Não deve criar ocorrência com coordenadas fora da faixa válida")
+    void naoDeveCriarOcorrenciaComCoordenadasInvalidas() throws Exception {
+        mockMvc.perform(post("/occurrences")
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("Authorization", "Bearer " + commonUserToken)
+            .content(objectMapper.writeValueAsString(occurrenceWithCoordinates(91.0, -43.1331))))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.message").value("Latitude deve estar entre -90 e 90"));
+
+        mockMvc.perform(post("/occurrences")
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("Authorization", "Bearer " + commonUserToken)
+            .content(objectMapper.writeValueAsString(occurrenceWithCoordinates(-22.9056, -181.0))))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.message").value("Longitude deve estar entre -180 e 180"));
+    }
 }
