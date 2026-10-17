@@ -1,236 +1,160 @@
-# CLAUDE.md
+# CLAUDE.md — Talkie Backend
 
-Este arquivo serve como guia de contexto para agentes de IA (Claude, Cursor, Copilot) e desenvolvedores para garantir a consistência técnica e arquitetural do projeto Talkie.
+API REST do Talkie. Visão geral do projeto, contrato com o frontend e fluxo full-stack: [../CLAUDE.md](../CLAUDE.md).
 
-# Visão Geral do Projeto
-O **Talkie** é uma plataforma de gestão de ocorrências comunitárias. O sistema permite que cidadãos reportem problemas (infraestrutura, segurança, etc.), organizados por uma taxonomia de categorias e subcategorias, com suporte a assinaturas de interesse e notificações via eventos internos.
+## Stack
 
-# Stack Tecnológica
-- **Linguagem:** Java 17
-- **Framework:** Spring Boot 3.3.5
-- **Build Tool:** Maven
-- **Banco de Dados:** PostgreSQL (Produção), H2 (Testes)
-- **Segurança:** Spring Security, JWT (Auth0 java-jwt)
-- **Persistência:** Spring Data JPA / Hibernate
-- **Utilitários:** Lombok, Springdoc OpenAPI (Swagger), Jackson
-- **Testes:** JUnit 5, Cucumber (BDD)
+- Java 17, Spring Boot 3.3.5, Maven (wrapper `mvnw` / `mvnw.cmd`)
+- Spring Web, Security, Data JPA, Mail (+ Thymeleaf para templates de e-mail)
+- PostgreSQL 16 + **Flyway** (produção/dev) · H2 (testes)
+- JWT com `com.auth0:java-jwt` · BCrypt
+- Lombok **1.18.38** (versões antigas quebram com o JDK atual) · springdoc-openapi (Swagger)
+- Testes: JUnit 5, MockMvc, Cucumber 7 (BDD)
 
-# Comandos de Desenvolvimento
+## Comandos
 
-## Build e Execução
 ```bash
-# Build do projeto
-mvn clean install
-
-# Rodar aplicação (porta 8080)
-mvn spring-boot:run
-
-# Build sem testes
-mvn clean install -DskipTests
+./mvnw spring-boot:run                      # API em :8080 (precisa do Postgres rodando)
+./mvnw clean package -DskipTests            # build
+./mvnw test                                 # todos os testes (IT + Cucumber), usam H2
+./mvnw test -Dtest=OccurrenceControllerIT   # uma classe
+./mvnw test -Dtest=CucumberRunnerTest       # só os cenários BDD
+docker compose up -d postgres mailhog       # infra local (Postgres :5432, MailHog :1025/:8025)
 ```
 
-## Testes
-```bash
-# Rodar todos os testes
-mvn test
+No Windows/PowerShell use `.\mvnw.cmd` no lugar de `./mvnw`.
 
-# Rodar apenas testes de integração (IT)
-mvn verify
+## Configuração
 
-# Rodar teste específico
-mvn test -Dtest=OccurrenceControllerIT
+- `src/main/resources/application.properties`: datasource via env (`SPRING_DATASOURCE_*`, padrão `localhost:5432/tcc_db`), `ddl-auto=validate`, SMTP do MailHog, `api.security.token.secret`.
+- `src/main/resources/application-test.properties` e `src/test/resources/application.properties`: H2 em memória com `create-drop` (`spring.flyway.enabled=false`: as migrations são específicas do PostgreSQL).
+- Swagger: `http://localhost:8080/swagger-ui.html`.
 
-# Rodar testes BDD (Cucumber)
-mvn test -Dgroups=cucumber
-```
+## Estrutura
 
-## Ferramentas Úteis
-- **Swagger/OpenAPI:** Acesse `http://localhost:8080/swagger-ui.html` após rodar a aplicação
-- **H2 Console (Testes):** Configurado automaticamente para testes com Spring Boot
-
-# Configuração de Ambiente
-- **Arquivo de Config:** `src/main/resources/application.properties`
-- **Env de Testes:** `src/main/resources/application-test.properties` (utiliza H2 in-memory)
-- **BD Produção:** Requer PostgreSQL configurado na variável `spring.datasource.url`
-
-# Arquitetura
-O projeto segue uma **Arquitetura em Camadas** padrão com fluxo unidirecional:
-1.  **Controller:** Camada de entrada (HTTP REST). Valida DTOs e chama serviços.
-2.  **Service:** Camada de lógica de negócio. Orquestra entidades, repositórios e publica eventos.
-3.  **Repository:** Camada de acesso a dados (Interfaces JpaRepository).
-4.  **Domain/Entity:** Modelos de dados persistentes.
-5.  **DTO:** Objetos de transferência para Request e Response.
-
-**Padrões Identificados:**
-- **Record DTOs:** DTOs modernos utilizando `record` para imutabilidade.
-- **Service-Based Logic:** Toda regra de negócio reside em `@Service`.
-- **Event-Driven:** Uso de `ApplicationEventPublisher` para desacoplamento (ex: criação de ocorrência).
-- **Stateless Auth:** Autenticação via Token JWT.
-
-# Estrutura de Diretórios
 ```
 src/main/java/com/tcc/talkie/
-├── Application.java            # Entrypoint
-├── config/                     # Configurações globais
-├── controller/                 # Endpoints REST
-├── domain/                     # Entidades JPA (user, category, occurrence)
-├── dto/                        # Records de Request e Response
-├── events/                     # Definição de eventos de aplicação
-├── infra/                      # Infraestrutura (security, exceptions)
-├── listeners/                  # Ouvintes de eventos
-├── repository/                 # Interfaces de persistência
-└── service/                    # Lógica de negócio
+├── config/          # OpenApiConfig
+├── controller/      # REST: Auth, Category, Subcategory, Occurrence, Subscription, User
+├── domain/          # Entidades JPA + enums, por contexto: user/, category/, occurrence/
+├── dto/
+│   ├── request/     # records de entrada (OccurrenceDTO, CategoryCreateDTO, ...)
+│   ├── response/    # records de saída (XxxResponseDTO) + ApiResponse<T>
+│   └── ErrorResponse.java
+├── events/          # OccurrenceCreatedEvent
+├── listeners/       # OccurrenceNotificationListener (@EventListener)
+├── infra/
+│   ├── exceptions/  # GlobalExceptionHandler + BadRequest/NotFound/Unauthorized
+│   └── security/    # SecurityConfig, SecurityFilter, TokenService, AuthenticatedUser
+├── repository/      # JpaRepository
+└── service/         # regra de negócio (inclui EmailService)
+src/main/resources/db/migration/   # Flyway
 ```
 
-# Convenções de Desenvolvimento
+## Convenções de código
 
-## Nomenclatura
-- **Classes:** `PascalCase` (ex: `OccurrenceService`)
-- **Variáveis/Métodos:** `camelCase` (ex: `findByOwnerId`)
-- **Pacotes:** `lowercase`
-- **Tabelas DB:** `snake_case` plural (ex: `occurrences`)
+**Controllers**
+- `@RestController` + `@RequestMapping("/recurso")` + `@RequiredArgsConstructor`; dependências `private final`.
+- Retornam `ResponseEntity<ApiResponse<T>>` com mensagem em português: `ResponseEntity.ok(new ApiResponse<>("Ocorrência criada com sucesso", dto))`.
+- Sem regra de negócio; só delegam para o service.
+- Modelo a seguir: `OccurrenceController`. **Não** copie `UserController` (retorna listas cruas e `ErrorResponse` em caso de sucesso).
 
-## Backend
-- **Controllers:** Devem usar `@RestController` e `@RequestMapping`. Injeção de dependência via `@RequiredArgsConstructor`.
-- **Services:** Devem ser anotados com `@Service`. Não devem expor entidades diretamente para o Controller se houver um DTO correspondente.
-- **DTOs:** Utilizar `record` para novos DTOs. Pacotes separados para `request` e `response`.
-- **Repositórios:** Interfaces estendendo `JpaRepository<Entity, ID>`.
+**Services**
+- `@Service` + `@RequiredArgsConstructor` (+ `@Slf4j` quando loga).
+- Concentram validação e regra de negócio; lançam `NotFoundException`, `BadRequestException` ou `UnauthorizedException`.
+- Usuário logado: `AuthenticatedUser.get()` / `getId()` / `getEmail()` (`infra/security/AuthenticatedUser.java`).
+- Mapeamento entidade → DTO fica no service (ex.: `OccurrenceService.mapToResponse`). Nunca exponha entidade JPA no controller.
+- Ações relevantes publicam eventos via `ApplicationEventPublisher` (ex.: `OccurrenceCreatedEvent`), consumidos em `listeners/`.
 
-## Segurança
-- **Acesso ao Usuário Logado:** Sempre utilizar a classe utilitária `AuthenticatedUser.get()` para obter o objeto `User` atual ou `AuthenticatedUser.getId()`.
-- **Roles:** `ROLE_USER` (padrão) e `ROLE_ADMIN` (gestão).
-- **Configuração:** Regras de URL centralizadas em `SecurityConfig.java`.
+**DTOs**
+- Sempre `record`. Request: `XxxDTO` / `XxxCreateDTO` / `XxxUpdateDTO` em `dto/request`; response: `XxxResponseDTO` em `dto/response`.
+- ⚠️ `spring-boot-starter-validation` **não** está no `pom.xml`: anotações `jakarta.validation` e `@Valid` não têm efeito hoje. Valide no service ou adicione a dependência (e um handler para `MethodArgumentNotValidException`).
 
-## Tratamento de Exceções
-- Utilizar `GlobalExceptionHandler` para capturar exceções (localizado em `infra/exception`).
-- Exceções customizadas devem herdar de `RuntimeException` (ex: `NotFoundException`, `BadRequestException`).
-- Respostas de erro devem seguir o padrão `ErrorResponse`.
+**Entidades**
+- `@Entity @Table(name = "...")` com `@Getter @Setter @NoArgsConstructor`.
+- `@GeneratedValue(strategy = GenerationType.IDENTITY)`; `User` usa `UUID`, demais `Long`.
+- Relacionamentos `@ManyToOne` + `@JoinColumn`; enums com `@Enumerated(EnumType.STRING)`.
+- Tabelas `snake_case` no plural (exceção histórica: `Category` → tabela `types`).
 
-## Events e Listeners
-- **Publicação:** Use `ApplicationEventPublisher.publishEvent()` no Service após operações críticas.
-- **Listeners:** Anotação `@EventListener` em métodos de classe `@Component` em `listeners/`.
-- **Exemplo:** `OccurrenceCreatedEvent` publicado ao criar ocorrência; listener pode dispara notificações.
+**Exceções**
+- `GlobalExceptionHandler` (`infra/exceptions/`) mapeia `BadRequestException`→400, `NotFoundException`→404, `UnauthorizedException`→401 e **qualquer outra `RuntimeException`→400**.
+- Corpo: `ErrorResponse(message, status, timestamp)`.
 
-# Banco de Dados
-- **ID Strategy:** `GenerationType.IDENTITY`.
-- **UUID:** O sistema utiliza `UUID` para IDs de usuários e `Long` para ocorrências e categorias.
-- **Relacionamentos:** Uso de `@ManyToOne` com `@JoinColumn`.
+**Segurança**
+- Regras de URL centralizadas em `SecurityConfig.securityFilterChain`; adicione a rota nova lá se exigir `hasRole("ADMIN")`. O padrão é `authenticated()`.
+- Roles: `USER` (padrão no cadastro) e `ADMIN`. O JWT tem `subject` = e-mail e claim `role`.
+- CORS em `SecurityConfig.corsConfigurationSource` (somente `http://localhost:5173`).
 
-# Frontend
-*Atualmente o projeto é focado em uma API REST. Pastas `static` e `templates` estão presentes mas não possuem implementação robusta de UI. Desenvolvimento de frontend é planejado em etapas futuras.*
+## Migrations Flyway
 
-# Estado Atual e Roadmap
-## Implementado ✅
-- Autenticação (JWT, BCrypt)
-- CRUD de Ocorrências, Categorias, Subcategorias
-- Sistema de Assinaturas (Subscription)
-- Event Publisher (OccurrenceCreatedEvent)
-- Testes de integração (JUnit 5 + Cucumber)
+Local: `src/main/resources/db/migration/`. Nome: `V{n}__descricao_em_snake_case.sql`.
 
-## Em Desenvolvimento 🔄
-- Pub/Sub de notificações (listener implementado mas vazio)
-- Frontend (design + implementação)
+| Versão | Conteúdo |
+|--------|----------|
+| V1 | schema inicial |
+| V2 | status em occurrences |
+| V3 | atualização do enum de status |
+| V4 | prioridade, cor e created_at em categorias |
+| V5 | created_at em users |
+| V6 | resolved_at em occurrences |
+| V7 | seed do admin (`admin@talkie.local` / `123456`) |
+| V8 | occurred_at, latitude, longitude e image_path em occurrences |
+| V9 | exclusão de conta (FKs `SET NULL`/`CASCADE`, `owner_id`/`user_id` anuláveis) e tabela `occurrence_status_history` |
 
-## Planejado 📋
-- Notificações por e-mail/push
-- Status de ocorrência (ABERTO, EM_ANALISE, RESOLVIDO)
-- Upload de mídia
-- Sistema de upvotes
-- Dashboard administrativo
+Regras:
+- Com `ddl-auto=validate`, **toda** alteração de entidade precisa de migration correspondente.
+- Nunca altere uma migration já aplicada; crie uma nova.
+- Use sempre o próximo número livre (confira a pasta antes; atualize esta tabela).
 
-# Testes
-- **Unitários/Integração:** JUnit 5.
-- **BDD:** Cucumber com arquivos `.feature` em `src/test/resources/features`.
-- **Configuração:** `CucumberSpringConfig` para injetar o contexto do Spring nos testes BDD.
+## Testes
 
-# Regras de Negócio Identificadas
-1.  **Auditoria:** Ocorrências gravam `createdAt` automaticamente no `Service`.
-2.  **Unicidade:** Categorias possuem nomes únicos (case insensitive).
-3.  **Autorização:** Apenas `ADMIN` pode criar/editar categorias e deletar qualquer ocorrência.
-4.  **Eventos:** A criação de ocorrência publica um `OccurrenceCreatedEvent`.
-
-# Instruções para IA
-
-### O que SEMPRE seguir:
-- Use `record` para novos DTOs de Request.
-- Injecte dependências via `@RequiredArgsConstructor` (Lombok) e campos `final`.
-- Use `AuthenticatedUser` para obter o contexto do usuário logado.
-- Retorne `ResponseEntity<ApiResponse<T>>` para manter a consistência das respostas.
-- Adicione as novas rotas no `SecurityConfig` se precisarem de permissões específicas.
-
-### O que EVITAR:
-- Não use `@Autowired` em campos (prefira construtor via Lombok).
-- Não coloque lógica de negócio em Controllers.
-- Não retorne Entidades JPA diretamente nos endpoints (use DTOs).
-
-### Como implementar novas funcionalidades:
-1.  Crie a **Entidade** no pacote `domain`.
-2.  Crie o **Repository** interface.
-3.  Crie os **DTOs** de Request e Response.
-4.  Implemente a lógica no **Service**.
-5.  Exponha via **Controller**.
-6.  Atualize o `SecurityConfig` se necessário.
-7.  Adicione um cenário no Cucumber ou teste unitário.
-
-# Exemplos de Código do Projeto
-
-### Controller Padrão
+**Integração (`src/test/java/.../controller/*ControllerIT.java`)**
 ```java
-@RestController
-@RequestMapping("/path")
-@RequiredArgsConstructor
-public class MyController {
-    private final MyService service;
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
+@ActiveProfiles("test")
+class XxxControllerIT {
+    @Autowired MockMvc mockMvc;           // em testes, @Autowired em campo é o padrão
+    @Autowired TokenService tokenService;
 
-    @PostMapping
-    public ResponseEntity<ApiResponse<MyResponseDTO>> create(@RequestBody MyRequestDTO data) {
-        var result = service.execute(data);
-        return ResponseEntity.ok(new ApiResponse<>("Sucesso", result));
+    @BeforeEach
+    void setup() {
+        // limpar repositórios (ordem: filhos → pais), criar usuários USER e ADMIN
+        userToken = tokenService.generateToken(savedUser);
+    }
+
+    @Test
+    @DisplayName("Deve ... ")
+    void deveFazerAlgo() throws Exception {
+        mockMvc.perform(post("/rota").header("Authorization", "Bearer " + userToken) ...)
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$.data.campo").value(...));
     }
 }
 ```
+- Nomes de teste e `@DisplayName` em português.
+- Cubra: sucesso, 404, 400 e acesso negado (USER em rota de ADMIN → 403).
 
-### Uso do AuthenticatedUser (Service)
-```java
-User user = AuthenticatedUser.get();
-occurrence.setOwner(user);
-```
+**BDD (Cucumber)**
+- Features em `src/test/resources/features/*.feature` (em português); steps em `bdd/steps/`; contexto compartilhado em `bdd/TestContext.java`; runner `bdd/CucumberRunnerTest`.
 
-### Registro de Evento (Service)
-```java
-eventPublisher.publishEvent(new MyCreatedEvent(savedEntity));
-```
+Outros: `listeners/OccurrenceNotificationListenerIT`, `service/EmailServiceIT`. Guias em `src/test/resources/doc/`.
 
-### Listener de Evento
-```java
-@Component
-public class MyEventListener {
-    @EventListener
-    public void onMyCreatedEvent(MyCreatedEvent event) {
-        // Lógica assíncrona: enviar notificação, atualizar cache, etc.
-    }
-}
-```
+## Checklist de nova funcionalidade
 
-### Padrão de Resposta API
-```java
-// Controller retorna sempre ApiResponse
-return ResponseEntity.ok(new ApiResponse<>("Mensagem de sucesso", data));
+- [ ] Migration Flyway (próximo `V{n}`) e tabela acima atualizada
+- [ ] Entidade + Repository
+- [ ] Records de request/response
+- [ ] Service com regra, exceções corretas e mapeamento para DTO
+- [ ] Controller retornando `ApiResponse<T>`
+- [ ] `SecurityConfig` atualizado (se a permissão não for só "autenticado")
+- [ ] `*ControllerIT` cobrindo sucesso e erros
+- [ ] Tipo/serviço correspondente no frontend (ver `../frontend/CLAUDE.md`)
 
-// Resposta JSON:
-{
-  "message": "Mensagem de sucesso",
-  "data": { ... }
-}
-```
+## Estado atual
 
-# Checklist para Novas Funcionalidades
-- [ ] Entidade criada com anotações JPA adequadas.
-- [ ] Repository estendendo JpaRepository.
-- [ ] Record DTOs criados para Entrada e Saída.
-- [ ] Service implementando a regra de negócio e validações.
-- [ ] Controller mapeando os endpoints REST.
-- [ ] Exceções específicas lançadas para casos de erro.
-- [ ] `SecurityConfig` atualizado com as permissões da nova rota.
-- [ ] Teste de integração ou cenário BDD adicionado.
-- [ ] Documentado no Swagger (OpenAPI) via anotações se necessário.
+**Implementado:** autenticação JWT; CRUD de categorias, subcategorias e ocorrências; status da ocorrência (ADMIN); assinaturas; e-mail para assinantes via evento + MailHog; data/hora e geolocalização da ocorrência (V8); histórico de status com motivo e exclusão de conta com anonimização (V9, ver `docs/EXCLUSAO_DE_CONTA.md`).
+
+**Em andamento:** upload/download de imagem (`POST/GET /occurrences/{id}/image`). O front já consome e o `mapToResponse` já gera `imageUrl`, mas o endpoint não existe.
+
+**Planejado:** upvotes, dashboard administrativo com métricas.

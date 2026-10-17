@@ -1,11 +1,7 @@
 package com.tcc.talkie.domain.user;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
-
-import com.tcc.talkie.domain.category.Category;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -36,8 +32,5 @@ public class User {
     private Role role;
 
     private LocalDateTime createdAt;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Category> categories = new ArrayList<>();
 
 }

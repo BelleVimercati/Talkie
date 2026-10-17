@@ -12,6 +12,7 @@ import { subscriptionService } from '@/services/subscriptionService'
 import { getErrorMessage } from '@/utils/errorHandler'
 import { Subscription } from '@/types/subscription'
 import { Search } from 'lucide-react'
+import { formatAuthor } from '@/utils/formatAuthor'
 
 function NotificationsPage() {
   const navigate = useNavigate()
@@ -103,7 +104,7 @@ function NotificationsPage() {
             </div>
           </div>
 
-          {removeError && <Alert variant="error" onClose={() => setRemoveError(null)} className="mb-4">{removeError}</Alert>}
+          {removeError && <Alert variant="error" onClose={() => setRemoveError(null)}>{removeError}</Alert>}
 
           {subscriptions.length === 0 ? (
             <div className="p-8 text-center bg-white rounded-lg border border-black-100">
@@ -201,7 +202,7 @@ function NotificationsPage() {
                           {occ.subcategoryName}
                         </td>
                         <td className="px-6 py-4 text-black-500">
-                          {occ.ownerName}
+                          {formatAuthor(occ.ownerName)}
                         </td>
                         <td className="px-6 py-4 text-black-500">
                           {formatDate(occ.createdAt)}

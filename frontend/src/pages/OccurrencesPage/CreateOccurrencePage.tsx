@@ -8,16 +8,21 @@ import Select from '@/components/ui/Select'
 import Textarea from '@/components/ui/Textarea'
 import Button from '@/components/ui/Button'
 import Alert from '@/components/ui/Alert'
+import { ImageUpload } from '@/components/occurrences/ImageUpload'
+import { LocationPicker } from '@/components/occurrences/LocationPicker'
 import { useCategories } from '@/hooks/useCategories'
 import { useSubcategories } from '@/hooks/useSubcategories'
 import { createOccurrenceSchema, type CreateOccurrenceFormData } from '@/schemas/createOccurrenceSchema'
 import { occurrenceService } from '@/services/occurrenceService'
+import { geocodingService } from '@/services/geocodingService'
 import { getErrorMessage, getFieldFromBackendMessage } from '@/utils/errorHandler'
 
 function CreateOccurrencePage() {
   const navigate = useNavigate()
   const [globalError, setGlobalError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [imageFile, setImageFile] = useState<File | null>(null)
+  const [isFetchingAddress, setIsFetchingAddress] = useState(false)
   const { categories } = useCategories()
   const { subcategories } = useSubcategories()
 
@@ -28,7 +33,7 @@ function CreateOccurrencePage() {
     setError,
     watch,
     setValue,
-    formState: { errors },
+    formState: { errors, dirtyFields },
   } = useForm<CreateOccurrenceFormData>({
     resolver: zodResolver(createOccurrenceSchema),
     defaultValues: {
@@ -38,6 +43,28 @@ function CreateOccurrencePage() {
   })
 
   const selectedCategoryId = watch('categoryId')
+  const latitude = watch('latitude')
+  const longitude = watch('longitude')
+
+  // Ponto escolhido no mapa (ou removido): atualiza as coordenadas e sugere o endereço
+  const handleLocationChange = async (lat?: number, lng?: number) => {
+    setValue('latitude', lat, { shouldValidate: true })
+    setValue('longitude', lng, { shouldValidate: true })
+    if (lat === undefined || lng === undefined) return
+
+    // Endereço digitado à mão não é sobrescrito (setValue sem shouldDirty não marca o campo)
+    if (dirtyFields.location) return
+
+    setIsFetchingAddress(true)
+    try {
+      const address = await geocodingService.reverse(lat, lng)
+      if (address) setValue('location', address, { shouldValidate: true })
+    } catch {
+      // Sem endereço automático: o usuário digita
+    } finally {
+      setIsFetchingAddress(false)
+    }
+  }
 
   // Atualizar subcategorias disponíveis quando categoria muda
   useEffect(() => {
@@ -70,7 +97,17 @@ function CreateOccurrencePage() {
       setGlobalError(null)
       setIsLoading(true)
 
-      await occurrenceService.create(data)
+      const created = await occurrenceService.create(data)
+
+      // Se houver imagem, fazer upload separado
+      if (imageFile) {
+        try {
+          await occurrenceService.uploadImage(created.id, imageFile)
+        } catch (err) {
+          // Ocorrência foi criada, mas erro no upload de imagem
+          setGlobalError('Ocorrência criada, mas falha ao enviar a imagem')
+        }
+      }
 
       navigate('/', { state: { created: true } })
     } catch (err) {
@@ -122,13 +159,12 @@ function CreateOccurrencePage() {
               {...register('title')}
             />
 
-            {/* Data (decorativa, desabilitada) */}
+            {/* Data e Horário do Fato */}
             <Input
-              label="Data*"
-              type="date"
-              disabled
-              defaultValue="2020-12-12"
-              className="opacity-50 cursor-not-allowed"
+              label="Data e Horário do Fato (opcional)"
+              type="datetime-local"
+              error={errors.occurredAt?.message}
+              {...register('occurredAt')}
             />
 
             {/* Categoria */}
@@ -169,46 +205,41 @@ function CreateOccurrencePage() {
             />
 
             {/* Localização */}
-            <Input
-              label="Localização*"
-              placeholder="Endereço ou descrição de local"
-              error={errors.location?.message}
-              {...register('location')}
-            />
-
-            {/* Horário (decorativa, desabilitada) */}
-            <Input
-              label="Horário*"
-              type="time"
-              disabled
-              defaultValue="12:00"
-              className="opacity-50 cursor-not-allowed"
-            />
-          </div>
-
-          {/* Toggle "usar localização e hora atuais" (decorativo) */}
-          <div className="flex items-center gap-3 px-4 py-2 border border-black-100 rounded-md bg-black-50 opacity-50 cursor-not-allowed">
-            <input
-              type="checkbox"
-              disabled
-              className="w-4 h-4"
-            />
-            <span className="text-sm text-black-500">Usar Localização e hora atuais</span>
-          </div>
-
-          {/* Anexo (decorativo, desabilitado) */}
-          <div className="opacity-50 cursor-not-allowed">
-            <label className="mb-1.5 block font-roboto text-sm font-medium text-black-800 tracking-wide03">
-              Anexo
-            </label>
-            <div className="relative">
-              <input
-                type="file"
-                disabled
-                className="h-12 w-full rounded-md border-[0.5px] border-black-100 bg-black-50 px-4 py-2 text-black-500"
+            <div className="col-span-2">
+              <Input
+                label="Localização*"
+                placeholder="Endereço (preenchido pelo mapa ou digitado)"
+                error={errors.location?.message}
+                {...register('location')}
               />
+              {isFetchingAddress && (
+                <p className="mt-1 text-xs text-black-500">Buscando endereço...</p>
+              )}
+            </div>
+
+            {/* Mapa */}
+            <div className="col-span-2">
+              <label className="mb-1.5 block font-roboto text-sm font-medium text-black-800 tracking-wide03">
+                Local no mapa (opcional)
+              </label>
+              <LocationPicker
+                latitude={latitude}
+                longitude={longitude}
+                onChange={handleLocationChange}
+              />
+              {(errors.latitude || errors.longitude) && (
+                <p className="mt-1 text-xs text-red-500">
+                  {errors.latitude?.message ?? errors.longitude?.message}
+                </p>
+              )}
             </div>
           </div>
+
+          {/* Imagem */}
+          <ImageUpload
+            value={imageFile}
+            onChange={setImageFile}
+          />
 
           {/* Descrição */}
           <Textarea

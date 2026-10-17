@@ -21,6 +21,7 @@ import com.tcc.talkie.dto.ErrorResponse;
 import com.tcc.talkie.dto.request.OccurrenceDTO;
 import com.tcc.talkie.dto.request.OccurrenceStatusUpdateDTO;
 import com.tcc.talkie.dto.response.OccurrenceResponseDTO;
+import com.tcc.talkie.dto.response.OccurrenceStatusHistoryResponseDTO;
 import com.tcc.talkie.service.OccurrenceService;
 
 import lombok.RequiredArgsConstructor;
@@ -37,19 +38,7 @@ public class OccurrenceController {
     @PostMapping
     public ResponseEntity<ApiResponse<OccurrenceResponseDTO>> create(@Valid @RequestBody OccurrenceDTO data){
         Occurrence created = service.create(data);
-        OccurrenceResponseDTO response = new OccurrenceResponseDTO(
-            created.getId(),
-            created.getTitle(),
-            created.getDescription(),
-            created.getLocation(),
-            created.getOwner().getId(),
-            created.getOwner().getName(),
-            created.getCategory().getName(),
-            created.getSubcategory().getName(),
-            created.getStatus(),
-            created.getCreatedAt(),
-            created.getResolvedAt()
-        );
+        OccurrenceResponseDTO response = service.mapToResponse(created);
         return ResponseEntity.ok(new ApiResponse<>("Ocorrência criada com sucesso", response));
     }
 
@@ -78,8 +67,14 @@ public class OccurrenceController {
         @PathVariable Long id,
         @Valid @RequestBody OccurrenceStatusUpdateDTO dto
     ){
-        OccurrenceResponseDTO result = service.updateStatus(id, dto.status());
+        OccurrenceResponseDTO result = service.updateStatus(id, dto.status(), dto.reason());
         return ResponseEntity.ok(new ApiResponse<>("Status atualizado com sucesso", result));
+    }
+
+    @GetMapping("/{id}/history")
+    public ResponseEntity<ApiResponse<List<OccurrenceStatusHistoryResponseDTO>>> getHistory(@PathVariable Long id){
+        List<OccurrenceStatusHistoryResponseDTO> history = service.findHistory(id);
+        return ResponseEntity.ok(new ApiResponse<>("Histórico recuperado com sucesso", history));
     }
 
     @DeleteMapping("/{id}")

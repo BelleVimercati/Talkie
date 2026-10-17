@@ -8,6 +8,7 @@ import CategoriesListPage from '@/pages/SettingsPage/CategoriesListPage'
 import CreateCategoryPage from '@/pages/SettingsPage/CreateCategoryPage'
 import CreateSubcategoryPage from '@/pages/SettingsPage/CreateSubcategoryPage'
 import UsersListPage from '@/pages/SettingsPage/UsersListPage'
+import ProfilePage from '@/pages/ProfilePage'
 import NotFoundPage from '@/pages/NotFoundPage'
 import ProtectedRoute from '@/components/common/ProtectedRoute'
 
@@ -70,6 +71,14 @@ function App() {
           element={
             <ProtectedRoute requireAdmin>
               <UsersListPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/perfil"
+          element={
+            <ProtectedRoute>
+              <ProfilePage />
             </ProtectedRoute>
           }
         />

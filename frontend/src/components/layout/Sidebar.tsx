@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '@/stores/authStore'
 import { getInitials } from '@/utils/initials'
-import { Grid, Bell, LogOut, Settings, Users } from 'lucide-react'
+import { Grid, Bell, LogOut, Settings, Users, UserCircle } from 'lucide-react'
 
 export function Sidebar() {
   const { user, logout } = useAuthStore()
@@ -17,6 +17,7 @@ export function Sidebar() {
   const isNotificacoes = location.pathname.startsWith('/notificacoes')
   const isConfiguracoes = location.pathname.startsWith('/configuracoes')
   const isUsers = location.pathname.startsWith('/usuarios')
+  const isPerfil = location.pathname.startsWith('/perfil')
 
   return (
     <div className="h-screen w-64 bg-white shadow-md flex flex-col">
@@ -66,6 +67,19 @@ export function Sidebar() {
         >
           <Bell size={18} />
           <span className="font-medium text-sm">Notificações</span>
+        </button>
+
+        {/* Meu perfil */}
+        <button
+          onClick={() => navigate('/perfil')}
+          className={`w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 transition-colors ${
+            isPerfil
+              ? 'bg-brand-orange bg-opacity-10 text-brand-orange'
+              : 'text-black-700 hover:bg-black-50'
+          }`}
+        >
+          <UserCircle size={18} />
+          <span className="font-medium text-sm">Meu perfil</span>
         </button>
 
         {/* Admin Items */}
