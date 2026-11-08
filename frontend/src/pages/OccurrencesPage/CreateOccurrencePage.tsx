@@ -66,30 +66,13 @@ function CreateOccurrencePage() {
     }
   }
 
-  // Atualizar subcategorias disponíveis quando categoria muda
+  // Trocar de categoria limpa a subcategoria escolhida
   useEffect(() => {
-    if (selectedCategoryId) {
-      const selected = categories.find((c) => c.id === selectedCategoryId)
-      if (selected) {
-        // Filtrar subcategorias por categoria
-        const filtered = subcategories.filter(
-          (s) => s.categoryName === selected.name
-        )
-        if (filtered.length > 0) {
-          setValue('subcategoryId', 0) // Reset
-        }
-      }
-    } else {
-      setValue('subcategoryId', 0)
-    }
-  }, [selectedCategoryId, categories, subcategories, setValue])
+    setValue('subcategoryId', 0)
+  }, [selectedCategoryId, setValue])
 
   const availableSubcategories = selectedCategoryId
-    ? (() => {
-        const selected = categories.find((c) => c.id === selectedCategoryId)
-        if (!selected) return []
-        return subcategories.filter((s) => s.categoryName === selected.name)
-      })()
+    ? subcategories.filter((s) => s.categoryId === selectedCategoryId)
     : []
 
   const onSubmit = async (data: CreateOccurrenceFormData) => {
@@ -213,13 +196,13 @@ function CreateOccurrencePage() {
                 {...register('location')}
               />
               {isFetchingAddress && (
-                <p className="mt-1 text-xs text-black-500">Buscando endereço...</p>
+                <p className="form-text">Buscando endereço...</p>
               )}
             </div>
 
             {/* Mapa */}
             <div className="col-span-2">
-              <label className="mb-1.5 block font-roboto text-sm font-medium text-black-800 tracking-wide03">
+              <label className="form-label font-roboto">
                 Local no mapa (opcional)
               </label>
               <LocationPicker
@@ -228,7 +211,7 @@ function CreateOccurrencePage() {
                 onChange={handleLocationChange}
               />
               {(errors.latitude || errors.longitude) && (
-                <p className="mt-1 text-xs text-red-500">
+                <p className="invalid-feedback">
                   {errors.latitude?.message ?? errors.longitude?.message}
                 </p>
               )}
