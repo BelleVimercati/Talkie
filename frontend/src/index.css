@@ -10,3 +10,96 @@
 html {
   scroll-behavior: smooth;
 }
+
+/*
+ * Formulários no padrão Bootstrap 5.3 (mesmos valores de .form-label, .form-control,
+ * .form-select, .is-invalid, .invalid-feedback e .form-text). Use estas classes em vez
+ * de cores soltas, para manter campos e rótulos consistentes em todo o app.
+ */
+@layer components {
+  .form-label {
+    display: inline-block;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    font-weight: 400;
+    color: #212529;
+  }
+
+  .form-control,
+  .form-select {
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    appearance: none;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  }
+
+  .form-select {
+    padding-right: 2.25rem;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+  }
+
+  .form-control:focus,
+  .form-select:focus {
+    border-color: #86b7fe;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  }
+
+  .form-control::placeholder {
+    color: #6c757d;
+    opacity: 1;
+  }
+
+  .form-control:disabled,
+  .form-select:disabled {
+    background-color: #e9ecef;
+    opacity: 1;
+  }
+
+  textarea.form-control {
+    resize: vertical;
+  }
+
+  .form-control.is-invalid,
+  .form-select.is-invalid {
+    border-color: #dc3545;
+  }
+
+  .form-control.is-invalid:focus,
+  .form-select.is-invalid:focus {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+  }
+
+  .invalid-feedback {
+    display: block;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 0.875em;
+    color: #dc3545;
+  }
+
+  .form-text {
+    margin-top: 0.25rem;
+    font-size: 0.875em;
+    color: #6c757d;
+  }
+
+  .form-check-input {
+    width: 1em;
+    height: 1em;
+    accent-color: #0d6efd;
+  }
+}

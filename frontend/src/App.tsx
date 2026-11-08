@@ -3,11 +3,13 @@ import LoginPage from '@/pages/AuthPage/LoginPage'
 import RegisterPage from '@/pages/AuthPage/RegisterPage'
 import HomePage from '@/pages/HomePage'
 import CreateOccurrencePage from '@/pages/OccurrencesPage/CreateOccurrencePage'
+import OccurrenceDetailsPage from '@/pages/OccurrencesPage/OccurrenceDetailsPage'
 import NotificationsPage from '@/pages/NotificationsPage'
 import CategoriesListPage from '@/pages/SettingsPage/CategoriesListPage'
 import CreateCategoryPage from '@/pages/SettingsPage/CreateCategoryPage'
 import CreateSubcategoryPage from '@/pages/SettingsPage/CreateSubcategoryPage'
 import UsersListPage from '@/pages/SettingsPage/UsersListPage'
+import ProfilePage from '@/pages/ProfilePage'
 import NotFoundPage from '@/pages/NotFoundPage'
 import ProtectedRoute from '@/components/common/ProtectedRoute'
 
@@ -30,6 +32,14 @@ function App() {
           element={
             <ProtectedRoute>
               <CreateOccurrencePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/ocorrencias/:id"
+          element={
+            <ProtectedRoute requireAdmin>
+              <OccurrenceDetailsPage />
             </ProtectedRoute>
           }
         />
@@ -58,7 +68,23 @@ function App() {
           }
         />
         <Route
+          path="/configuracoes/categorias/:id/editar"
+          element={
+            <ProtectedRoute requireAdmin>
+              <CreateCategoryPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/configuracoes/subcategorias/nova"
+          element={
+            <ProtectedRoute requireAdmin>
+              <CreateSubcategoryPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/configuracoes/subcategorias/:id/editar"
           element={
             <ProtectedRoute requireAdmin>
               <CreateSubcategoryPage />
@@ -70,6 +96,14 @@ function App() {
           element={
             <ProtectedRoute requireAdmin>
               <UsersListPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/perfil"
+          element={
+            <ProtectedRoute>
+              <ProfilePage />
             </ProtectedRoute>
           }
         />

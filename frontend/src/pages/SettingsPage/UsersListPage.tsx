@@ -58,7 +58,7 @@ function UsersListPage() {
               placeholder="Pesquisar"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 border border-black-100 rounded-2xl text-sm placeholder-brand-muted focus:outline-none focus:ring-2 focus:ring-brand-blue focus:ring-opacity-50"
+              className="form-control h-12 pl-10"
             />
           </div>
         </div>

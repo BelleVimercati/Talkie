@@ -20,6 +20,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tcc.talkie.domain.user.Role;
 import com.tcc.talkie.domain.user.User;
 import com.tcc.talkie.dto.UpdateDTO;
+import com.tcc.talkie.repository.CategoryRepository;
+import com.tcc.talkie.repository.OccurrenceRepository;
+import com.tcc.talkie.repository.OccurrenceStatusHistoryRepository;
+import com.tcc.talkie.repository.SubcategoryRepository;
+import com.tcc.talkie.repository.SubscriptionRepository;
 import com.tcc.talkie.repository.UserRepository;
 import com.tcc.talkie.infra.security.TokenService;
 
@@ -41,6 +46,21 @@ class UserControllerIT {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
+    private OccurrenceStatusHistoryRepository historyRepository;
+
+    @Autowired
+    private SubscriptionRepository subscriptionRepository;
+
+    @Autowired
+    private OccurrenceRepository occurrenceRepository;
+
+    @Autowired
+    private SubcategoryRepository subcategoryRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
     private TokenService tokenService;
 
     private User commonUser;
@@ -50,6 +70,12 @@ class UserControllerIT {
 
     @BeforeEach
     void setup() {
+        // O contexto é compartilhado entre as classes de teste: limpar dependentes antes dos usuários
+        historyRepository.deleteAll();
+        subscriptionRepository.deleteAll();
+        occurrenceRepository.deleteAll();
+        subcategoryRepository.deleteAll();
+        categoryRepository.deleteAll();
         userRepository.deleteAll();
 
         // Create common user
@@ -233,16 +259,14 @@ class UserControllerIT {
 
     /* Testes do DELETE /users/{id} */
     @Test
-    @DisplayName("Deve deletar usuário com sucesso")
-    void deveDeletarUsuarioComSucesso() throws Exception {
-        mockMvc.perform(delete("/users/" + commonUser.getId())
+    @DisplayName("Usuário comum não deve deletar outro usuário pela rota de administração")
+    void usuarioComumNaoDeveDeletarOutroUsuario() throws Exception {
+        mockMvc.perform(delete("/users/" + adminUser.getId())
             .contentType(MediaType.APPLICATION_JSON)
             .header("Authorization", "Bearer " + commonUserToken))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.message").value("Usuário deletado com sucesso"));
+            .andExpect(status().isForbidden());
 
-        // Verify user is deleted
-        assert userRepository.findById(commonUser.getId()).isEmpty();
+        assert userRepository.findById(adminUser.getId()).isPresent();
     }
 
     @Test
@@ -260,7 +284,7 @@ class UserControllerIT {
 
         mockMvc.perform(delete("/users/" + idInexistente)
             .contentType(MediaType.APPLICATION_JSON)
-            .header("Authorization", "Bearer " + commonUserToken))
+            .header("Authorization", "Bearer " + adminUserToken))
             .andExpect(status().isNotFound())
             .andExpect(jsonPath("$.message").value("Usuário não encontrado"));
     }
@@ -291,11 +315,12 @@ class UserControllerIT {
 
         String userToken = tokenService.generateToken(userToDelete);
 
-        mockMvc.perform(delete("/users/" + userToDelete.getId())
+        mockMvc.perform(delete("/users/me")
             .contentType(MediaType.APPLICATION_JSON)
-            .header("Authorization", "Bearer " + userToken))
+            .header("Authorization", "Bearer " + userToken)
+            .content("{\"password\":\"123456\"}"))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.message").value("Usuário deletado com sucesso"));
+            .andExpect(jsonPath("$.message").value("Conta excluída com sucesso"));
 
         // Verify user is deleted
         assert userRepository.findById(userToDelete.getId()).isEmpty();

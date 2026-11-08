@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.tcc.talkie.domain.user.Role;
 import com.tcc.talkie.domain.user.User;
 
 public interface UserRepository extends JpaRepository<User, UUID> {
@@ -13,4 +14,6 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     Optional<User> findByEmail(String email);
 
     Optional<User> findById(UUID id);
+
+    long countByRole(Role role);
 }

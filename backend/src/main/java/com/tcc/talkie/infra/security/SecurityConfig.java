@@ -64,6 +64,7 @@ public class SecurityConfig {
                     "/swagger-ui.html"
                 ).permitAll()
                 .requestMatchers(HttpMethod.GET, "/occurrences").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/occurrences/*/history").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/occurrences/*/status").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/occurrences/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/categories/**").hasRole("ADMIN")
@@ -74,6 +75,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.DELETE, "/subcategories/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.GET, "/users/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/users/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/users/me").authenticated()
                 .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             )

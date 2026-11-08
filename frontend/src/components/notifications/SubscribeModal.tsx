@@ -99,7 +99,7 @@ export function SubscribeModal({ isOpen, onClose, onSubscribe, editingSubscripti
                 onChange={(e) => setSelectedCategoryId(e.target.value)}
                 error={error || undefined}
               />
-              {error && <p className="text-xs text-red-500">{error}</p>}
+              {error && <p className="invalid-feedback">{error}</p>}
               <div className="flex gap-3 pt-2">
                 <Button
                   type="button"
@@ -112,8 +112,9 @@ export function SubscribeModal({ isOpen, onClose, onSubscribe, editingSubscripti
                 </Button>
                 <Button
                   type="submit"
+                  variant="dashboard"
                   className="flex-1"
-                  disabled={isSubmitting || !selectedCategoryId || (editingSubscription && Number(selectedCategoryId) === editingSubscription.categoryId)}
+                  disabled={isSubmitting || !selectedCategoryId || (!!editingSubscription && Number(selectedCategoryId) === editingSubscription.categoryId)}
                   isLoading={isSubmitting}
                 >
                   {editingSubscription ? 'Salvar' : 'Inscrever'}

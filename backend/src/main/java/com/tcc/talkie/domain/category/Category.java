@@ -30,8 +30,12 @@ public class Category {
 
     private LocalDateTime createdAt;
 
+    /* Exclusão lógica: inativa some dos formulários, mas segue nas ocorrências antigas */
+    @Column(nullable = false)
+    private boolean active = true;
+
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)

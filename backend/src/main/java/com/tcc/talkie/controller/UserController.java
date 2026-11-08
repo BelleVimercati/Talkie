@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tcc.talkie.domain.user.User;
 import com.tcc.talkie.dto.ErrorResponse;
 import com.tcc.talkie.dto.UpdateDTO;
+import com.tcc.talkie.dto.request.DeleteAccountDTO;
+import com.tcc.talkie.dto.response.ApiResponse;
 import com.tcc.talkie.dto.response.UserResponseDTO;
 import com.tcc.talkie.service.UserService;
 
@@ -69,6 +71,12 @@ public class UserController {
                 user.getRole(),
                 user.getCreatedAt()
             ));
+    }
+
+    @DeleteMapping("/me")
+    public ResponseEntity<ApiResponse<Void>> deleteOwnAccount(@RequestBody(required = false) DeleteAccountDTO data){
+        service.deleteOwnAccount(data != null ? data.password() : null);
+        return ResponseEntity.ok(new ApiResponse<>("Conta excluída com sucesso", null));
     }
 
     @DeleteMapping("/{id}")

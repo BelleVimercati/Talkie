@@ -24,6 +24,7 @@ public class TokenService {
         try{
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.create().withIssuer("talkie-api").withSubject(user.getEmail()).withClaim("role", user.getRole().name())
+            .withClaim("uid", user.getId().toString())
             .withExpiresAt(this.generateExpirationDate()).sign(algorithm);
             
         } catch (JWTCreationException exception){
@@ -45,6 +46,16 @@ public class TokenService {
             
             return JWT.require(algorithm).withIssuer("talkie-api").build().verify(token).getSubject();
 
+        } catch (JWTVerificationException exception) {
+            return null;
+        }
+    }
+
+    /* ID do usuário no token: garante que o token pertence à mesma conta, mesmo se o e-mail for reutilizado */
+    public String getUserId(String token){
+        try{
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+            return JWT.require(algorithm).withIssuer("talkie-api").build().verify(token).getClaim("uid").asString();
         } catch (JWTVerificationException exception) {
             return null;
         }

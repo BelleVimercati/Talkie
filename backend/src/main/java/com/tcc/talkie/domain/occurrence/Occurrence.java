@@ -39,7 +39,7 @@ public class Occurrence {
     private String location;
 
     @ManyToOne
-    @JoinColumn(name = "owner_id", nullable = false)
+    @JoinColumn(name = "owner_id")
     private User owner;
 
     @Column(nullable = false)
@@ -58,4 +58,12 @@ public class Occurrence {
     private OccurrenceStatus status = OccurrenceStatus.ABERTO;
 
     private LocalDateTime resolvedAt;
+
+    private LocalDateTime occurredAt;
+
+    private Double latitude;
+
+    private Double longitude;
+
+    private String imagePath;
 }

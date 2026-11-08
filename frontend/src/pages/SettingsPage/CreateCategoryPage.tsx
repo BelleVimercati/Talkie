@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AppLayout } from '@/components/layout/AppLayout'
@@ -15,6 +15,10 @@ import { getErrorMessage } from '@/utils/errorHandler'
 
 function CreateCategoryPage() {
   const navigate = useNavigate()
+  // Com :id na rota, a página edita a categoria em vez de criar
+  const { id } = useParams()
+  const categoryId = id ? Number(id) : null
+  const isEditing = categoryId !== null
   const [globalError, setGlobalError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -22,6 +26,7 @@ function CreateCategoryPage() {
     register,
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<CreateCategoryFormData>({
     resolver: zodResolver(createCategorySchema),
@@ -30,12 +35,31 @@ function CreateCategoryPage() {
     },
   })
 
+  useEffect(() => {
+    if (categoryId === null) return
+    categoryService
+      .getById(categoryId)
+      .then((category) =>
+        reset({
+          name: category.name,
+          icon: category.icon,
+          priority: category.priority,
+          color: category.color,
+        })
+      )
+      .catch((err) => setGlobalError(getErrorMessage(err)))
+  }, [categoryId, reset])
+
   const onSubmit = async (data: CreateCategoryFormData) => {
     try {
       setGlobalError(null)
       setIsLoading(true)
 
-      await categoryService.create(data)
+      if (categoryId !== null) {
+        await categoryService.update(categoryId, data)
+      } else {
+        await categoryService.create(data)
+      }
       navigate('/configuracoes')
     } catch (err) {
       const message = getErrorMessage(err)
@@ -50,7 +74,7 @@ function CreateCategoryPage() {
       <div className="p-8">
         <div className="mb-8">
           <h1 className="mb-2 text-3xl font-bold font-roboto text-black-900">
-            Nova Categoria
+            {isEditing ? 'Editar Categoria' : 'Nova Categoria'}
           </h1>
           <p className="text-sm text-brand-blue">
             <button
@@ -150,7 +174,7 @@ function CreateCategoryPage() {
               disabled={isLoading}
               className="w-auto px-8"
             >
-              Criar categoria
+              {isEditing ? 'Salvar alterações' : 'Criar categoria'}
             </Button>
           </div>
         </form>

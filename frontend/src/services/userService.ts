@@ -8,4 +8,9 @@ export const userService = {
     const data = response.data
     return Array.isArray(data) ? data : data.data
   },
+
+  deleteOwnAccount: async (password: string) => {
+    const response = await api.delete<ApiResponse<null>>('/users/me', { data: { password } })
+    return response.data.message
+  },
 }

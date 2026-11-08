@@ -23,6 +23,10 @@ dist-ssr
 *.sln
 *.sw?
 
+# Saída do tsc gerada por engano dentro de src (o tsconfig usa noEmit)
+src/**/*.js
+src/**/*.js.map
+
 # Environment
 .env
 .env.local

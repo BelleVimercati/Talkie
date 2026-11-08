@@ -6,19 +6,26 @@ import java.util.UUID;
 
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.tcc.talkie.domain.category.Category;
 import com.tcc.talkie.domain.category.Subcategory;
 import com.tcc.talkie.domain.occurrence.Occurrence;
 import com.tcc.talkie.domain.occurrence.OccurrenceStatus;
+import com.tcc.talkie.domain.occurrence.OccurrenceStatusHistory;
+import com.tcc.talkie.domain.user.Role;
 import com.tcc.talkie.domain.user.User;
 import com.tcc.talkie.dto.request.OccurrenceDTO;
 import com.tcc.talkie.dto.response.OccurrenceResponseDTO;
+import com.tcc.talkie.dto.response.OccurrenceStatusHistoryResponseDTO;
 import com.tcc.talkie.events.OccurrenceCreatedEvent;
+import com.tcc.talkie.infra.exceptions.BadRequestException;
 import com.tcc.talkie.infra.exceptions.NotFoundException;
 import com.tcc.talkie.infra.security.AuthenticatedUser;
 import com.tcc.talkie.repository.CategoryRepository;
 import com.tcc.talkie.repository.OccurrenceRepository;
+import com.tcc.talkie.repository.OccurrenceStatusHistoryRepository;
 import com.tcc.talkie.repository.SubcategoryRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -32,12 +39,24 @@ public class OccurrenceService {
     private final OccurrenceRepository repository;
     private final CategoryRepository categoryRepository;
     private final SubcategoryRepository subcategoryRepository;
+    private final OccurrenceStatusHistoryRepository historyRepository;
     private final ApplicationEventPublisher eventPublisher;
+    private final StorageService storageService;
 
+    @Transactional
     public Occurrence create(OccurrenceDTO dto){
+        validateCoordinates(dto.latitude(), dto.longitude());
+
         Category category = categoryRepository.findById(dto.categoryId()).orElseThrow(() -> new NotFoundException("Categoria não encontrada"));
 
         Subcategory subcategory = subcategoryRepository.findById(dto.subcategoryId()).orElseThrow(() -> new NotFoundException("Subcategoria não encontrada"));
+
+        if (!subcategory.getCategory().getId().equals(category.getId())) {
+            throw new BadRequestException("A subcategoria não pertence à categoria informada");
+        }
+        if (!category.isActive() || !subcategory.isActive()) {
+            throw new BadRequestException("Categoria ou subcategoria inativa");
+        }
 
         User user = AuthenticatedUser.get();
 
@@ -52,19 +71,115 @@ public class OccurrenceService {
         occurrence.setOwner(user);
 
         occurrence.setCreatedAt(LocalDateTime.now());
+        occurrence.setOccurredAt(dto.occurredAt() != null ? dto.occurredAt() : LocalDateTime.now());
+        occurrence.setLatitude(dto.latitude());
+        occurrence.setLongitude(dto.longitude());
 
         Occurrence savedOccurrence = repository.save(occurrence);
+        recordStatusChange(savedOccurrence, null, savedOccurrence.getStatus(), null, user);
         eventPublisher.publishEvent(new OccurrenceCreatedEvent(savedOccurrence));
         return savedOccurrence;
     }
 
-    public OccurrenceResponseDTO updateStatus(Long id, OccurrenceStatus status) {
+    @Transactional
+    public OccurrenceResponseDTO updateStatus(Long id, OccurrenceStatus status, String reason) {
         Occurrence occurrence = repository.findById(id)
             .orElseThrow(() -> new NotFoundException("Ocorrência não encontrada"));
+        OccurrenceStatus previous = occurrence.getStatus();
+        if (previous == status) {
+            throw new BadRequestException("A ocorrência já está com esse status");
+        }
         occurrence.setStatus(status);
         occurrence.setResolvedAt(status == OccurrenceStatus.RESOLVIDO ? LocalDateTime.now() : null);
         Occurrence updated = repository.save(occurrence);
+        String trimmedReason = reason != null && !reason.isBlank() ? reason.trim() : null;
+        recordStatusChange(updated, previous, status, trimmedReason, AuthenticatedUser.get());
         return mapToResponse(updated);
+    }
+
+    /* Detalhe de uma ocorrência: o admin vê qualquer uma; o usuário, só as próprias */
+    public OccurrenceResponseDTO findById(Long id) {
+        return mapToResponse(findAccessible(id));
+    }
+
+    /* Só o autor anexa a imagem; uma nova imagem substitui a anterior */
+    @Transactional
+    public OccurrenceResponseDTO attachImage(Long id, MultipartFile file) {
+        Occurrence occurrence = repository.findById(id)
+            .orElseThrow(() -> new NotFoundException("Ocorrência não encontrada"));
+        User user = AuthenticatedUser.get();
+        if (occurrence.getOwner() == null || !occurrence.getOwner().getId().equals(user.getId())) {
+            throw new NotFoundException("Ocorrência não encontrada");
+        }
+
+        String previous = occurrence.getImagePath();
+        occurrence.setImagePath(storageService.storeImage(file));
+        Occurrence saved = repository.save(occurrence);
+        storageService.delete(previous);
+        return mapToResponse(saved);
+    }
+
+    public Occurrence findWithImage(Long id) {
+        Occurrence occurrence = findAccessible(id);
+        if (occurrence.getImagePath() == null) {
+            throw new NotFoundException("Ocorrência sem imagem");
+        }
+        return occurrence;
+    }
+
+    /* Ocorrência de outra pessoa responde 404, para não revelar que ela existe */
+    private Occurrence findAccessible(Long id) {
+        Occurrence occurrence = repository.findById(id)
+            .orElseThrow(() -> new NotFoundException("Ocorrência não encontrada"));
+        User user = AuthenticatedUser.get();
+        boolean isOwner = occurrence.getOwner() != null && occurrence.getOwner().getId().equals(user.getId());
+        if (user.getRole() != Role.ADMIN && !isOwner) {
+            throw new NotFoundException("Ocorrência não encontrada");
+        }
+        return occurrence;
+    }
+
+    public List<OccurrenceStatusHistoryResponseDTO> findHistory(Long occurrenceId) {
+        if (repository.findById(occurrenceId).isEmpty()) {
+            throw new NotFoundException("Ocorrência não encontrada");
+        }
+        return historyRepository.findByOccurrenceIdOrderByChangedAtAscIdAsc(occurrenceId)
+            .stream()
+            .map(h -> new OccurrenceStatusHistoryResponseDTO(
+                h.getId(),
+                h.getPreviousStatus(),
+                h.getNewStatus(),
+                h.getReason(),
+                h.getChangedAt(),
+                h.getChangedBy() != null ? h.getChangedBy().getId() : null,
+                h.getChangedBy() != null ? h.getChangedBy().getName() : null
+            ))
+            .toList();
+    }
+
+    /* @DecimalMin/@DecimalMax do DTO não rodam sem spring-boot-starter-validation */
+    private void validateCoordinates(Double latitude, Double longitude) {
+        if ((latitude == null) != (longitude == null)) {
+            throw new BadRequestException("Latitude e longitude devem ser informadas juntas");
+        }
+        if (latitude == null) return;
+        if (latitude < -90 || latitude > 90) {
+            throw new BadRequestException("Latitude deve estar entre -90 e 90");
+        }
+        if (longitude < -180 || longitude > 180) {
+            throw new BadRequestException("Longitude deve estar entre -180 e 180");
+        }
+    }
+
+    private void recordStatusChange(Occurrence occurrence, OccurrenceStatus previous, OccurrenceStatus next, String reason, User actor) {
+        OccurrenceStatusHistory entry = new OccurrenceStatusHistory();
+        entry.setOccurrence(occurrence);
+        entry.setPreviousStatus(previous);
+        entry.setNewStatus(next);
+        entry.setReason(reason);
+        entry.setChangedBy(actor);
+        entry.setChangedAt(LocalDateTime.now());
+        historyRepository.save(entry);
     }
 
     public List<OccurrenceResponseDTO> findByCategory(Long categoryId) {
@@ -81,11 +196,13 @@ public class OccurrenceService {
             .toList();
     }
 
+    @Transactional
     public void delete(Long id){
-        if (repository.findById(id).isEmpty()) {
-            throw new NotFoundException("Ocorrência não encontrada");
-        }
+        Occurrence occurrence = repository.findById(id)
+            .orElseThrow(() -> new NotFoundException("Ocorrência não encontrada"));
+        historyRepository.deleteByOccurrenceId(id);
         repository.deleteById(id);
+        storageService.delete(occurrence.getImagePath());
     }
 
 
@@ -102,19 +219,23 @@ public class OccurrenceService {
             .toList();
     }
 
-    private OccurrenceResponseDTO mapToResponse(Occurrence o) {
+    public OccurrenceResponseDTO mapToResponse(Occurrence o) {
         return new OccurrenceResponseDTO(
             o.getId(),
             o.getTitle(),
             o.getDescription(),
             o.getLocation(),
-            o.getOwner().getId(),
-            o.getOwner().getName(),
+            o.getOwner() != null ? o.getOwner().getId() : null,
+            o.getOwner() != null ? o.getOwner().getName() : null,
             o.getCategory().getName(),
             o.getSubcategory().getName(),
             o.getStatus(),
             o.getCreatedAt(),
-            o.getResolvedAt()
+            o.getResolvedAt(),
+            o.getOccurredAt(),
+            o.getLatitude(),
+            o.getLongitude(),
+            o.getImagePath() != null ? "/occurrences/" + o.getId() + "/image" : null
         );
     }
 

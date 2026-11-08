@@ -17,6 +17,10 @@ public class Subcategory {
 
     private String name;
 
+    /* Exclusão lógica: inativa some dos formulários, mas segue nas ocorrências antigas */
+    @Column(nullable = false)
+    private boolean active = true;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;

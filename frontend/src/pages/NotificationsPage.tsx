@@ -12,6 +12,7 @@ import { subscriptionService } from '@/services/subscriptionService'
 import { getErrorMessage } from '@/utils/errorHandler'
 import { Subscription } from '@/types/subscription'
 import { Search } from 'lucide-react'
+import { formatAuthor } from '@/utils/formatAuthor'
 
 function NotificationsPage() {
   const navigate = useNavigate()
@@ -77,7 +78,7 @@ function NotificationsPage() {
             Notificações
           </h1>
           <p className="text-sm text-brand-blue">
-            <button onClick={() => navigate('/')} className="hover:underline">
+            <button onClick={() => navigate("/")} className="hover:underline">
               Geral
             </button>
             {` > Notificações`}
@@ -91,23 +92,30 @@ function NotificationsPage() {
               Inscrições
             </h2>
             <div>
-            <Button
-              onClick={() => {
-                setEditingSubscription(null)
-                setIsModalOpen(true)
-              }}
-              className="text-sm"
-            >
-              + Nova Inscrição
-            </Button>
+              <Button
+                onClick={() => {
+                  setEditingSubscription(null);
+                  setIsModalOpen(true);
+                }}
+                variant="dashboard"
+                className="text-sm"
+              >
+                + Nova Inscrição
+              </Button>
             </div>
           </div>
 
-          {removeError && <Alert variant="error" onClose={() => setRemoveError(null)} className="mb-4">{removeError}</Alert>}
+          {removeError && (
+            <Alert variant="error" onClose={() => setRemoveError(null)}>
+              {removeError}
+            </Alert>
+          )}
 
           {subscriptions.length === 0 ? (
             <div className="p-8 text-center bg-white rounded-lg border border-black-100">
-              <p className="text-black-500">Você ainda não está inscrito em nenhuma categoria</p>
+              <p className="text-black-500">
+                Você ainda não está inscrito em nenhuma categoria
+              </p>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -144,7 +152,7 @@ function NotificationsPage() {
                 placeholder="Pesquisar"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-black-100 rounded-2xl text-sm placeholder-brand-muted focus:outline-none focus:ring-2 focus:ring-brand-blue focus:ring-opacity-50"
+                className="form-control h-12 pl-10"
               />
             </div>
           </div>
@@ -190,7 +198,10 @@ function NotificationsPage() {
                   </thead>
                   <tbody>
                     {filtered.map((occ, idx) => (
-                      <tr key={idx} className="border-b border-black-100 hover:bg-black-50">
+                      <tr
+                        key={idx}
+                        className="border-b border-black-100 hover:bg-black-50"
+                      >
                         <td className="px-6 py-4 text-black-900 font-medium">
                           {occ.title}
                         </td>
@@ -201,7 +212,7 @@ function NotificationsPage() {
                           {occ.subcategoryName}
                         </td>
                         <td className="px-6 py-4 text-black-500">
-                          {occ.ownerName}
+                          {formatAuthor(occ.ownerName)}
                         </td>
                         <td className="px-6 py-4 text-black-500">
                           {formatDate(occ.createdAt)}
@@ -229,7 +240,7 @@ function NotificationsPage() {
         editingSubscription={editingSubscription}
       />
     </AppLayout>
-  )
+  );
 }
 
 export default NotificationsPage

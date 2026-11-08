@@ -16,5 +16,9 @@ public record OccurrenceResponseDTO(
     String subcategoryName,
     OccurrenceStatus status,
     LocalDateTime createdAt,
-    LocalDateTime resolvedAt
+    LocalDateTime resolvedAt,
+    LocalDateTime occurredAt,
+    Double latitude,
+    Double longitude,
+    String imageUrl
 ) {}
