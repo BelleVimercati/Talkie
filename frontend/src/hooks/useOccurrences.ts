@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { occurrenceService } from '@/services/occurrenceService'
-import { Occurrence, OccurrenceStatus } from '@/types/occurrence'
+import { Occurrence } from '@/types/occurrence'
 import { getErrorMessage } from '@/utils/errorHandler'
 import { useAuthStore } from '@/stores/authStore'
 
@@ -29,11 +29,5 @@ export function useOccurrences() {
     fetchOccurrences()
   }, [user?.role])
 
-  const updateOccurrenceStatus = (id: number, status: OccurrenceStatus) => {
-    setOccurrences((prev) =>
-      prev.map((o) => (o.id === id ? { ...o, status } : o))
-    )
-  }
-
-  return { occurrences, isLoading, error, updateOccurrenceStatus }
+  return { occurrences, isLoading, error }
 }

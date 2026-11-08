@@ -3,6 +3,7 @@ import LoginPage from '@/pages/AuthPage/LoginPage'
 import RegisterPage from '@/pages/AuthPage/RegisterPage'
 import HomePage from '@/pages/HomePage'
 import CreateOccurrencePage from '@/pages/OccurrencesPage/CreateOccurrencePage'
+import OccurrenceDetailsPage from '@/pages/OccurrencesPage/OccurrenceDetailsPage'
 import NotificationsPage from '@/pages/NotificationsPage'
 import CategoriesListPage from '@/pages/SettingsPage/CategoriesListPage'
 import CreateCategoryPage from '@/pages/SettingsPage/CreateCategoryPage'
@@ -35,6 +36,14 @@ function App() {
           }
         />
         <Route
+          path="/ocorrencias/:id"
+          element={
+            <ProtectedRoute requireAdmin>
+              <OccurrenceDetailsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/notificacoes"
           element={
             <ProtectedRoute>
@@ -59,7 +68,23 @@ function App() {
           }
         />
         <Route
+          path="/configuracoes/categorias/:id/editar"
+          element={
+            <ProtectedRoute requireAdmin>
+              <CreateCategoryPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/configuracoes/subcategorias/nova"
+          element={
+            <ProtectedRoute requireAdmin>
+              <CreateSubcategoryPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/configuracoes/subcategorias/:id/editar"
           element={
             <ProtectedRoute requireAdmin>
               <CreateSubcategoryPage />

@@ -1,17 +1,19 @@
-import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { AppLayout } from '@/components/layout/AppLayout'
 import { StatsCards } from '@/components/occurrences/StatsCards'
 import { OccurrencesTable } from '@/components/occurrences/OccurrencesTable'
 import Alert from '@/components/ui/Alert'
-import { OccurrenceDetailsModal } from '@/components/occurrences/OccurrenceDetailsModal'
 import { useOccurrences } from '@/hooks/useOccurrences'
 import { useAuthStore } from '@/stores/authStore'
 import { Occurrence } from '@/types/occurrence'
 
 function HomePage() {
   const { user } = useAuthStore()
-  const { occurrences, isLoading, error, updateOccurrenceStatus } = useOccurrences()
-  const [selectedOccurrence, setSelectedOccurrence] = useState<Occurrence | null>(null)
+  const navigate = useNavigate()
+  const { occurrences, isLoading, error } = useOccurrences()
+
+  // O admin analisa e trata cada ocorrência numa página própria
+  const openOccurrence = (occurrence: Occurrence) => navigate(`/ocorrencias/${occurrence.id}`)
 
   const isAdmin = user?.role === 'ADMIN'
 
@@ -36,17 +38,10 @@ function HomePage() {
           <OccurrencesTable
             occurrences={occurrences}
             isLoading={isLoading}
-            onRowClick={isAdmin ? setSelectedOccurrence : undefined}
+            onRowClick={isAdmin ? openOccurrence : undefined}
           />
         </div>
 
-        {/* Modal */}
-        <OccurrenceDetailsModal
-          occurrence={selectedOccurrence}
-          isOpen={!!selectedOccurrence}
-          onClose={() => setSelectedOccurrence(null)}
-          onStatusUpdated={updateOccurrenceStatus}
-        />
       </div>
     </AppLayout>
   )

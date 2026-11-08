@@ -13,6 +13,11 @@ export const occurrenceService = {
     return response.data.data
   },
 
+  getById: async (id: number) => {
+    const response = await api.get<ApiResponse<Occurrence>>(`/occurrences/${id}`)
+    return response.data.data
+  },
+
   getByCategory: async (categoryId: number) => {
     const response = await api.get<ApiResponse<Occurrence[]>>(`/occurrences/category/${categoryId}`)
     return response.data.data
@@ -36,12 +41,9 @@ export const occurrenceService = {
   uploadImage: async (id: number, file: File) => {
     const formData = new FormData()
     formData.append('file', file)
-    const response = await api.post(`/occurrences/${id}/image`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
-    return response.data
+    // Sem Content-Type manual: o navegador define o multipart com o boundary correto
+    const response = await api.post<ApiResponse<Occurrence>>(`/occurrences/${id}/image`, formData)
+    return response.data.data
   },
 
   getImage: async (id: number): Promise<Blob> => {
