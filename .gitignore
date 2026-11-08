@@ -35,5 +35,8 @@ build/
 docs/
 backend/docs/
 
+CLAUDE.md
+levantamento_requisitos.md
+
 ### TCC (texto da monografia, não versionar) ###
 tcc/
