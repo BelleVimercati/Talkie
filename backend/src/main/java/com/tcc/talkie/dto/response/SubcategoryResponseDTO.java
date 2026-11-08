@@ -1,4 +1,9 @@
 package com.tcc.talkie.dto.response;
 
-public record SubcategoryResponseDTO(String name, String categoryName, Long subcategoryId) {
-}
+public record SubcategoryResponseDTO(
+    String name,
+    String categoryName,
+    Long subcategoryId,
+    Long categoryId,
+    boolean active
+) {}

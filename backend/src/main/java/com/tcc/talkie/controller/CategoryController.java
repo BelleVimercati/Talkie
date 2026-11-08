@@ -1,6 +1,5 @@
 package com.tcc.talkie.controller;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -11,12 +10,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 
-import com.tcc.talkie.domain.category.Category;
-import com.tcc.talkie.dto.ErrorResponse;
 import com.tcc.talkie.dto.request.CategoryCreateDTO;
 import com.tcc.talkie.dto.response.ApiResponse;
 import com.tcc.talkie.dto.response.CategoryResponseDTO;
@@ -32,68 +30,39 @@ public class CategoryController {
     private final CategoryService service;
 
     @GetMapping
-    public ResponseEntity<List<CategoryResponseDTO>> getTypes(){
-        List<CategoryResponseDTO> types = service.findAll()
-        .stream()
-        .map(type -> new CategoryResponseDTO(
-            type.getId(),
-            type.getName(),
-            type.getIcon(),
-            type.getUser().getId(),
-            type.getPriority(),
-            type.getColor(),
-            type.getCreatedAt()
-        ))
-        .toList();
+    public ResponseEntity<ApiResponse<List<CategoryResponseDTO>>> getAll(
+        @RequestParam(defaultValue = "false") boolean includeInactive
+    ){
+        List<CategoryResponseDTO> categories = service.findAll(includeInactive)
+            .stream()
+            .map(service::toResponse)
+            .toList();
+        return ResponseEntity.ok(new ApiResponse<>("Categorias recuperadas com sucesso", categories));
+    }
 
-        return ResponseEntity.ok(types);
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<CategoryResponseDTO>> getById(@PathVariable Long id){
+        return ResponseEntity.ok(new ApiResponse<>("Categoria recuperada com sucesso", service.toResponse(service.findById(id))));
     }
 
     @PostMapping
     public ResponseEntity<ApiResponse<CategoryResponseDTO>> create(@Valid @RequestBody CategoryCreateDTO data){
-        Category created = service.create(data);
-        return ResponseEntity.ok(new ApiResponse<>("Categoria criada com sucesso", new CategoryResponseDTO(
-            created.getId(),
-            created.getName(),
-            created.getIcon(),
-            created.getUser().getId(),
-            created.getPriority(),
-            created.getColor(),
-            created.getCreatedAt()
-        )));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id){
-        service.delete(id);
-        return ResponseEntity.ok(new ErrorResponse("Categoria deletada com sucesso", 200, LocalDate.now().toString()));
+        return ResponseEntity.ok(new ApiResponse<>("Categoria criada com sucesso", service.toResponse(service.create(data))));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<CategoryResponseDTO>> update(@PathVariable Long id, @Valid @RequestBody CategoryCreateDTO data){
-        Category updated = service.update(id, data);
-        return ResponseEntity.ok(new ApiResponse<>("Categoria atualizada com sucesso", new CategoryResponseDTO(
-            updated.getId(),
-            updated.getName(),
-            updated.getIcon(),
-            updated.getUser().getId(),
-            updated.getPriority(),
-            updated.getColor(),
-            updated.getCreatedAt()
-        )));
+        return ResponseEntity.ok(new ApiResponse<>("Categoria atualizada com sucesso", service.toResponse(service.update(id, data))));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable Long id){
-            Category category = service.findById(id);
-            return ResponseEntity.ok(new CategoryResponseDTO(
-                category.getId(),
-                category.getName(),
-                category.getIcon(),
-                category.getUser().getId(),
-                category.getPriority(),
-                category.getColor(),
-                category.getCreatedAt()
-            ));
+    /* Exclusão lógica: a categoria é desativada, não apagada */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<CategoryResponseDTO>> deactivate(@PathVariable Long id){
+        return ResponseEntity.ok(new ApiResponse<>("Categoria desativada com sucesso", service.toResponse(service.deactivate(id))));
+    }
+
+    @PutMapping("/{id}/reactivate")
+    public ResponseEntity<ApiResponse<CategoryResponseDTO>> reactivate(@PathVariable Long id){
+        return ResponseEntity.ok(new ApiResponse<>("Categoria reativada com sucesso", service.toResponse(service.reactivate(id))));
     }
 }

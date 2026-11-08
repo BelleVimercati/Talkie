@@ -1,5 +1,6 @@
 package com.tcc.talkie.repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -14,6 +15,8 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     Optional<Category> findByNameIgnoreCase(String name);
 
     Optional<Category> findById(Long id);
+
+    List<Category> findByActiveTrue();
 
     @Modifying
     @Query("update Category c set c.user = null where c.user.id = :userId")

@@ -4,6 +4,7 @@ import java.util.UUID;
 import java.time.LocalDateTime;
 import com.tcc.talkie.domain.category.CategoryPriority;
 
+/* userId é nulo quando o admin que criou a categoria excluiu a conta */
 public record CategoryResponseDTO(
     Long id,
     String name,
@@ -11,5 +12,6 @@ public record CategoryResponseDTO(
     UUID userId,
     CategoryPriority priority,
     String color,
-    LocalDateTime createdAt
+    LocalDateTime createdAt,
+    boolean active
 ) {}

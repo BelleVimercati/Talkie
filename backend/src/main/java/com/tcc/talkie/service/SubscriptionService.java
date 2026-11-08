@@ -30,6 +30,10 @@ public class SubscriptionService {
         Category category = categoryRepository.findById(categoryId)
             .orElseThrow(() -> new NotFoundException("Categoria não encontrada"));
 
+        if (!category.isActive()) {
+            throw new BadRequestException("Não é possível se inscrever em uma categoria inativa");
+        }
+
         boolean alreadySubscribed = subscriptionRepository.existsBySubscriberIdAndCategoryId(subscriberId, categoryId);
         if (alreadySubscribed) {
             throw new BadRequestException("Você já está inscrito nesta categoria");
