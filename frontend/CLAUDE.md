@@ -43,8 +43,9 @@ src/
 │   ├── common/          # ProtectedRoute
 │   ├── layout/          # AppLayout (com Sidebar), AuthLayout, Sidebar
 │   ├── ui/              # primitivos: Button, Input, PasswordInput, Select, Textarea, Alert,
-│   │                    #   Badge, PriorityBadge, RoleBadge, Card, ColorPicker, IconPicker
-│   ├── occurrences/     # OccurrencesTable, OccurrenceDetailsModal, StatsCards, ImageUpload, LocationPicker
+│   │                    #   Badge, PriorityBadge, RoleBadge, Card, ColorPicker, IconPicker, ConfirmDialog
+│   ├── occurrences/     # OccurrencesTable, StatsCards, ImageUpload, LocationPicker, OccurrenceImage,
+│   │                    #   StatusTimeline, StatusActionPanel
 │   └── notifications/   # SubscribeModal, SubscriptionCard
 ├── pages/               # telas (AuthPage/, OccurrencesPage/, SettingsPage/, HomePage, ...)
 ├── hooks/               # useCategories, useOccurrences, useSubscriptions, useUsers, useGeolocation, ...
@@ -64,9 +65,11 @@ Paths em **português**. Toda rota autenticada é envolvida por `ProtectedRoute`
 | `/login`, `/register` | LoginPage, RegisterPage | público |
 | `/` | HomePage (dashboard de ocorrências) | autenticado |
 | `/ocorrencias/nova` | CreateOccurrencePage | autenticado |
+| `/ocorrencias/:id` | OccurrenceDetailsPage (análise e tratamento do status) | ADMIN |
 | `/notificacoes` | NotificationsPage (assinaturas) | autenticado |
 | `/configuracoes` | CategoriesListPage | ADMIN |
 | `/configuracoes/categorias/nova`, `/configuracoes/subcategorias/nova` | CreateCategory/SubcategoryPage | ADMIN |
+| `/configuracoes/categorias/:id/editar`, `/configuracoes/subcategorias/:id/editar` | mesmas páginas em modo edição (`useParams`) | ADMIN |
 | `/usuarios` | UsersListPage | ADMIN |
 
 Nova página: crie em `pages/`, envolva o conteúdo em `<AppLayout>`, registre a rota em `App.tsx` e, se fizer sentido, adicione o link em `components/layout/Sidebar.tsx`.
@@ -140,6 +143,7 @@ Use os tokens de `tailwind.config.ts` em vez de cores hex soltas:
 - **Status de ocorrência:** `status-openBg/openText`, `status-analysisBg/analysisText`, `status-resolvedBg/resolvedText`, `status-closedBg/closedText`.
 - **Fontes:** `font-roboto` (títulos e botões), `font-poppins`, `font-logo`.
 - Títulos de página: `text-3xl font-bold font-roboto text-black-900`; container `p-8`.
+- **Formulários seguem o Bootstrap 5.3**, com classes definidas em `src/index.css`: `form-label`, `form-control`, `form-select`, `is-invalid`, `invalid-feedback`, `form-text`, `form-check-input`. Campos brancos com borda `#dee2e6`, rótulos `#212529`, foco azul do Bootstrap. Não use fundo cinza (`bg-black-50`) nem cinzas soltos em rótulos e campos; prefira os primitivos `Input`/`Select`/`Textarea`, que já aplicam essas classes.
 
 ## Regras
 
@@ -159,5 +163,10 @@ Use os tokens de `tailwind.config.ts` em vez de cores hex soltas:
 
 ## Pendências conhecidas
 
-- `occurrenceService.uploadImage` / `getImage` chamam `/occurrences/{id}/image`, que ainda não existe no backend.
-- `categoryService.list` / `subcategoryService.list` aceitam resposta como array cru ou como `ApiResponse` (herança de inconsistência da API). Em código novo, espere sempre `ApiResponse<T>`.
+- `UserController` ainda pode devolver lista crua; `userService.list` mantém o fallback para array.
+
+## Categorias e subcategorias
+
+- Exclusão lógica: "Desativar" chama `DELETE` (a API só marca `active = false`); "Reativar" chama `PUT /{id}/reactivate`.
+- `useCategories()` / `useSubcategories()` trazem só ativas (formulários); a tela de administração usa `{ includeInactive: true }` e `reload()` após cada ação.
+- Filtre subcategorias por `categoryId`, nunca pelo nome da categoria.

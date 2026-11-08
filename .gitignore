@@ -34,3 +34,6 @@ build/
 
 docs/
 backend/docs/
+
+### TCC (texto da monografia, não versionar) ###
+tcc/

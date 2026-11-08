@@ -47,8 +47,8 @@ cd frontend && npm install && npm run dev
 | Entidade | Pontos-chave |
 |----------|--------------|
 | `User` | ID `UUID`; `Role` = `USER` \| `ADMIN` |
-| `Category` | tabela `types`; `CategoryPriority` (BAIXA, MEDIA, ALTA), cor, ícone |
-| `Subcategory` | pertence a uma `Category` |
+| `Category` | tabela `types`; `CategoryPriority` (BAIXA, MEDIA, ALTA), cor, ícone; `active` (exclusão lógica) |
+| `Subcategory` | pertence a uma `Category`; `active` (exclusão lógica); nome único por categoria |
 | `Occurrence` | título, descrição, local, `occurredAt`, latitude/longitude, `imagePath`, `OccurrenceStatus` (ABERTO, EM_ANALISE, RESOLVIDO, FECHADO), `resolvedAt` |
 | `Subscription` | usuário assina uma categoria |
 | `OccurrenceStatusHistory` | evento de criação/mudança de status, com motivo e autor (anulável) |
@@ -80,7 +80,7 @@ Permissões (`infra/security/SecurityConfig.java`): `ADMIN` lista todas as ocorr
 
 - **Lombok:** precisa ser ≥ 1.18.38 com o JDK atual (1.18.30 quebra a compilação). A versão aparece no `pom.xml` em dois lugares (dependência e `annotationProcessorPaths`).
 - **Bean Validation:** `spring-boot-starter-validation` **não** está no `pom.xml`, então `@Valid` / `@NotBlank` nos DTOs não são aplicados. Valide no service ou adicione a dependência (e trate `MethodArgumentNotValidException` no `GlobalExceptionHandler`).
-- **Upload de imagem:** o front chama `POST/GET /occurrences/{id}/image`, mas o endpoint ainda não existe no backend (a coluna `image_path` e o `imageUrl` do DTO já existem).
+- **Imagem da ocorrência:** `POST /occurrences/{id}/image` (multipart `file`, só o autor; JPEG/PNG/WebP até 5 MB, validados pela assinatura do arquivo) e `GET /occurrences/{id}/image` (autor ou admin). Arquivos em `app.upload-dir` (padrão `backend/uploads/`, fora do git) via `StorageService`. No front, a imagem é baixada como blob (`OccurrenceImage`), porque exige o JWT.
 - **`GlobalExceptionHandler`** converte qualquer `RuntimeException` em 400. Lance `NotFoundException` / `BadRequestException` / `UnauthorizedException` para ter o status correto.
 - **Exclusão de conta** anonimiza em vez de apagar ocorrências: `owner`, `changedBy` e `Category.user` podem ser `null` ("Usuário excluído" no front, via `formatAuthor`). Ao criar uma nova FK para `users`, trate-a em `UserService.deleteAccount`. Detalhes: `backend/docs/EXCLUSAO_DE_CONTA.md`.
 - **Geolocalização** (`useGeolocation`/`LocationPicker`): a Geolocation API só funciona em `localhost` ou HTTPS — o deploy precisa de HTTPS. Endereço sugerido via Nominatim (OpenStreetMap), chamado direto do navegador. O backend valida o par latitude/longitude e as faixas em `OccurrenceService.validateCoordinates`.

@@ -75,6 +75,7 @@ src/main/resources/db/migration/   # Flyway
 - `@GeneratedValue(strategy = GenerationType.IDENTITY)`; `User` usa `UUID`, demais `Long`.
 - Relacionamentos `@ManyToOne` + `@JoinColumn`; enums com `@Enumerated(EnumType.STRING)`.
 - Tabelas `snake_case` no plural (exceção histórica: `Category` → tabela `types`).
+- Categorias e subcategorias **não são apagadas**: `DELETE` desativa (`active = false`) e `PUT /{id}/reactivate` reativa. As listagens devolvem só ativas, salvo `?includeInactive=true`; ocorrência e assinatura recusam itens inativos.
 
 **Exceções**
 - `GlobalExceptionHandler` (`infra/exceptions/`) mapeia `BadRequestException`→400, `NotFoundException`→404, `UnauthorizedException`→401 e **qualquer outra `RuntimeException`→400**.
@@ -100,6 +101,7 @@ Local: `src/main/resources/db/migration/`. Nome: `V{n}__descricao_em_snake_case.
 | V7 | seed do admin (`admin@talkie.local` / `123456`) |
 | V8 | occurred_at, latitude, longitude e image_path em occurrences |
 | V9 | exclusão de conta (FKs `SET NULL`/`CASCADE`, `owner_id`/`user_id` anuláveis) e tabela `occurrence_status_history` |
+| V10 | coluna `active` em `types` e `subcategories` (exclusão lógica) |
 
 Regras:
 - Com `ddl-auto=validate`, **toda** alteração de entidade precisa de migration correspondente.
@@ -155,6 +157,6 @@ Outros: `listeners/OccurrenceNotificationListenerIT`, `service/EmailServiceIT`. 
 
 **Implementado:** autenticação JWT; CRUD de categorias, subcategorias e ocorrências; status da ocorrência (ADMIN); assinaturas; e-mail para assinantes via evento + MailHog; data/hora e geolocalização da ocorrência (V8); histórico de status com motivo e exclusão de conta com anonimização (V9, ver `docs/EXCLUSAO_DE_CONTA.md`).
 
-**Em andamento:** upload/download de imagem (`POST/GET /occurrences/{id}/image`). O front já consome e o `mapToResponse` já gera `imageUrl`, mas o endpoint não existe.
+**Também implementado:** `GET /occurrences/{id}` (admin ou autor; outros recebem 404) e upload/leitura de imagem (`POST/GET /occurrences/{id}/image`, `StorageService`, `app.upload-dir`).
 
 **Planejado:** upvotes, dashboard administrativo com métricas.

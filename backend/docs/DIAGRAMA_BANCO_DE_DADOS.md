@@ -1,6 +1,6 @@
 # Diagrama do Banco de Dados — Talkie
 
-Modelo entidade-relacionamento do PostgreSQL, derivado das migrations Flyway `V1` a `V9`
+Modelo entidade-relacionamento do PostgreSQL, derivado das migrations Flyway `V1` a `V10`
 (`backend/src/main/resources/db/migration/`).
 
 ```mermaid
@@ -23,12 +23,14 @@ erDiagram
         varchar priority "BAIXA | MEDIA | ALTA"
         varchar color
         timestamp created_at
+        boolean active "exclusão lógica"
     }
 
     subcategories {
         bigint id PK
         bigint category_id FK
         varchar name
+        boolean active "exclusão lógica"
     }
 
     occurrences {
@@ -90,7 +92,8 @@ erDiagram
 ## Observações
 
 - `subscriptions` tem restrição `UNIQUE (subscriber_id, category_id)`: um usuário assina cada categoria uma única vez.
-- `occurrences.category_id` e `occurrences.subcategory_id` são FKs independentes: nem o banco nem o `OccurrenceService` verificam hoje se a subcategoria pertence à categoria informada.
+- `occurrences.category_id` e `occurrences.subcategory_id` são FKs independentes: o banco não garante que a subcategoria pertence à categoria; quem verifica é o `OccurrenceService.create`.
 - `subscriptions.subscriber_id` e `subscriptions.category_id` são anuláveis no schema, embora a aplicação sempre os preencha.
 - O usuário administrador inicial é inserido pela migration `V7`.
+- Categorias e subcategorias não são apagadas: `active = false` as tira dos formulários, mas ocorrências e assinaturas antigas continuam apontando para elas (V10).
 - Ao excluir uma conta, as referências em `occurrences`, `types` e `occurrence_status_history` viram `NULL` e as assinaturas são apagadas (ver `EXCLUSAO_DE_CONTA.md`).

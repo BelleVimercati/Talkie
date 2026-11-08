@@ -83,7 +83,7 @@ Toda criação e mudança de status grava um evento (`previous_status`, `new_sta
 
 - **Texto livre:** título, descrição, localização e motivo podem conter dados pessoais digitados pelos usuários. Não são anonimizados automaticamente. Precisa de uma política (revisão manual, prazo de retenção ou edição pelo admin).
 - **Geolocalização:** latitude/longitude de uma ocorrência podem apontar para a residência do autor — ainda mais agora que podem vir do próprio aparelho (Geolocation API). Pode ser necessário reduzir a precisão ou apagar após a resolução. Ao usar o mapa, o navegador do usuário também envia a região e o IP aos servidores do OpenStreetMap (tiles e Nominatim); isso deve constar nos termos de uso.
-- **Imagem:** o upload ainda não existe; quando existir, a imagem precisa da mesma análise.
+- **Imagem:** a foto enviada com a ocorrência é mantida junto com ela após a exclusão da conta e pode mostrar pessoas, placas ou a casa do autor. Não é anonimizada automaticamente; precisa da mesma política do texto livre.
 - **Prazo de retenção:** não há obrigação legal/regulatória registrada no projeto; por isso nenhum dado pessoal é retido após a exclusão.
 - **Último administrador:** não pode se excluir; é preciso promover outro antes (ainda não existe rota de promoção).
 - **Logs:** `OccurrenceNotificationListener` registra nome e e-mail dos assinantes em log; recomenda-se remover.
