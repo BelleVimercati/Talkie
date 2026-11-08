@@ -28,7 +28,7 @@ const CATEGORY_COLORS = [
 export function ColorPicker({ value, onChange, error }: ColorPickerProps) {
   return (
     <div className="space-y-2">
-      <label className="block font-roboto text-sm font-medium text-black-800 tracking-wide03">
+      <label className="form-label font-roboto">
         Cor*
       </label>
       <div className="grid grid-cols-8 gap-3">

@@ -43,7 +43,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ onChange, error }) => 
 
   return (
     <div className="space-y-2">
-      <label className="block text-sm font-medium text-gray-900">Foto da ocorrência (opcional)</label>
+      <label className="form-label font-roboto">Foto da ocorrência (opcional)</label>
 
       {preview ? (
         <div className="relative w-full h-48 bg-gray-100 rounded-lg overflow-hidden">
@@ -72,7 +72,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({ onChange, error }) => 
         </label>
       )}
 
-      {error && <p className="text-xs text-red-500">{error}</p>}
+      {error && <p className="invalid-feedback">{error}</p>}
     </div>
   )
 }

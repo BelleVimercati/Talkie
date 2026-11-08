@@ -9,7 +9,7 @@ const CATEGORY_ICONS = ['⛈', '🚓', '🦔', '👷🏽‍♀️', '🚨', '�
 export function IconPicker({ value, onChange, error }: IconPickerProps) {
   return (
     <div className="space-y-2">
-      <label className="block font-roboto text-sm font-medium text-black-800 tracking-wide03">
+      <label className="form-label font-roboto">
         Ícone*
       </label>
       <div className="grid grid-cols-7 gap-3">

@@ -1,6 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '@/stores/authStore'
 import { getInitials } from '@/utils/initials'
+import logomin from '@/assets/logomin.png'
 import { Grid, Bell, LogOut, Settings, Users, UserCircle } from 'lucide-react'
 
 export function Sidebar() {
@@ -24,6 +25,8 @@ export function Sidebar() {
       {/* Logo */}
       <div className="px-6 py-6 border-b">
         <div className="flex items-center gap-2">
+          {/* Mesma altura da linha do nome (text-xl = 1.75rem) */}
+          <img src={logomin} alt="" aria-hidden="true" className="h-7 w-auto" />
           <div className="text-xl font-bold font-logo text-brand-logo">Talkie</div>
         </div>
       </div>

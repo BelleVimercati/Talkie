@@ -113,7 +113,7 @@ export function LocationPicker({
         </div>
       )}
 
-      {error && <p className="text-xs text-red-500">{error}</p>}
+      {error && <p className="invalid-feedback">{error}</p>}
       {accuracy !== null && (
         <p
           className={`text-xs ${accuracy > 100 ? "text-brand-orange" : "text-black-500"}`}
