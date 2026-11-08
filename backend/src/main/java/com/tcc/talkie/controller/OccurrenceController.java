@@ -3,6 +3,8 @@ package com.tcc.talkie.controller;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.http.CacheControl;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.Valid;
 
@@ -23,6 +27,7 @@ import com.tcc.talkie.dto.request.OccurrenceStatusUpdateDTO;
 import com.tcc.talkie.dto.response.OccurrenceResponseDTO;
 import com.tcc.talkie.dto.response.OccurrenceStatusHistoryResponseDTO;
 import com.tcc.talkie.service.OccurrenceService;
+import com.tcc.talkie.service.StorageService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 public class OccurrenceController {
     
     private final OccurrenceService service;
+    private final StorageService storageService;
 
     @PostMapping
     public ResponseEntity<ApiResponse<OccurrenceResponseDTO>> create(@Valid @RequestBody OccurrenceDTO data){
@@ -54,6 +60,30 @@ public class OccurrenceController {
 
         log.info("Ocorrências encontradas para o usuário: {}", occurrences.size());
         return ResponseEntity.ok(new ApiResponse<>("Suas ocorrências recuperadas com sucesso", occurrences));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<OccurrenceResponseDTO>> getById(@PathVariable Long id){
+        return ResponseEntity.ok(new ApiResponse<>("Ocorrência recuperada com sucesso", service.findById(id)));
+    }
+
+    @PostMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ApiResponse<OccurrenceResponseDTO>> uploadImage(
+        @PathVariable Long id,
+        @RequestParam("file") MultipartFile file
+    ){
+        return ResponseEntity.ok(new ApiResponse<>("Imagem enviada com sucesso", service.attachImage(id, file)));
+    }
+
+    /* Bytes da imagem (exige o mesmo acesso do detalhe da ocorrência) */
+    @GetMapping("/{id}/image")
+    public ResponseEntity<byte[]> getImage(@PathVariable Long id){
+        Occurrence occurrence = service.findWithImage(id);
+        String filename = occurrence.getImagePath();
+        return ResponseEntity.ok()
+            .contentType(MediaType.parseMediaType(storageService.contentType(filename)))
+            .cacheControl(CacheControl.noStore().cachePrivate())
+            .body(storageService.load(filename));
     }
 
     @GetMapping("/category/{categoryId}")

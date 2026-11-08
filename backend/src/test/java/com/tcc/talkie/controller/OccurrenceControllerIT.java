@@ -475,4 +475,38 @@ class OccurrenceControllerIT {
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.message").value("Longitude deve estar entre -180 e 180"));
     }
+
+    /* Categoria/subcategoria inativas ou incoerentes */
+    @Test
+    @DisplayName("Não deve criar ocorrência em categoria inativa")
+    void naoDeveCriarOcorrenciaEmCategoriaInativa() throws Exception {
+        category.setActive(false);
+        categoryRepository.save(category);
+
+        mockMvc.perform(post("/occurrences")
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("Authorization", "Bearer " + commonUserToken)
+            .content(objectMapper.writeValueAsString(occurrenceWithCoordinates(null, null))))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.message").value("Categoria ou subcategoria inativa"));
+    }
+
+    @Test
+    @DisplayName("Não deve criar ocorrência com subcategoria de outra categoria")
+    void naoDeveCriarOcorrenciaComSubcategoriaDeOutraCategoria() throws Exception {
+        Category other = new Category();
+        other.setName("Trânsito");
+        other.setUser(adminUser);
+        other = categoryRepository.save(other);
+
+        OccurrenceDTO dto = new OccurrenceDTO("Buraco na rua", "Há um grande buraco na Rua A", "Rua A, número 123",
+            other.getId(), subcategory.getId(), null, null, null);
+
+        mockMvc.perform(post("/occurrences")
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("Authorization", "Bearer " + commonUserToken)
+            .content(objectMapper.writeValueAsString(dto)))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.message").value("A subcategoria não pertence à categoria informada"));
+    }
 }
