@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { AppLayout } from '@/components/layout/AppLayout'
 import Button from '@/components/ui/Button'
 import Alert from '@/components/ui/Alert'
+import ConfirmDialog from '@/components/ui/ConfirmDialog'
 import { Badge } from '@/components/ui/Badge'
 import { SubscriptionCard } from '@/components/notifications/SubscriptionCard'
 import { SubscribeModal } from '@/components/notifications/SubscribeModal'
@@ -22,6 +23,8 @@ function NotificationsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingSubscription, setEditingSubscription] = useState<Subscription | null>(null)
   const [removeError, setRemoveError] = useState<string | null>(null)
+  const [removingSubscription, setRemovingSubscription] = useState<Subscription | null>(null)
+  const [isRemoving, setIsRemoving] = useState(false)
 
   const filtered = useMemo(
     () =>
@@ -47,15 +50,20 @@ function NotificationsPage() {
     refetchSubscriptions()
   }
 
-  const handleRemove = async (categoryId: number) => {
-    if (!window.confirm('Tem certeza que deseja cancelar esta inscrição?')) return
+  const handleRemove = async () => {
+    if (!removingSubscription) return
 
     try {
+      setIsRemoving(true)
       setRemoveError(null)
-      await subscriptionService.unsubscribe(categoryId)
+      await subscriptionService.unsubscribe(removingSubscription.categoryId)
+      setRemovingSubscription(null)
       refetchSubscriptions()
     } catch (err) {
+      setRemovingSubscription(null)
       setRemoveError(getErrorMessage(err))
+    } finally {
+      setIsRemoving(false)
     }
   }
 
@@ -125,7 +133,7 @@ function NotificationsPage() {
                   icon="📌"
                   categoryName={sub.categoryName}
                   onEdit={() => handleEdit(sub)}
-                  onRemove={() => handleRemove(sub.categoryId)}
+                  onRemove={() => setRemovingSubscription(sub)}
                 />
               ))}
             </div>
@@ -239,6 +247,19 @@ function NotificationsPage() {
         onSubscribe={handleSubscribeSuccess}
         editingSubscription={editingSubscription}
       />
+
+      <ConfirmDialog
+        isOpen={removingSubscription !== null}
+        title="Cancelar inscrição"
+        confirmLabel="Cancelar inscrição"
+        isLoading={isRemoving}
+        onConfirm={handleRemove}
+        onCancel={() => setRemovingSubscription(null)}
+      >
+        Tem certeza que deseja cancelar a inscrição em{' '}
+        <strong>{removingSubscription?.categoryName}</strong>? Você deixará de receber
+        notificações dessa categoria.
+      </ConfirmDialog>
     </AppLayout>
   );
 }
