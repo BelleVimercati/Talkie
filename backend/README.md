@@ -334,7 +334,7 @@ src/test/
 - [ ] Envio de notificações por e-mail/push
 
 ### 📋 Planejado
-- [ ] Status de ocorrência (ABERTO, EM_ANALISE, RESOLVIDO)
+- [x] Status de ocorrência (ABERTO, RESOLVIDO, FECHADO)
 - [ ] Upload de mídia (imagens/vídeos)
 - [ ] Sistema de upvotes/downvotes
 - [ ] Dashboard administrativo

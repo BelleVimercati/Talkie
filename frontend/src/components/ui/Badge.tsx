@@ -6,11 +6,6 @@ export const STATUS_CONFIG: Record<OccurrenceStatus, { bg: string; text: string;
     text: 'text-status-openText',
     label: 'Aberto',
   },
-  EM_ANALISE: {
-    bg: 'bg-status-analysisBg',
-    text: 'text-status-analysisText',
-    label: 'Em Análise',
-  },
   RESOLVIDO: {
     bg: 'bg-status-resolvedBg',
     text: 'text-status-resolvedText',

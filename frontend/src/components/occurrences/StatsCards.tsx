@@ -8,9 +8,7 @@ interface StatsCardsProps {
 
 export function StatsCards({ occurrences }: StatsCardsProps) {
   const total = occurrences.length
-  const pendentes = occurrences.filter(
-    (o) => o.status === 'ABERTO' || o.status === 'EM_ANALISE'
-  ).length
+  const pendentes = occurrences.filter((o) => o.status === 'ABERTO').length
   const resolvidas = occurrences.filter((o) => o.status === 'RESOLVIDO').length
   const fechadas = occurrences.filter((o) => o.status === 'FECHADO').length
 

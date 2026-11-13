@@ -49,7 +49,7 @@ cd frontend && npm install && npm run dev
 | `User` | ID `UUID`; `Role` = `USER` \| `ADMIN` |
 | `Category` | tabela `types`; `CategoryPriority` (BAIXA, MEDIA, ALTA), cor, ícone; `active` (exclusão lógica) |
 | `Subcategory` | pertence a uma `Category`; `active` (exclusão lógica); nome único por categoria |
-| `Occurrence` | título, descrição, local, `occurredAt`, latitude/longitude, `imagePath`, `OccurrenceStatus` (ABERTO, EM_ANALISE, RESOLVIDO, FECHADO), `resolvedAt` |
+| `Occurrence` | título, descrição, local, `occurredAt`, latitude/longitude, `imagePath`, `OccurrenceStatus` (ABERTO, RESOLVIDO, FECHADO), `resolvedAt` |
 | `Subscription` | usuário assina uma categoria |
 | `OccurrenceStatusHistory` | evento de criação/mudança de status, com motivo e autor (anulável) |
 

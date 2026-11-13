@@ -9,7 +9,6 @@ interface StatusTimelineProps {
 // Cor do marcador de cada evento, pelos tokens de status do tema
 const DOT_COLOR: Record<OccurrenceStatus, string> = {
   ABERTO: 'bg-status-openText',
-  EM_ANALISE: 'bg-status-analysisText',
   RESOLVIDO: 'bg-status-resolvedText',
   FECHADO: 'bg-status-closedText',
 }
@@ -25,7 +24,14 @@ const formatDateTime = (value: string) =>
 
 const label = (status: OccurrenceStatus) => STATUS_CONFIG[status]?.label ?? status
 
-/* Histórico em linha do tempo: do mais recente para o mais antigo */
+// Contexto do ponto: diferencia o registro inicial de uma reabertura (ambos "Aberto")
+const description = (event: OccurrenceStatusHistory) => {
+  if (!event.previousStatus) return 'Ocorrência registrada'
+  if (event.newStatus === 'ABERTO') return 'Ocorrência reaberta'
+  return null
+}
+
+/* Histórico em linha do tempo: um ponto por status, do mais recente para o mais antigo */
 export function StatusTimeline({ events }: StatusTimelineProps) {
   if (events.length === 0) {
     return <p className="text-sm text-[#6c757d]">Nenhum evento registrado.</p>
@@ -41,13 +47,13 @@ export function StatusTimeline({ events }: StatusTimelineProps) {
             className={`absolute -left-[9px] top-1 h-4 w-4 rounded-full ring-4 ring-white ${DOT_COLOR[event.newStatus]}`}
             aria-hidden="true"
           />
-          <p className="font-medium text-[#212529]">
-            {event.previousStatus
-              ? `${label(event.previousStatus)} → ${label(event.newStatus)}`
-              : `Ocorrência registrada (${label(event.newStatus)})`}
+          <p className={`font-semibold ${STATUS_CONFIG[event.newStatus]?.text ?? 'text-[#212529]'}`}>
+            {label(event.newStatus)}
           </p>
           <p className="text-xs text-[#6c757d]">
-            {formatDateTime(event.changedAt)} · {formatAuthor(event.changedByName)}
+            {[description(event), formatDateTime(event.changedAt), formatAuthor(event.changedByName)]
+              .filter(Boolean)
+              .join(' · ')}
           </p>
           {event.reason && (
             <blockquote className="mt-2 whitespace-pre-wrap rounded-md border-l-4 border-[#dee2e6] bg-white px-3 py-2 text-sm text-[#212529]">

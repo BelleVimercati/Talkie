@@ -17,7 +17,7 @@ Onde a autoria for exibida e a referência for nula, a interface mostra **"Usuá
 
 ### Correspondência de status
 
-O enum `OccurrenceStatus` usa `ABERTO` (pendente), `RESOLVIDO` (resolvida) e `FECHADO` (declinada), além de `EM_ANALISE` quando presente. A exclusão da conta não altera o status de nenhuma ocorrência, qualquer que seja ele.
+O enum `OccurrenceStatus` usa `ABERTO` (pendente), `RESOLVIDO` (resolvida) e `FECHADO` (declinada). A exclusão da conta não altera o status de nenhuma ocorrência, qualquer que seja ele.
 
 ## Fluxo
 

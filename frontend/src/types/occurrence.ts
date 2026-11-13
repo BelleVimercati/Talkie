@@ -1,4 +1,4 @@
-export type OccurrenceStatus = 'ABERTO' | 'EM_ANALISE' | 'RESOLVIDO' | 'FECHADO'
+export type OccurrenceStatus = 'ABERTO' | 'RESOLVIDO' | 'FECHADO'
 
 export interface Occurrence {
   id: number
