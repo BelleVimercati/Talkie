@@ -1,0 +1,598 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.11.7)  8 NOV 2026 09:59
+entering extended mode
+ restricted \write18 enabled.
+ file:line:error style messages enabled.
+ %&-line parsing enabled.
+**"c:/Users/isabellevimercati/OneDrive - OCYAN/Documentos/UFF/Talkie/tcc/tcc.tex"
+(c:/Users/isabellevimercati/OneDrive - OCYAN/Documentos/UFF/Talkie/tcc/tcc.tex
+LaTeX2e <2025-11-01>
+L3 programming layer <2025-12-24>
+(C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/base\article.cls
+Document Class: article 2025/01/22 v1.4n Standard LaTeX document class
+(C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/base\size12.clo
+File: size12.clo 2025/01/22 v1.4n Standard LaTeX file (size option)
+)
+\c@part=\count275
+\c@section=\count276
+\c@subsection=\count277
+\c@subsubsection=\count278
+\c@paragraph=\count279
+\c@subparagraph=\count280
+\c@figure=\count281
+\c@table=\count282
+\abovecaptionskip=\skip49
+\belowcaptionskip=\skip50
+\bibindent=\dimen148
+) (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/float\float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count283
+\float@exts=\toks17
+\float@box=\box53
+\@float@everytoks=\toks18
+\@floatcapt=\box54
+) (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/caption\subcaption.sty
+Package: subcaption 2023/07/28 v1.6b Sub-captions (AR)
+ (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/caption\caption.sty
+Package: caption 2023/08/05 v3.6o Customizing captions (AR)
+ (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/caption\caption3.sty
+Package: caption3 2023/07/31 v2.4d caption3 kernel (AR)
+ (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/graphics\keyval.sty
+Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
+\KV@toks@=\toks19
+)
+\caption@tempdima=\dimen149
+\captionmargin=\dimen150
+\caption@leftmargin=\dimen151
+\caption@rightmargin=\dimen152
+\caption@width=\dimen153
+\caption@indent=\dimen154
+\caption@parindent=\dimen155
+\caption@hangindent=\dimen156
+Package caption Info: Standard document class detected.
+)
+\c@caption@flags=\count284
+\c@continuedfloat=\count285
+Package caption Info: float package is loaded.
+)
+Package caption Info: New subtype `subfigure' on input line 238.
+\c@subfigure=\count286
+Package caption Info: New subtype `subtable' on input line 238.
+\c@subtable=\count287
+) (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/generic/babel\babel.sty
+Package: babel 2025/12/11 v25.17 The multilingual framework for LuaLaTeX, pdfLaTeX and XeLaTeX
+\babel@savecnt=\count288
+LaTeX Encoding Info:    Redeclaring text command \ij (encoding OT1) on input line 2068.
+LaTeX Encoding Info:    Redeclaring text command \IJ (encoding OT1) on input line 2070.
+LaTeX Encoding Info:    Redeclaring text command \ij (encoding T1) on input line 2072.
+LaTeX Encoding Info:    Redeclaring text command \IJ (encoding T1) on input line 2073.
+LaTeX Encoding Info:    Ignoring declaration for text command \ij (encoding ?) on input line 2074.
+LaTeX Encoding Info:    Ignoring declaration for text command \IJ (encoding ?) on input line 2076.
+LaTeX Encoding Info:    Ignoring declaration for text command \SS (encoding ?) on input line 2101.
+\U@D=\dimen157
+\l@unhyphenated=\language79
+ (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/generic/babel\txtbabel.def)
+\bbl@readstream=\read2
+\bbl@dirlevel=\count289
+Package babel Info: Configuration files are deprecated, as
+(babel)             they can break document portability.
+(babel)             Reported on input line 4196.
+
+*************************************
+* Local config file bblopts.cfg used
+*
+(C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/arabi\bblopts.cfg
+File: bblopts.cfg 2005/09/08 v0.1 add Arabic and Farsi to "declared" options of babel
+) (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/generic/babel/locale/invalid\babel-brazil.tex)
+
+Package babel Warning: Name 'brazil' is deprecated.
+(babel)                Use 'brazilian' instead.
+(babel)                Reported on input line 4320.
+
+Package babel Info: Importing font and identification data for brazil
+(babel)             from babel-pt-BR.ini. Reported on input line 4320.
+(C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/babel-portuges\brazilian.ldf
+Language: portuges 2026/01/24 v1.2u Portuguese support from the babel system
+Package babel Info: Hyphen rules for 'brazil' set to \l@portuguese
+(babel)             (\language56). Reported on input line 100.
+Package babel Info: Making " an active character on input line 132.
+)) (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/base\fontenc.sty
+Package: fontenc 2025/07/18 v2.1d Standard LaTeX package
+) (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/base\inputenc.sty
+Package: inputenc 2024/02/08 v1.3d Input encoding file
+\inpenc@prehook=\toks20
+\inpenc@posthook=\toks21
+) (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/url\url.sty
+\Urlmuskip=\muskip17
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+) (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\mathptmx.sty
+Package: mathptmx 2020/03/25 PSNFSS-v9.3 Times w/ Math, improved (SPQR, WaS) 
+LaTeX Font Info:    Redeclaring symbol font `operators' on input line 28.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  OT1/cmr/m/n --> OT1/ztmcm/m/n on input line 28.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/ztmcm/m/n on input line 28.
+LaTeX Font Info:    Redeclaring symbol font `letters' on input line 29.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `normal'
+(Font)                  OML/cmm/m/it --> OML/ztmcm/m/it on input line 29.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `bold'
+(Font)                  OML/cmm/b/it --> OML/ztmcm/m/it on input line 29.
+LaTeX Font Info:    Redeclaring symbol font `symbols' on input line 30.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
+(Font)                  OMS/cmsy/m/n --> OMS/ztmcm/m/n on input line 30.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
+(Font)                  OMS/cmsy/b/n --> OMS/ztmcm/m/n on input line 30.
+LaTeX Font Info:    Redeclaring symbol font `largesymbols' on input line 31.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
+(Font)                  OMX/cmex/m/n --> OMX/ztmcm/m/n on input line 31.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
+(Font)                  OMX/cmex/m/n --> OMX/ztmcm/m/n on input line 31.
+\symbold=\mathgroup4
+\symitalic=\mathgroup5
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 34.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
+(Font)                  OT1/cmr/bx/n --> OT1/ptm/bx/n on input line 34.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/ptm/bx/n on input line 34.
+LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 35.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
+(Font)                  OT1/cmr/m/it --> OT1/ptm/m/it on input line 35.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
+(Font)                  OT1/cmr/bx/it --> OT1/ptm/m/it on input line 35.
+LaTeX Info: Redefining \hbar on input line 50.
+) (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.sty
+Package: geometry 2026/03/07 v6.0 Page Geometry
+ (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/generic/iftex\ifvtex.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+ (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/generic/iftex\iftex.sty
+Package: iftex 2024/12/12 v1.0g TeX engine tests
+))
+\Gm@cnth=\count290
+\Gm@cntv=\count291
+\c@Gm@tempcnt=\count292
+\Gm@bindingoffset=\dimen158
+\Gm@wd@mp=\dimen159
+\Gm@odd@mp=\dimen160
+\Gm@even@mp=\dimen161
+\Gm@layoutwidth=\dimen162
+\Gm@layoutheight=\dimen163
+\Gm@layouthoffset=\dimen164
+\Gm@layoutvoffset=\dimen165
+\Gm@dimlist=\toks22
+ (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.cfg)) (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/setspace\setspace.sty
+Package: setspace 2022/12/04 v6.7b set line spacing
+) (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/parskip\parskip.sty
+Package: parskip 2021-03-14 v2.0h non-zero parskip adjustments
+ (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/kvoptions\kvoptions.sty
+Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
+ (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/generic/ltxcmds\ltxcmds.sty
+Package: ltxcmds 2023-12-04 v1.26 LaTeX kernel commands for general use (HO)
+) (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/kvsetkeys\kvsetkeys.sty
+Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
+)) (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/etoolbox\etoolbox.sty
+Package: etoolbox 2025/10/02 v2.5m e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count293
+)) (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/tools\indentfirst.sty
+Package: indentfirst 2023/07/02 v1.03 Indent first paragraph (DPC)
+) (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/fancyhdr\fancyhdr.sty
+Package: fancyhdr 2025/02/07 v5.2 Extensive control of page headers and footers
+\f@nch@headwidth=\skip51
+\f@nch@offset@elh=\skip52
+\f@nch@offset@erh=\skip53
+\f@nch@offset@olh=\skip54
+\f@nch@offset@orh=\skip55
+\f@nch@offset@elf=\skip56
+\f@nch@offset@erf=\skip57
+\f@nch@offset@olf=\skip58
+\f@nch@offset@orf=\skip59
+\f@nch@height=\skip60
+\f@nch@footalignment=\skip61
+\f@nch@widthL=\skip62
+\f@nch@widthC=\skip63
+\f@nch@widthR=\skip64
+\@temptokenb=\toks23
+) (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/tocloft\tocloft.sty
+Package: tocloft 2026-09-12 v3.0c parameterised ToC, etc., typesetting
+Package tocloft Info: The document has section divisions on input line 64.
+\cftparskip=\skip65
+\cftbeforetoctitleskip=\skip66
+\cftaftertoctitleskip=\skip67
+\cftbeforepartskip=\skip68
+\cftpartnumwidth=\skip69
+\cftpartindent=\skip70
+\cftbeforesecskip=\skip71
+\cftsecindent=\skip72
+\cftsecnumwidth=\skip73
+\cftbeforesubsecskip=\skip74
+\cftsubsecindent=\skip75
+\cftsubsecnumwidth=\skip76
+\cftbeforesubsubsecskip=\skip77
+\cftsubsubsecindent=\skip78
+\cftsubsubsecnumwidth=\skip79
+\cftbeforeparaskip=\skip80
+\cftparaindent=\skip81
+\cftparanumwidth=\skip82
+\cftbeforesubparaskip=\skip83
+\cftsubparaindent=\skip84
+\cftsubparanumwidth=\skip85
+\cftbeforeloftitleskip=\skip86
+\cftafterloftitleskip=\skip87
+\cftbeforefigskip=\skip88
+\cftfigindent=\skip89
+\cftfignumwidth=\skip90
+\c@lofdepth=\count294
+\c@lotdepth=\count295
+\cftbeforelottitleskip=\skip91
+\cftafterlottitleskip=\skip92
+\cftbeforetabskip=\skip93
+\cfttabindent=\skip94
+\cfttabnumwidth=\skip95
+
+
+Package tocloft Warning: \@starttoc has already been redefined; \cfttocprehook et al. not installed. on input line 1432.
+
+) (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/abntex2\abntex2cite.sty
+Package: abntex2cite 2018/11/24 v-1.9.7 abnTeX2
+ (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/base\ifthen.sty
+Package: ifthen 2024/03/16 v1.1e Standard LaTeX ifthen package (DPC)
+) (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/tools\calc.sty
+Package: calc 2025/03/01 v4.3b Infix arithmetic (KKT,FJ)
+\calc@Acount=\count296
+\calc@Bcount=\count297
+\calc@Adimen=\dimen166
+\calc@Bdimen=\dimen167
+\calc@Askip=\skip96
+\calc@Bskip=\skip97
+LaTeX Info: Redefining \setlength on input line 86.
+LaTeX Info: Redefining \addtolength on input line 87.
+\calc@Ccount=\count298
+\calc@Cskip=\skip98
+) (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/abntex2\abntex2abrev.sty)
+\minimumbiblabelwidth=\skip99
+\ABCIauxlen=\skip100
+\c@ABCIaux=\count299
+\c@ABCImax=\count300
+ (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/generic/iftex\ifpdf.sty
+Package: ifpdf 2019/10/25 v3.4 ifpdf legacy package. Use iftex instead.
+) (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/generic/iftex\ifxetex.sty
+Package: ifxetex 2019/10/25 v0.7 ifxetex legacy package. Use iftex instead.
+) (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/relsize\relsize.sty
+Package: relsize 2013/03/29 ver 4.1
+)
+\biblabelsep=\skip101
+LaTeX Info: Redefining \newblock on input line 591.
+LaTeX Info: Redefining \cite on input line 862.
+\ABCItoken=\toks24
+) (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/tools\longtable.sty
+Package: longtable 2025-10-13 v4.24 Multi-page Table package (DPC)
+\LTleft=\skip102
+\LTright=\skip103
+\LTpre=\skip104
+\LTpost=\skip105
+\LTchunksize=\count301
+\LTcapwidth=\dimen168
+\LT@head=\box55
+\LT@firsthead=\box56
+\LT@foot=\box57
+\LT@lastfoot=\box58
+\LT@gbox=\box59
+\LT@cols=\count302
+\LT@rows=\count303
+\c@LT@tables=\count304
+\c@LT@chunks=\count305
+\LT@p@ftn=\toks25
+) (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/tools\array.sty
+Package: array 2025/09/25 v2.6n Tabular extension package (FMi)
+\col@sep=\dimen169
+\ar@mcellbox=\box60
+\extrarowheight=\dimen170
+\NC@list=\toks26
+\extratabsurround=\skip106
+\backup@length=\skip107
+\ar@cellbox=\box61
+) (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/xcolor\xcolor.sty
+Package: xcolor 2024/09/29 v3.02 LaTeX color extensions (UK)
+ (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: pdftex.def on input line 274.
+ (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/graphics-def\pdftex.def
+File: pdftex.def 2025/09/29 v1.2d Graphics/color driver for pdftex
+) (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/graphics\mathcolor.ltx)
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1349.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1353.
+Package xcolor Info: Model `RGB' extended on input line 1365.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1367.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1368.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1369.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1370.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1371.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1372.
+) (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/colortbl\colortbl.sty
+Package: colortbl 2026/05/01 v1.0l Color table columns (DPC)
+\everycr=\toks27
+\minrowclearance=\skip108
+\rownum=\count306
+) (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphicx.sty
+Package: graphicx 2024/12/31 v1.2e Enhanced LaTeX Graphics (DPC,SPQR)
+ (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphics.sty
+Package: graphics 2024/08/06 v1.4g Standard LaTeX Graphics (DPC,SPQR)
+ (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/graphics\trig.sty
+Package: trig 2023/12/02 v1.11 sin cos tan (DPC)
+) (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 106.
+)
+\Gin@req@height=\dimen171
+\Gin@req@width=\dimen172
+)
+LaTeX Font Info:    Trying to load font information for T1+ptm on input line 60.
+ (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\t1ptm.fd
+File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
+) (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def
+File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count307
+) (tcc.aux
+Package babel Info: 'brazil' activates 'portuges' shorthands.
+(babel)             Reported on input line 6.
+)
+\openout1 = `tcc.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 60.
+LaTeX Font Info:    ... okay on input line 60.
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: longtable package is loaded.
+ (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/caption\ltcaption.sty
+Package: ltcaption 2021/01/08 v1.4c longtable captions (AR)
+)
+Package caption Info: End \AtBeginDocument code.
+\big@size=\dimen173
+
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: a4paper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(85.35826pt, 455.24411pt, 56.9055pt)
+* v-part:(T,H,B)=(85.35826pt, 702.78308pt, 56.9055pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=455.24411pt
+* \textheight=702.78308pt
+* \oddsidemargin=13.08827pt
+* \evensidemargin=13.08827pt
+* \topmargin=-23.91173pt
+* \headheight=15.0pt
+* \headsep=25.0pt
+* \topskip=12.0pt
+* \footskip=30.0pt
+* \marginparwidth=35.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+(C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count308
+\scratchdimen=\dimen174
+\scratchbox=\box62
+\nofMPsegments=\count309
+\nofMParguments=\count310
+\everyMPshowfont=\toks28
+\MPscratchCnt=\count311
+\MPscratchDim=\dimen175
+\MPnumerator=\count312
+\makeMPintoPDFobject=\count313
+\everyMPtoPDFconversion=\toks29
+) (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
+ (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/00miktex\epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
+)) [1
+
+{C:/Users/isabellevimercati/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/isabellevimercati/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}] [1
+
+
+] [2
+
+] (tcc.lof
+LaTeX Font Info:    Trying to load font information for OT1+ztmcm on input line 2.
+ (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ot1ztmcm.fd
+File: ot1ztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OT1/ztmcm.
+)
+LaTeX Font Info:    Trying to load font information for OML+ztmcm on input line 2.
+ (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\omlztmcm.fd
+File: omlztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OML/ztmcm.
+)
+LaTeX Font Info:    Trying to load font information for OMS+ztmcm on input line 2.
+ (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\omsztmcm.fd
+File: omsztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMS/ztmcm.
+)
+LaTeX Font Info:    Trying to load font information for OMX+ztmcm on input line 2.
+ (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\omxztmcm.fd
+File: omxztmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OMX/ztmcm.
+)
+LaTeX Font Info:    Trying to load font information for OT1+ptm on input line 2.
+ (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ot1ptm.fd
+File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
+)
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 2.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 2.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 2.
+)
+\tf@lof=\write3
+\openout3 = `tcc.lof'.
+
+ [3
+
+
+] [4
+
+] (tcc.toc)
+\tf@toc=\write4
+\openout4 = `tcc.toc'.
+
+ [5
+
+] [4
+
+] [5]
+Underfull \hbox (badness 10000) in paragraph at lines 193--194
+
+ []
+
+<imagens/WhatsApp Image 2025-12-18 at 19.08.00.jpeg, id=30, 593.21625pt x 1284.8pt>
+File: imagens/WhatsApp Image 2025-12-18 at 19.08.00.jpeg Graphic file (type jpg)
+<use imagens/WhatsApp Image 2025-12-18 at 19.08.00.jpeg>
+Package pdftex.def Info: imagens/WhatsApp Image 2025-12-18 at 19.08.00.jpeg  used on input line 206.
+(pdftex.def)             Requested size: 136.57462pt x 295.79185pt.
+<imagens/WhatsApp Image 2025-12-18 at 19.08.00 (1).jpeg, id=31, 593.21625pt x 1284.8pt>
+File: imagens/WhatsApp Image 2025-12-18 at 19.08.00 (1).jpeg Graphic file (type jpg)
+<use imagens/WhatsApp Image 2025-12-18 at 19.08.00 (1).jpeg>
+Package pdftex.def Info: imagens/WhatsApp Image 2025-12-18 at 19.08.00 (1).jpeg  used on input line 213.
+(pdftex.def)             Requested size: 136.57462pt x 295.79185pt.
+<imagens/WhatsApp Image 2025-12-18 at 19.08.00 .jpeg, id=32, 593.21625pt x 1284.8pt>
+File: imagens/WhatsApp Image 2025-12-18 at 19.08.00 .jpeg Graphic file (type jpg)
+<use imagens/WhatsApp Image 2025-12-18 at 19.08.00 .jpeg>
+Package pdftex.def Info: imagens/WhatsApp Image 2025-12-18 at 19.08.00 .jpeg  used on input line 220.
+(pdftex.def)             Requested size: 136.57462pt x 295.79185pt.
+[6
+
+ <./imagens/WhatsApp Image 2025-12-18 at 19.08.00.jpeg> <./imagens/WhatsApp Image 2025-12-18 at 19.08.00 (1).jpeg> <./imagens/WhatsApp Image 2025-12-18 at 19.08.00 .jpeg>]
+<imagens/COR1.jpeg, id=36, 593.21625pt x 1284.8pt>
+File: imagens/COR1.jpeg Graphic file (type jpg)
+<use imagens/COR1.jpeg>
+Package pdftex.def Info: imagens/COR1.jpeg  used on input line 241.
+(pdftex.def)             Requested size: 136.57462pt x 295.79185pt.
+<imagens/COR2.jpeg, id=37, 593.21625pt x 1284.8pt>
+File: imagens/COR2.jpeg Graphic file (type jpg)
+<use imagens/COR2.jpeg>
+Package pdftex.def Info: imagens/COR2.jpeg  used on input line 248.
+(pdftex.def)             Requested size: 136.57462pt x 295.79185pt.
+<imagens/COR3.jpeg, id=38, 593.21625pt x 1284.8pt>
+File: imagens/COR3.jpeg Graphic file (type jpg)
+<use imagens/COR3.jpeg>
+Package pdftex.def Info: imagens/COR3.jpeg  used on input line 255.
+(pdftex.def)             Requested size: 136.57462pt x 295.79185pt.
+ [7 <./imagens/COR1.jpeg> <./imagens/COR2.jpeg> <./imagens/COR3.jpeg>]
+<imagens/Rio1746.jpeg, id=42, 593.21625pt x 1284.8pt>
+File: imagens/Rio1746.jpeg Graphic file (type jpg)
+<use imagens/Rio1746.jpeg>
+Package pdftex.def Info: imagens/Rio1746.jpeg  used on input line 276.
+(pdftex.def)             Requested size: 136.57462pt x 295.79185pt.
+<imagens/Rio17462.jpeg, id=43, 593.21625pt x 1284.8pt>
+File: imagens/Rio17462.jpeg Graphic file (type jpg)
+<use imagens/Rio17462.jpeg>
+Package pdftex.def Info: imagens/Rio17462.jpeg  used on input line 283.
+(pdftex.def)             Requested size: 136.57462pt x 295.79185pt.
+<imagens/Rio17463.jpeg, id=44, 593.21625pt x 1284.8pt>
+File: imagens/Rio17463.jpeg Graphic file (type jpg)
+<use imagens/Rio17463.jpeg>
+Package pdftex.def Info: imagens/Rio17463.jpeg  used on input line 290.
+(pdftex.def)             Requested size: 136.57462pt x 295.79185pt.
+ [8 <./imagens/Rio1746.jpeg> <./imagens/Rio17462.jpeg> <./imagens/Rio17463.jpeg>]
+c:/Users/isabellevimercati/OneDrive - OCYAN/Documentos/UFF/Talkie/tcc/tcc.tex:384: ignored error: Infinite glue shrinkage found in box being split [9
+
+] [10]
+Overfull \hbox (0.7043pt too wide) in paragraph at lines 398--399
+[]|\T1/ptm/b/n/12 Prioridade| 
+ []
+
+
+Overfull \hbox (0.7043pt too wide) in paragraph at lines 403--404
+[]|\T1/ptm/b/n/12 Prioridade| 
+ []
+
+
+Overfull \hbox (2.71837pt too wide) in paragraph at lines 424--424
+[]|\T1/ptm/m/n/12 Manutenibilidade| 
+ []
+
+
+Overfull \hbox (2.71837pt too wide) in paragraph at lines 426--426
+[]|\T1/ptm/m/n/12 Manutenibilidade| 
+ []
+
+c:/Users/isabellevimercati/OneDrive - OCYAN/Documentos/UFF/Talkie/tcc/tcc.tex:428: ignored error: Infinite glue shrinkage found in box being split [11] [12]
+LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 450.
+ (C:\Users\isabellevimercati\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ts1ptm.fd
+File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
+)
+c:/Users/isabellevimercati/OneDrive - OCYAN/Documentos/UFF/Talkie/tcc/tcc.tex:500: ignored error: Infinite glue shrinkage found in box being split [13]
+c:/Users/isabellevimercati/OneDrive - OCYAN/Documentos/UFF/Talkie/tcc/tcc.tex:534: ignored error: Infinite glue shrinkage found in box being split [14]
+c:/Users/isabellevimercati/OneDrive - OCYAN/Documentos/UFF/Talkie/tcc/tcc.tex:599: ignored error: Infinite glue shrinkage found in box being split [15]
+c:/Users/isabellevimercati/OneDrive - OCYAN/Documentos/UFF/Talkie/tcc/tcc.tex:599: ignored error: Infinite glue shrinkage found in box being split [16]
+c:/Users/isabellevimercati/OneDrive - OCYAN/Documentos/UFF/Talkie/tcc/tcc.tex:599: ignored error: Infinite glue shrinkage found in box being split [17]
+c:/Users/isabellevimercati/OneDrive - OCYAN/Documentos/UFF/Talkie/tcc/tcc.tex:633: ignored error: Infinite glue shrinkage found in box being split [18]
+c:/Users/isabellevimercati/OneDrive - OCYAN/Documentos/UFF/Talkie/tcc/tcc.tex:670: ignored error: Infinite glue shrinkage found in box being split [19]
+c:/Users/isabellevimercati/OneDrive - OCYAN/Documentos/UFF/Talkie/tcc/tcc.tex:714: ignored error: Infinite glue shrinkage found in box being split [20]
+c:/Users/isabellevimercati/OneDrive - OCYAN/Documentos/UFF/Talkie/tcc/tcc.tex:757: ignored error: Infinite glue shrinkage found in box being split [21]
+c:/Users/isabellevimercati/OneDrive - OCYAN/Documentos/UFF/Talkie/tcc/tcc.tex:800: ignored error: Infinite glue shrinkage found in box being split [22] [23]
+c:/Users/isabellevimercati/OneDrive - OCYAN/Documentos/UFF/Talkie/tcc/tcc.tex:875: ignored error: Infinite glue shrinkage found in box being split [24] [25]
+c:/Users/isabellevimercati/OneDrive - OCYAN/Documentos/UFF/Talkie/tcc/tcc.tex:918: ignored error: Infinite glue shrinkage found in box being split [26] [27] [28] [29]
+
+LaTeX Warning: Reference `fig:stack-tecnologica' on page 30 undefined on input line 1028.
+
+[30] [31]
+
+LaTeX Warning: Reference `fig:modelo-logico' on page 32 undefined on input line 1070.
+
+
+LaTeX Warning: Reference `fig:modelo-banco-dados' on page 32 undefined on input line 1085.
+
+[32]
+
+LaTeX Warning: Reference `fig:design-telas' on page 33 undefined on input line 1103.
+
+[33] [34] (tcc.aux)
+ ***********
+LaTeX2e <2025-11-01>
+L3 programming layer <2025-12-24>
+ ***********
+
+
+LaTeX Warning: There were undefined references.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 8022 strings out of 467870
+ 138985 string characters out of 5412546
+ 576814 words of memory out of 5000000
+ 36764 multiletter control sequences out of 15000+600000
+ 657529 words of font info for 76 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 69i,12n,83p,1419b,511s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ <C:\Users\isabellevimercati\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ectt1200.pk><C:/Users/isabellevimercati/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/isabellevimercati/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/isabellevimercati/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
+Output written on tcc.pdf (37 pages, 690166 bytes).
+PDF statistics:
+ 185 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 500000)
+ 46 words of extra memory for PDF output out of 10000 (max. 10000000)
+
